@@ -1,5 +1,6 @@
 ﻿using BusinessLayer.Abstract;
 using DataAccessLayer.Abstract;
+using DtoLayer.ProductDtos;
 using EntityLayer.Concrete;
 
 namespace BusinessLayer.Concrete;
@@ -38,9 +39,11 @@ public class ProductManager : IProductService
     {
         await _productDal.DeleteAsync(entity);
     }
-    
-    
-    
-    
-    
+
+    public async Task<List<ResultProductWithCategoryDto>> GetListWithCategoryAsync()
+    {
+        var result = await _productDal.GetListWithCategoryAsync();
+        return result;
+        
+    }
 }
