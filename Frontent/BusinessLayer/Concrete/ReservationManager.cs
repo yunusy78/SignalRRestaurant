@@ -32,7 +32,7 @@ public class ReservationManager : IReservationService
         return false;
     }
 
-    public async Task<List<GetBookingDto>> GetAllAsync()
+    public async Task<List<GetReservationDto>> GetAllAsync()
     {
         var client = _httpClientFactory.CreateClient();
         var serviceApiSettings = _configuration.GetSection("ServiceApiSettings").Get<ServiceApiSettings>();
@@ -40,13 +40,13 @@ public class ReservationManager : IReservationService
         if (response.IsSuccessStatusCode)
         {
             var jsonContent = await response.Content.ReadAsStringAsync();
-            var result = JsonConvert.DeserializeObject<List<GetBookingDto>>(jsonContent);
+            var result = JsonConvert.DeserializeObject<List<GetReservationDto>>(jsonContent);
             return result!;
         }
         return null;
     }
 
-    public async Task<GetBookingDto> GetByIdAsync(int id)
+    public async Task<GetReservationDto> GetByIdAsync(int id)
     {
         var client = _httpClientFactory.CreateClient();
         var serviceApiSettings = _configuration.GetSection("ServiceApiSettings").Get<ServiceApiSettings>();
@@ -54,13 +54,13 @@ public class ReservationManager : IReservationService
         if (response.IsSuccessStatusCode)
         {
             var jsonContent = response.Content.ReadAsStringAsync();
-            var result = JsonConvert.DeserializeObject<GetBookingDto>(jsonContent.Result);
+            var result = JsonConvert.DeserializeObject<GetReservationDto>(jsonContent.Result);
             return result!;
         }
         return null;
     }
 
-    public async Task<List<GetBookingDto>> GetListByFilterAsync(Expression<Func<GetBookingDto, bool>> filter)
+    public async Task<List<GetReservationDto>> GetListByFilterAsync(Expression<Func<GetReservationDto, bool>> filter)
     {
         var client = _httpClientFactory.CreateClient();
         var serviceApiSettings = _configuration.GetSection("ServiceApiSettings").Get<ServiceApiSettings>();
@@ -68,13 +68,13 @@ public class ReservationManager : IReservationService
         if (response.IsSuccessStatusCode)
         {
             var jsonContent = await response.Content.ReadAsStringAsync();
-            var result= JsonConvert.DeserializeObject<List<GetBookingDto>>(jsonContent);
+            var result= JsonConvert.DeserializeObject<List<GetReservationDto>>(jsonContent);
             return result!;
         }
         return null;
     }
 
-    public async Task<bool> CreateReservationAsync(CreateBookingDto dto)
+    public async Task<bool> CreateReservationAsync(CreateReservationDto dto)
     {
         var client = _httpClientFactory.CreateClient();
         var serviceApiSettings = _configuration.GetSection("ServiceApiSettings").Get<ServiceApiSettings>();
@@ -98,7 +98,7 @@ public class ReservationManager : IReservationService
     }
 
 
-    public async Task<bool> UpdateReservationAsync(UpdateBookingDto dto)
+    public async Task<bool> UpdateReservationAsync(UpdateReservationDto dto)
     {
         var client = _httpClientFactory.CreateClient();
         var serviceApiSettings = _configuration.GetSection("ServiceApiSettings").Get<ServiceApiSettings>();

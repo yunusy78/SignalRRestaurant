@@ -22,6 +22,8 @@ public class ServiceApiSettings
     
     public ServiceApi Reservation { get; set; }
     
+    public ServiceApi Discount { get; set; }
+    
     
     
 }

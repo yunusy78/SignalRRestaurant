@@ -11,4 +11,6 @@ public class Product
     public int CategoryId { get; set; }
     public Category Category { get; set; }
     
+    public List<OrderDetails> OrderDetails { get; set; }
+    
 }

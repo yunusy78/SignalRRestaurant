@@ -1,0 +1,48 @@
+﻿@model dynamic
+
+@{
+    ViewBag.Title = "title";
+    Layout = "_Layout";
+}
+<script src="~/microsoft/signalr/dist/browser/signalr.min.js"></script>
+<script src="~/lib/jquery/dist/jquery.min.js"></script>
+<script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+<script src="~/js/site.js" asp-append-version="true"></script>
+    <div class="content">
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="card">
+                        <script type="text/javascript">
+                        $(document).ready(function () {
+                            var connection = new signalR.HubConnectionBuilder().withUrl("http://localhost:5183/SignalRHub").build();
+                            $("#constatus").text(connection.state);
+                           
+                            connection.start().then(function () {
+                                $("#constatus").text(connection.state);
+                                 connection.invoke("GetTotalCategoryCount");
+                                console.log("connected");
+                            }).catch(function (err) {
+                                return console.error(err.toString());
+                            });
+                            
+                            connection.on("ReceiveTotalCategoryCount",(result)=>{
+                               $("#categorycount").text(result); 
+                            });
+                            
+                                
+                           
+                        });
+                        
+                        </script>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+<div class="row">
+    <div class="col-md-8 offset-2">
+        <div class="alert alert-success">Connection Status : <span id="constatus"></span></div>
+        <div class="alert alert-warning">Category Count : <span id="categorycount"></span></div>
+    </div>
+</div>

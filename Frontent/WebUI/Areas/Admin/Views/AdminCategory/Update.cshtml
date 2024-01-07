@@ -1,0 +1,39 @@
+﻿@model DtoLayer.CategoryDtos.ResultCategoryDto
+
+@{
+    ViewBag.Title = "title";
+    Layout = "~/Areas/Admin/Views/AdminLayout/Index.cshtml";
+}
+<div class="main-panel">
+<div class="content">
+    <div class="container-fluid">
+        <h4 class="page-title">Kategori</h4>
+        <div class="row">
+            <div class="col-md-6">
+                <div class="card">
+                    <div class="card-header">
+                        <div class="card-title"> Rediger Kategori</div>
+                    </div>
+                    <div class="card-body">
+                        <form method="post" enctype="multipart/form-data" action="/Admin/AdminCategory/Update">
+                            @Html.AntiForgeryToken()
+                            <input asp-for="CategoryId" type="hidden" class="form-control" >
+                            <div class="form-group">
+                                <label>Navn :</label>
+                                <input asp-for="CategoryName" class="form-control" required>
+                            </div>
+                            <div class="form-group">
+                                <label>Beskrivelse :</label>
+                                <input asp-for="Description" class="form-control" required>
+                            </div>
+                            <div class="text-center">
+                                <button type="submit" class="btn btn-primary"><i class="fa fa-save"></i> Lagre</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+ </div> 

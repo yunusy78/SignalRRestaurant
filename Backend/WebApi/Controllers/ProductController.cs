@@ -16,14 +16,21 @@ namespace WebApi.Controllers
     public class ProductController : ControllerBase
     {
         private readonly IProductService _productService;
+        private readonly IShoppingCartService _shoppingCartService;
+        
         private readonly IMapper _mapper;
         
         
-        public ProductController(IProductService productService, IMapper mapper)
+        
+        public ProductController(IProductService productService, IMapper mapper, IShoppingCartService shoppingCartService)
         {
             _productService = productService;
             _mapper = mapper;
+            _shoppingCartService = shoppingCartService;
         }
+        
+        
+        
         
        
         
@@ -74,6 +81,28 @@ namespace WebApi.Controllers
         {
             var result = _mapper.Map<List<ResultProductWithCategoryDto>>(await _productService.GetListWithCategoryAsync());
             return Ok(result);
+        }
+        
+        
+        [HttpPost("AddToCart")]
+        public async Task<IActionResult> AddToCart([FromBody] ShoppingCart addToCartRequest)
+        {
+            var product = await _productService.GetByIdAsync(addToCartRequest.ProductId);
+            if (product == null)
+            {
+                return NotFound("Product not found");
+            }
+
+            ShoppingCart cartObj = new()
+            {
+                Quantity = 1,
+                ProductId = addToCartRequest.ProductId,
+                Price = product.Price,
+                CreatedDate = DateTime.Now
+            };
+            
+            await _shoppingCartService.AddAsync(cartObj);
+            return Ok("Added Successfully");
         }
         
         

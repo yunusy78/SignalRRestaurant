@@ -1,0 +1,66 @@
+﻿@model List<DtoLayer.DiscountDtos.ResultDiscountDto>
+
+@{
+    ViewBag.Title = "title";
+    Layout = "~/Areas/Admin/Views/AdminLayout/Index.cshtml";
+}
+
+<div class="main-panel">
+<div class="content">
+    <div class="container-fluid">
+        <h4 class="page-title">Rabatt</h4>
+        <div class="row">
+            <div class="col-md-12">
+                <div class="card">
+                    <div class="card-header">
+                        <div class="card-title">Rabatt Liste</div>
+                    </div>
+                    <div class="card-body">
+                        <table id="datatable-buttons" class="table table-bordered table-bordered-bd-info mt-4">
+                            <thead>
+                            <tr>
+                                <th>Id</th>
+                                <th>Tittel</th>
+                                <th>Beskrivelse</th>
+                                <th>Beløp</th>
+                                <th>Rediger</th>
+                                <th>Slett</th>
+                                <th>Detaljer</th>
+                            </tr>
+                            </thead>
+
+                            <tbody>
+                            @foreach(var item in Model)
+                            {
+                                <tr>
+                                    <td>@item.DiscountId</td>
+                                    <td>@item.Title</td>
+                                    <td>@item.Description</td>
+                                    <td>@item.Amount</td>
+                                    <td><a href="/Admin/AdminDiscount/Update/@item.DiscountId" class="btn btn-outline-warning"> <i class="mdi mdi-account-edit"></i> Rediger</a></td>
+                                    <td><a href="/Admin/AdminDiscount/Delete/@item.DiscountId" class="btn btn-outline-danger" onclick="deleteItemWarning()"><i class="mdi mdi-delete"></i> Slett</a> </td>
+                                    <td><a href="#" class="btn btn-outline-primary"><i class="mdi mdi-eye"></i> Detaljer</a></td>
+                                </tr>
+                        
+                                <script>
+
+        function deleteItemWarning() {
+        var confirmDelete = confirm("Advarsel! Denne handlingen vil slette elementet permanent. Er du sikker på at du vil fortsette?");
+        if (confirmDelete) {
+            // Brukeren bekreftet sletting, slettingsprosessen kan fortsette.
+            window.location.href = "/Admin/AdminDiscount/Delete/@item.DiscountId";
+        }
+    }
+            </script>
+                            }
+                            </tbody>
+                        </table>
+                        <a href="/Admin/AdminDiscount/Create" class="btn btn-primary"> <i class="mdi mdi-plus"></i> Legg en ny Rabatt Kode</a>
+                        <button class="btn btn-primary" onclick="goBack()"><i class="bx bx-arrow-back"></i> Tilbake</button>
+                    </div> <!-- end card body-->
+                </div> <!-- end card -->
+            </div><!-- end col-->
+        </div>
+    </div>
+    </div>
+</div>

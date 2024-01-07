@@ -32,11 +32,33 @@
       <Folder Include="Areas\Admin\Data\" />
       <Folder Include="Areas\Admin\Models\" />
       <Folder Include="Areas\Admin\Pages\" />
+      <Folder Include="Areas\Admin\Views\Shared\" />
       <Folder Include="Pages\Components\" />
+      <Folder Include="wwwroot\ImageFile\Discount\" />
+      <Folder Include="wwwroot\ImageFile\Product\" />
     </ItemGroup>
 
     <ItemGroup>
       <ProjectReference Include="..\BusinessLayer\BusinessLayer.csproj" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <AdditionalFiles Include="Areas\Admin\Views\AdminContact\Create.cshtml" />
+      <AdditionalFiles Include="Areas\Admin\Views\AdminContact\Index.cshtml" />
+      <AdditionalFiles Include="Areas\Admin\Views\AdminContact\Update.cshtml" />
+      <AdditionalFiles Include="Areas\Admin\Views\AdminReservation\Create.cshtml" />
+      <AdditionalFiles Include="Areas\Admin\Views\AdminReservation\Index.cshtml" />
+      <AdditionalFiles Include="Areas\Admin\Views\AdminReservation\Update.cshtml" />
+      <AdditionalFiles Include="Areas\Admin\Views\Shared\Components\_LayoutFooterPartialComponent\Default.cshtml" />
+      <AdditionalFiles Include="Areas\Admin\Views\Shared\Components\_LayoutHeaderPartialComponent\Default.cshtml" />
+      <AdditionalFiles Include="Areas\Admin\Views\Shared\Components\_LayoutNavBarComponentPartial\Default.cshtml" />
+      <AdditionalFiles Include="Areas\Admin\Views\Shared\Components\_LayoutScriptPartialComponent\Default.cshtml" />
+      <AdditionalFiles Include="Areas\Admin\Views\Shared\Components\_LayoutSideBarComponentPartial\Default.cshtml" />
+      <AdditionalFiles Include="Views\SignalRDefault\Index.cshtml" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <_ContentIncludedByDefault Remove="Pages\SignalRDefault\Index.cshtml" />
     </ItemGroup>
 
 </Project>

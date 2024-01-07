@@ -20,6 +20,16 @@ public class SignalRContext : DbContext
     public DbSet<Feature> Features { get; set; }
     public DbSet<Category> Categories { get; set; }
     
+    public DbSet<Order> Orders { get; set; }
+    
+    public DbSet<OrderDetails> OrderDetails { get; set; }
+    
+    public DbSet<CashTransaction> CashTransactions { get; set; }
+    
+    public DbSet<ShoppingCart> ShoppingCarts { get; set; }
+    
+    public DbSet<DiningTable> DiningTables { get; set; }
+    
     
     
     

@@ -4,10 +4,10 @@ using DtoLayer.BookingDtos;
 
 namespace BusinessLayer.Abstract;
 
-public interface IReservationService : IGenericService<GetBookingDto>
+public interface IReservationService : IGenericService<GetReservationDto>
 {
     
-    Task<bool> CreateReservationAsync(CreateBookingDto dto);
-    Task <bool> UpdateReservationAsync(UpdateBookingDto dto);
+    Task<bool> CreateReservationAsync(CreateReservationDto dto);
+    Task <bool> UpdateReservationAsync(UpdateReservationDto dto);
     
 }
