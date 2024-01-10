@@ -1,0 +1,44 @@
+﻿@{
+    ViewBag.Title = "title";
+	Layout = "~/Views/UILayout/Index.cshtml";
+}
+<form method="get" asp-action="Index">
+    <div class="container mt-4">
+        <div class="card">
+            <div class="card-header bg-dark text-light">
+                <div class="row">
+                    <div class="col-6">
+                        <i class="fa fa-shopping-cart"></i> &nbsp;
+                        Bestilling Kurv
+                    </div>
+                    <div class="col-6 text-end">
+                        <a asp-controller="Default" asp-area="" asp-action="Index" class="btn btn-outline-info btn-sm">Fortsett å Handle</a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card-body">
+                <div class="container">
+                          <label for="id" class="form-label">Bord Nummer:</label>
+                    <div class="mb-3">
+
+                        <select id="id" name="id" class="form-select">
+                            @foreach (var item in ViewBag.List)
+                            {
+                                <option value="@item.Value">@item.Text</option>
+                            }
+                        </select>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card-footer">
+                <div class="row">
+                    <div class="col-12 text-center">
+                        <button type="submit" class="btn btn-outline-info btn-sm mx-auto">Submit</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</form>

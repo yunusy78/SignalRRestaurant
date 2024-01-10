@@ -1,0 +1,28 @@
+﻿@model dynamic
+
+@{
+    ViewBag.Title = "title";
+}
+
+<!DOCTYPE html>
+<html>
+
+@await Component.InvokeAsync("_UILayoutHeadComponentPartial")
+
+<body>
+
+  @await Component.InvokeAsync("_UILayoutNavBarComponentPartial")
+@RenderBody()
+  <!-- book section -->
+  <!-- end book section -->
+
+  <!-- footer section -->
+  @await Component.InvokeAsync("_UILayoutFooterComponentPartial")
+  <!-- footer section -->
+
+  <!-- jQery -->
+  @await Component.InvokeAsync("_UILayoutScriptComponentPartial")
+
+</body>
+
+</html>

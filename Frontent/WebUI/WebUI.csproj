@@ -35,7 +35,6 @@
       <Folder Include="Areas\Admin\Views\Shared\" />
       <Folder Include="Pages\Components\" />
       <Folder Include="wwwroot\ImageFile\Discount\" />
-      <Folder Include="wwwroot\ImageFile\Product\" />
     </ItemGroup>
 
     <ItemGroup>
@@ -54,11 +53,16 @@
       <AdditionalFiles Include="Areas\Admin\Views\Shared\Components\_LayoutNavBarComponentPartial\Default.cshtml" />
       <AdditionalFiles Include="Areas\Admin\Views\Shared\Components\_LayoutScriptPartialComponent\Default.cshtml" />
       <AdditionalFiles Include="Areas\Admin\Views\Shared\Components\_LayoutSideBarComponentPartial\Default.cshtml" />
+      <AdditionalFiles Include="Views\About\Index.cshtml" />
+      <AdditionalFiles Include="Views\BookingTable\Index.cshtml" />
+      <AdditionalFiles Include="Views\Menu\Index.cshtml" />
       <AdditionalFiles Include="Views\SignalRDefault\Index.cshtml" />
     </ItemGroup>
 
     <ItemGroup>
       <_ContentIncludedByDefault Remove="Pages\SignalRDefault\Index.cshtml" />
+      <_ContentIncludedByDefault Remove="Pages\ShoppingCart\Index.cshtml" />
+      <_ContentIncludedByDefault Remove="Pages\About\Index.cshtml" />
     </ItemGroup>
 
 </Project>

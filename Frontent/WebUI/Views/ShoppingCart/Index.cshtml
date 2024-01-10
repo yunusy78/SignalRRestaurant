@@ -1,0 +1,105 @@
+﻿@model List<DtoLayer.ShoppingCartDtos.ResultShoppingCartWithDiningTableDto>
+
+@{
+    ViewBag.Title = "title";
+	Layout = "~/Views/UILayout/Index.cshtml";
+}
+
+<form method="post">
+	<br />
+	<div class="container">
+		<div class="card">
+			<div class="card-header bg-dark text-light ml-0">
+				<div class="row">
+					<div class="col-6  pt-2">
+						<i class="fa fa-shopping-cart"></i> &nbsp;
+						Bestilling Kurv
+					</div>
+					<div class="col-6 text-end">
+						<a  asp-controller="Default" asp-area="" asp-action="Index" class="btn btn-outline-info btn-sm">Forsette å Handle</a>
+					</div>
+				</div>
+			</div>
+
+			<div class="card-body">
+				@foreach(var item in Model){
+					<div class="row">
+						<div class="d-none d-lg-block col-lg-1 text-center py-2">
+							<img src="@item.ImageUrl" class="rounded" width="100%"/>
+						</div>
+						<div class="col-12 col-lg-6 pt-md-3">
+							<h5><strong>@item.ProductName</strong></h5>
+						</div>
+						<div class="col-12  col-lg-5 text-center row">
+							<div class="col-4 text-md-right pt-4">
+								<h6 class="text-info"><strong><span class="text-info"></span><strong class="text-info">@item.Price.ToString("0")
+									<span class="text-info">x&nbsp;</span>@item.Quantity </strong><span class="text-info"> = </span>@item.TotalPrice.ToString("0"),- </strong></h6>
+							</div>
+							<div class="col-6 col-sm-4 col-lg-6 pt-2">
+								<div class="w-75 btn-group" role="group">
+									<a asp-action="DecrementCount" asp-controller="ShoppingCart" asp-area="" asp-route-cartId="@item.Id" asp-route-productId="@item.ProductId" asp-route-tableId="@item.DiningTableId" class="btn btn-warning">
+										<i class="fa fa-minus-square"></i>
+									</a>
+									<a asp-action="IncrementCount" asp-controller="ShoppingCart" asp-area="" asp-route-cartId="@item.Id" asp-route-productId="@item.ProductId" asp-route-tableId="@item.DiningTableId" class="btn btn-primary">
+										<i class="fa fa-plus-square"></i>
+									</a> &nbsp;
+									<a asp-action="RemoveFromCart" asp-controller="ShoppingCart" asp-area="" asp-route-cartId="@item.Id" asp-route-productId="@item.ProductId" asp-route-tableId="@item.DiningTableId" class="btn btn-danger">
+										<i class="fa fa-trash"></i></a>
+								</div>
+							</div>
+						</div>
+					</div>
+					<hr/>}
+				<div class="row">
+					<div class="col-12 col-md-6 offset-md-6 col-lg-4 offset-lg-8 pr-4">
+						<ul class="list-group">
+							<li class="list-group-item d-flex justify-content-between bg-light">
+								<span class="text-info"> Totalt </span>
+								<strong id="totalAmount" class="text-info"></strong>
+							</li>
+						</ul>
+					</div>
+					<div class="col-12 col-md-6 offset-md-6 col-lg-4 offset-lg-8 pr-4">
+     <form asp-action="" asp-controller="">
+	     <ul class="list-group">
+		     
+		     <li class="list-group-item d-flex justify-content-between bg-light">
+			     <div class="input-group">
+				     <input type="text" class="form-control" name="discountCode" placeholder="Rabattkode"/>
+				     <button type="submit" class="btn btn-info"> &nbsp; Bruk &nbsp; </button>
+				     <br/>
+				     <button asp-controller="" asp-action="" class="btn btn-warning">Avbryt</button>
+			     </div>
+		     </li>
+	     </ul>
+     </form>
+					</div>      
+					
+				</div>
+			</div>
+			
+			<div class="card-footer">
+				<div class="card-footer row">
+					<div class="col-sm-12 col-lg-4 col-md-6 offset-lg-8 offset-md-6 ">
+					</div>
+				</div>
+			</div>
+			
+		</div>
+	</div>
+</form>
+
+
+<script>
+    // Toplam miktarı hesapla ve göster
+    var totalAmount = 0;
+    @foreach (var item in Model)
+    {
+	    <text>
+			totalAmount += @item.TotalPrice;
+		</text>
+    }
+
+    // Toplam miktarı göster
+    document.getElementById('totalAmount').innerText =' '+ totalAmount.toFixed(2)+',-' ;
+</script>

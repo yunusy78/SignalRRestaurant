@@ -13,4 +13,6 @@ public class Product
     
     public List<OrderDetails> OrderDetails { get; set; }
     
+    public List<ShoppingCart> ShoppingCarts { get; set; }
+    
 }

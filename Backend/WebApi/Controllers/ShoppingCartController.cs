@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using AutoMapper;
 using BusinessLayer.Abstract;
 using DataAccessLayer.Abstract;
+using DtoLayer.ShoppingCartDtos;
 using EntityLayer.Concrete;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -16,53 +17,64 @@ namespace WebApi.Controllers
     [Route("api/[controller]")]
     public class ShoppingCartController : ControllerBase
     {
-        private readonly IShoppingCartDal _shoppingCartDal;
+        private readonly IShoppingCartService _shoppingCartService;
 
-        public ShoppingCartController(IShoppingCartDal shoppingCartDal)
+        public ShoppingCartController(IShoppingCartService shoppingCartService)
         {
-            _shoppingCartDal = shoppingCartDal;
+            _shoppingCartService = shoppingCartService;
         }
 
-        [HttpPost("IncrementCount")]
-        public ActionResult<int> IncrementCount([FromBody] ShoppingCart shoppingCart, int count)
+        [HttpGet("IncrementCount")]
+        public ActionResult<int> IncrementCount(int cartId, int productId)
         {
-            int newQuantity = _shoppingCartDal.IncrementCount(shoppingCart, count);
-            return Ok(newQuantity);
+            int newQuantity = _shoppingCartService.IncrementCount(cartId, productId);
+            return Ok();
         }
+        
 
-        [HttpPost("DecrementCount")]
-        public ActionResult<int> DecrementCount([FromBody] ShoppingCart shoppingCart, int count)
+        [HttpGet("DecrementCount")]
+        public ActionResult<int> DecrementCount(int cartId, int productId)
         {
-            int newQuantity = _shoppingCartDal.DecrementCount(shoppingCart, count);
-            return Ok(newQuantity);
+            int newQuantity = _shoppingCartService.DecrementCount(cartId, productId);
+            return Ok();
         }
 
         [HttpGet("GetFirstOrDefault")]
         public ActionResult<ShoppingCart> GetFirstOrDefault(Expression<Func<ShoppingCart, bool>> filter, string includeProperties = null, bool tracked = true)
         {
-            ShoppingCart result = _shoppingCartDal.GetFirstOrDefault(filter, includeProperties, tracked);
+            ShoppingCart result = _shoppingCartService.GetFirstOrDefault(filter, includeProperties, tracked);
             return Ok(result);
         }
 
         [HttpGet("GetAllListByFilter")]
         public ActionResult<IEnumerable<ShoppingCart>> GetAllListByFilter(Expression<Func<ShoppingCart, bool>> filter = null, string includeProperties = null, string includeProperties2 = null)
         {
-            IEnumerable<ShoppingCart> resultList = _shoppingCartDal.GetAllListByFilter(filter, includeProperties, includeProperties2);
+            IEnumerable<ShoppingCart> resultList = _shoppingCartService.GetAllListByFilter(filter, includeProperties, includeProperties2);
             return Ok(resultList);
         }
 
-        [HttpPost("RemoveRange")]
-        public IActionResult RemoveRange([FromBody] IEnumerable<ShoppingCart> entity)
+        [HttpGet("RemoveRange")]
+        public IActionResult RemoveRange(int cartId, int productId)
         {
-            _shoppingCartDal.RemoveRange(entity);
+            _shoppingCartService.RemoveRange(cartId, productId);
             return Ok("Entities removed successfully.");
         }
-
-        [HttpPost("SaveChanges")]
-        public IActionResult SaveChanges()
+        
+        
+        [HttpGet("GetAllListByDiningTableAsync")]
+        public async Task<ActionResult<List<ResultShoppingCartWithDiningTableDto>>> GetAllListByDiningTableAsync(int diningTableId)
         {
-            _shoppingCartDal.SaveChanges();
-            return Ok("Changes saved successfully.");
+            List<ResultShoppingCartWithDiningTableDto> result = await _shoppingCartService.GetAllListByDiningTableAsync(diningTableId);
+            return Ok(result);
+        }
+        
+        
+        [HttpPost("CreateBasketAsync")]
+        
+        public async Task<ActionResult<CreateShoppingCartDto>> CreateBasketAsync(CreateShoppingCartDto createBasketDto)
+        {
+            CreateShoppingCartDto result = await _shoppingCartService.CreateBasketAsync(createBasketDto);
+            return Ok(result);
         }
     }
 }

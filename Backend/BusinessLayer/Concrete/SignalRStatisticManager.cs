@@ -102,5 +102,12 @@ public class SignalRStatisticManager : ISignalRStatisticService
     }
     
     
+    public async Task<int> GetTotalPassiveTableCountAsync()
+    {
+        var result = await _signalRStatisticDal.GetTotalPassiveTableCountAsync();
+        return result;
+    }
+    
+    
     
 }

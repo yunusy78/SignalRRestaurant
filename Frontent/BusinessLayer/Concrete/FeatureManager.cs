@@ -5,7 +5,7 @@ using BusinessLayer.Abstract;
 using DtoLayer.FeatureDtos;
 using Microsoft.Extensions.Configuration;
 
-namespace Business.Concrete;
+namespace BusinessLayer.Concrete;
 
 public class FeatureManager : IFeatureService
 {

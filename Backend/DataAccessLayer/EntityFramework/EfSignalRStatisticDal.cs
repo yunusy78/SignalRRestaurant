@@ -100,6 +100,12 @@ public class EfSignalRStatisticDal : ISignalRStatisticDal
     }
     
     
+    public async Task<int> GetTotalPassiveTableCountAsync()
+    {
+        return await _context.DiningTables.CountAsync(x => !x.Status);
+    }
+    
+    
     
 
 

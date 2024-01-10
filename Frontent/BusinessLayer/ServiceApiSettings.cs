@@ -24,6 +24,10 @@ public class ServiceApiSettings
     
     public ServiceApi Discount { get; set; }
     
+    public ServiceApi ShoppingCart { get; set; }
+    
+    public ServiceApi DiningTable { get; set; }
+    
     
     
 }

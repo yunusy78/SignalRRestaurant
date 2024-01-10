@@ -8,5 +8,6 @@ public interface IProductService : IGenericService<ResultProductDto>
 {
     Task<bool> AddAsync(CreateProductDto dto);
     Task<bool> UpdateAsync(UpdateProductDto dto);
+    Task<List<ResultProductWithCategoryDto>> GetListWithCategoryAsync();
     
 }

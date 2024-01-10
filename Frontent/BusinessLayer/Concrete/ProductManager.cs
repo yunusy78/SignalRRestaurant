@@ -89,4 +89,19 @@ public class ProductManager : IProductService
         }
         return true;
     }
+    
+    
+    public async Task<List<ResultProductWithCategoryDto>> GetListWithCategoryAsync()
+    {
+        var client = _httpClientFactory.CreateClient();
+        var serviceApiSettings = _configuration.GetSection("ServiceApiSettings").Get<ServiceApiSettings>();
+        var response = await client.GetAsync($"{serviceApiSettings!.BaseUri}/{serviceApiSettings.Product.Path}/GetListWithCategory");
+        if (response.IsSuccessStatusCode)
+        {
+            var jsonContent = await response.Content.ReadAsStringAsync();
+            var result = JsonConvert.DeserializeObject<List<ResultProductWithCategoryDto>>(jsonContent);
+            return result!;
+        }
+        return null;
+    }
 }

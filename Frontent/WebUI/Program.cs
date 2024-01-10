@@ -1,9 +1,11 @@
+using System.Configuration;
 using Business.Concrete;
 using BusinessLayer.Abstract;
 using BusinessLayer.Concrete;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using WebUI.Data;
+using WebUI.Models;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -26,8 +28,10 @@ builder.Services.AddScoped<IAboutService, AboutManager>();
 builder.Services.AddScoped<ISocialMediaService, SocialMediaManager>();
 builder.Services.AddScoped<IReservationService, ReservationManager>();
 builder.Services.AddScoped<IDiscountService, DiscountManager>();
+builder.Services.AddScoped<IShoppingCartService, ShoppingCartManager>();
+builder.Services.AddScoped<IDiningTableService, DiningTableManager>();
 builder.Services.AddHttpClient();
-
+builder.Services.Configure<SignalRHubSettings>(builder.Configuration.GetSection("SignalRHubSettings"));
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
@@ -51,7 +55,7 @@ app.UseAuthorization();
 
 app.MapControllerRoute(
     name: "default",
-    pattern: "{controller=Home}/{action=Index}/{id?}");
+    pattern: "{controller=Default}/{action=Index}/{id?}");
 
 app.UseEndpoints(endpoints =>
 {

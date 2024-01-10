@@ -1,0 +1,69 @@
+﻿@model List<DtoLayer.ContactDtos.ResultContactDto>
+<footer class="footer_section">
+    <div class="container">
+       @foreach (var contact in Model)
+                   {
+                       <div class="row">
+            
+                <div class="col-md-4 footer-col">
+                    <div class="footer_contact">
+                        <h4>
+                            Kontakt Oss
+                        </h4>
+                        <div class="contact_link_box">
+                            <a href="">
+                                <i class="fa fa-map-marker" aria-hidden="true"></i>
+                                <span>
+                                   @contact.Location
+                                </span>
+                            </a>
+                            <a href="">
+                                <i class="fa fa-phone" aria-hidden="true"></i>
+                                <span>
+                                    Ring @contact.Phone
+                                </span>
+                            </a>
+                            <a href="">
+                                <i class="fa fa-envelope" aria-hidden="true"></i>
+                                <span>
+                                    @contact.Email
+                                </span>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            
+            <div class="col-md-4 footer-col">
+                <div class="footer_detail">
+                    <a href="" class="footer-logo">
+                        BurgerClash
+                    </a>
+                    <p>
+                        @contact.FooterDescription
+                    </p>
+                    @await Component.InvokeAsync("_UILayoutSocialMediaComponentPartial")
+                </div>
+            </div>
+            <div class="col-md-4 footer-col">
+                <h4>
+                    Åpningstider
+                </h4>
+                <p>
+                    Hver dag
+                </p>
+                <p>
+                    10.00 Formiddag - 22.00 Kveld
+                </p>
+            </div>
+        </div>
+                       <div class="footer-info">
+                           <p>
+                               &copy; <span id="displayYear"></span> Alle rettigheter reservert av
+                               <a href="https://html.design/">Gratis HTML-maler</a><br><br>
+                               &copy; <span id="displayYear"></span> Distribuert av
+                               <a href="https://themewagon.com/" target="_blank">ThemeWagon</a>
+                           </p>
+                       </div>
+                   }
+    </div>
+</footer>

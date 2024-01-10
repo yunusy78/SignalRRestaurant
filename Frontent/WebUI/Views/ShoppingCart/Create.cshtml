@@ -1,0 +1,52 @@
+﻿@model DtoLayer.ShoppingCartDtos.CreateShoppingCartDto
+
+@{
+    ViewBag.Title = "title";
+    Layout = "_Layout";
+}
+
+<form method="post" asp-action="Create">
+    <div class="container mt-4">
+        <div class="card">
+            <div class="card-header bg-dark text-light">
+                <div class="row">
+                    <div class="col-6">
+                        <i class="fa fa-shopping-cart"></i> &nbsp;
+                        Bestilling Kurv
+                    </div>
+                    <div class="col-6 text-end">
+                        <a asp-controller="Default" asp-area="" asp-action="Index" class="btn btn-outline-info btn-sm">Fortsett å Handle</a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card-body">
+                <div class="container">
+                          <label for="id" class="form-label">Bord Nummer:</label>
+                    <div class="mb-3">
+
+                        <select id="id" asp-for="DiningTableId" class="form-select">
+                            @foreach (var item in ViewBag.List)
+                            {
+                                <option value="@item.Value">@item.Text</option>
+                            }
+                        </select>
+                        <input type="hidden" asp-for="ProductId" value="@ViewBag.Product.ProductId"/>
+                        <input type="hidden" asp-for="Price" value="@ViewBag.Product.Price"/>
+                        <input type="hidden" asp-for="Quantity" value="1"/>
+                        <input type="hidden" asp-for="TotalPrice" value="@ViewBag.Product.Price"/>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card-footer">
+                <div class="row">
+                    <div class="col-12 text-center">
+                        <button type="submit" class="btn btn-outline-info btn-sm mx-auto">Submit</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</form>
+

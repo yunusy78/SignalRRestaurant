@@ -351,6 +351,9 @@ namespace DataAccessLayer.Migrations
                     b.Property<DateTime>("CreatedDate")
                         .HasColumnType("datetime2");
 
+                    b.Property<int>("DiningTableId")
+                        .HasColumnType("int");
+
                     b.Property<decimal>("Price")
                         .HasColumnType("decimal(18,2)");
 
@@ -360,7 +363,12 @@ namespace DataAccessLayer.Migrations
                     b.Property<int>("Quantity")
                         .HasColumnType("int");
 
+                    b.Property<decimal>("TotalPrice")
+                        .HasColumnType("decimal(18,2)");
+
                     b.HasKey("Id");
+
+                    b.HasIndex("DiningTableId");
 
                     b.HasIndex("ProductId");
 
@@ -461,11 +469,19 @@ namespace DataAccessLayer.Migrations
 
             modelBuilder.Entity("EntityLayer.Concrete.ShoppingCart", b =>
                 {
+                    b.HasOne("EntityLayer.Concrete.DiningTable", "DiningTable")
+                        .WithMany("ShoppingCarts")
+                        .HasForeignKey("DiningTableId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.HasOne("EntityLayer.Concrete.Product", "Product")
-                        .WithMany()
+                        .WithMany("ShoppingCarts")
                         .HasForeignKey("ProductId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+
+                    b.Navigation("DiningTable");
 
                     b.Navigation("Product");
                 });
@@ -473,6 +489,11 @@ namespace DataAccessLayer.Migrations
             modelBuilder.Entity("EntityLayer.Concrete.Category", b =>
                 {
                     b.Navigation("Products");
+                });
+
+            modelBuilder.Entity("EntityLayer.Concrete.DiningTable", b =>
+                {
+                    b.Navigation("ShoppingCarts");
                 });
 
             modelBuilder.Entity("EntityLayer.Concrete.Order", b =>
@@ -483,6 +504,8 @@ namespace DataAccessLayer.Migrations
             modelBuilder.Entity("EntityLayer.Concrete.Product", b =>
                 {
                     b.Navigation("OrderDetails");
+
+                    b.Navigation("ShoppingCarts");
                 });
 #pragma warning restore 612, 618
         }

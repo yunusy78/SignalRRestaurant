@@ -140,6 +140,15 @@ namespace WebApi.Controllers
         }
         
         
+        [HttpGet("GetTotalPassiveTableCount")]
+        
+        public async Task<IActionResult> GetTotalPassiveTableCount()
+        {
+            var result = await _signalRStatisticService.GetTotalPassiveTableCountAsync();
+            return Ok(result);
+        }
+        
+        
         
         
         

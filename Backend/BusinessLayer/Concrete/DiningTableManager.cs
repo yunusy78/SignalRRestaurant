@@ -1,5 +1,6 @@
 ﻿using BusinessLayer.Abstract;
 using DataAccessLayer.Abstract;
+using DtoLayer.DiningTableDtos;
 using EntityLayer.Concrete;
 
 namespace BusinessLayer.Concrete;
@@ -25,18 +26,18 @@ public class DiningTableManager : IDiningTableService
         return result;
     }
 
-    public async Task AddAsync(DiningTable diningTable)
+    public async Task AddAsync(DiningTable resultDiningTableDto)
     {
-        await _diningTableDal.AddAsync(diningTable);
+        await _diningTableDal.AddAsync(resultDiningTableDto);
     }
 
-    public async Task UpdateAsync(DiningTable diningTable)
+    public async Task UpdateAsync(DiningTable resultDiningTableDto)
     {
-        await _diningTableDal.UpdateAsync(diningTable);
+        await _diningTableDal.UpdateAsync(resultDiningTableDto);
     }
 
-    public async Task DeleteAsync(DiningTable diningTable)
+    public async Task DeleteAsync(DiningTable resultDiningTableDto)
     {
-        await _diningTableDal.DeleteAsync(diningTable);
+        await _diningTableDal.DeleteAsync(resultDiningTableDto);
     }
 }

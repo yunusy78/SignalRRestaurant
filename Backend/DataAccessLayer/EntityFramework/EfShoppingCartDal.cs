@@ -2,6 +2,7 @@
 using DataAccessLayer.Abstract;
 using DataAccessLayer.Concrete;
 using DataAccessLayer.Repositories;
+using DtoLayer.ShoppingCartDtos;
 using EntityLayer.Concrete;
 using Microsoft.EntityFrameworkCore;
 
@@ -13,16 +14,30 @@ public class EfShoppingCartDal :GenericRepository<ShoppingCart>, IShoppingCartDa
     {
     }
     
-    
-    public int IncrementCount(ShoppingCart shoppingCart, int count)
+    public int IncrementCount(int cartId, int productId)
     {
-        shoppingCart.Quantity += count;
+        var context = new SignalRContext();
+        var shoppingCart = GetFirstOrDefault(x => x.Id == cartId && x.ProductId == productId);
+        shoppingCart.Quantity += 1;
+        shoppingCart.TotalPrice += shoppingCart.Price;
+        context.ShoppingCarts.Update(shoppingCart);
+        context.SaveChanges();
         return shoppingCart.Quantity;
+        
     }
     
-    public int DecrementCount(ShoppingCart shoppingCart, int count)
+    
+    public int DecrementCount(int cartId, int productId)
     {
-        shoppingCart.Quantity -= count;
+        var context = new SignalRContext();
+        var shoppingCart = GetFirstOrDefault(x => x.Id == cartId && x.ProductId == productId);
+        if (shoppingCart.Quantity > 1)
+        {
+            shoppingCart.Quantity -= 1;
+            shoppingCart.TotalPrice -= shoppingCart.Price;
+        }
+        context.ShoppingCarts.Update(shoppingCart);
+        context.SaveChanges();
         return shoppingCart.Quantity;
     }
     
@@ -85,10 +100,11 @@ public class EfShoppingCartDal :GenericRepository<ShoppingCart>, IShoppingCartDa
         return query.ToList();
     }
     
-    public void RemoveRange(IEnumerable<ShoppingCart> entity)
+    public void RemoveRange(int cartId, int productId)
     {
         SignalRContext context = new();
-        context.RemoveRange(entity);
+        var shoppingCart = context.ShoppingCarts.Where(x => x.Id == cartId && x.ProductId == productId);
+        context.ShoppingCarts.RemoveRange(shoppingCart);
         context.SaveChanges();
     }
 
@@ -97,6 +113,72 @@ public class EfShoppingCartDal :GenericRepository<ShoppingCart>, IShoppingCartDa
         SignalRContext context = new();
         context.SaveChanges();
     }
+    
+    public async Task<List<ResultShoppingCartWithDiningTableDto>> GetAllListByDiningTableAsync(int diningTableId)
+    {
+        SignalRContext context = new();
+        
+        var result =await context.ShoppingCarts.Include(x => x.ResultDiningTableDto)
+            .Include(x => x.Product)
+            .Where(x => x.DiningTableId == diningTableId)
+            .ToListAsync();
+        
+        List<ResultShoppingCartWithDiningTableDto> resultList = new();
+        
+        foreach (var item in result)
+        {
+            ResultShoppingCartWithDiningTableDto dto = new()
+            {
+                Id = item.Id,
+                DiningTableId = item.DiningTableId,
+                DiningTableName = item.ResultDiningTableDto.TableName,
+                ProductId = item.ProductId,
+                ProductName = item.Product.ProductName,
+                Quantity = item.Quantity,
+                Price = item.Price,
+                TotalPrice = item.TotalPrice,
+                CreatedDate = item.CreatedDate,
+                ImageUrl = item.Product.ImageUrl
+            };
+            resultList.Add(dto);
+        }
+        return resultList;
+    }
+    
+    
+    public async Task<CreateShoppingCartDto> CreateBasketAsync(CreateShoppingCartDto createBasketDto)
+    {
+        SignalRContext context = new SignalRContext();
+
+        // Aynı üründen sepette var mı kontrol et
+        var existingCartItem = await context.ShoppingCarts
+            .FirstOrDefaultAsync(x => x.ProductId == createBasketDto.ProductId && x.DiningTableId == createBasketDto.DiningTableId);
+
+        if (existingCartItem != null)
+        {
+            // Eğer varsa miktarı artır
+            existingCartItem.Quantity += createBasketDto.Quantity;
+            existingCartItem.TotalPrice += createBasketDto.TotalPrice;
+        }
+        else
+        {
+            // Yoksa yeni bir kayıt ekle
+            ShoppingCart shoppingCart = new()
+            {
+                ProductId = createBasketDto.ProductId,
+                Quantity = createBasketDto.Quantity,
+                Price = createBasketDto.Price,
+                TotalPrice = createBasketDto.TotalPrice,
+                DiningTableId = createBasketDto.DiningTableId,
+                CreatedDate = createBasketDto.CreatedDate
+            };
+            await context.ShoppingCarts.AddAsync(shoppingCart);
+        }
+
+        await context.SaveChangesAsync();
+        return createBasketDto;
+    }
+
 
     
 }

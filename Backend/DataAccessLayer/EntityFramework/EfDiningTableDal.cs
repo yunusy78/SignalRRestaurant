@@ -1,6 +1,7 @@
 ﻿using DataAccessLayer.Abstract;
 using DataAccessLayer.Concrete;
 using DataAccessLayer.Repositories;
+using DtoLayer.DiningTableDtos;
 using EntityLayer.Concrete;
 
 namespace DataAccessLayer.EntityFramework;

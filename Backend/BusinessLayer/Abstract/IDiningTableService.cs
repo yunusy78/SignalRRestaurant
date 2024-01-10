@@ -1,4 +1,5 @@
-﻿using EntityLayer.Concrete;
+﻿using DtoLayer.DiningTableDtos;
+using EntityLayer.Concrete;
 
 namespace BusinessLayer.Abstract;
 

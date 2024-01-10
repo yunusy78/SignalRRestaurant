@@ -28,6 +28,8 @@ public interface ISignalRStatisticDal
     
     Task<int> GetTotalActiveTableCountAsync();
     
+    Task<int> GetTotalPassiveTableCountAsync();
+    
     
     
     

@@ -1,6 +1,7 @@
 ﻿using System.Linq.Expressions;
 using BusinessLayer.Abstract;
 using DataAccessLayer.Abstract;
+using DtoLayer.ShoppingCartDtos;
 using EntityLayer.Concrete;
 
 namespace BusinessLayer.Concrete;
@@ -14,14 +15,14 @@ public class ShoppingCartManager : IShoppingCartService
         _shoppingCartDal = shoppingCartDal;
     }
     
-    public int IncrementCount(ShoppingCart shoppingCart, int count)
+    public int IncrementCount(int cartId, int productId)
     {
-        return _shoppingCartDal.IncrementCount(shoppingCart, count);
+        return _shoppingCartDal.IncrementCount(cartId, productId);
     }
     
-    public int DecrementCount(ShoppingCart shoppingCart, int count)
+    public int DecrementCount(int cartId, int productId)
     {
-        return _shoppingCartDal.DecrementCount(shoppingCart, count);
+        return _shoppingCartDal.DecrementCount(cartId, productId);
     }
     
     public ShoppingCart GetFirstOrDefault(Expression<Func<ShoppingCart, bool>> filter, string? includeProperties = null, bool tracked = true)
@@ -34,10 +35,11 @@ public class ShoppingCartManager : IShoppingCartService
         return _shoppingCartDal.GetAllListByFilter(filter, includeProperties, includeProperties2);
     }
     
-    public void RemoveRange(IEnumerable<ShoppingCart> entity)
+    public void RemoveRange(int cartId, int productId)
     {
-        _shoppingCartDal.RemoveRange(entity);
+        _shoppingCartDal.RemoveRange(cartId, productId);
     }
+   
     
     public async Task<List<ShoppingCart>> GetAllAsync()
     {
@@ -65,5 +67,15 @@ public class ShoppingCartManager : IShoppingCartService
     {
          await _shoppingCartDal.DeleteAsync(entity);
         
+    }
+    
+    public async Task<List<ResultShoppingCartWithDiningTableDto>> GetAllListByDiningTableAsync(int diningTableId)
+    {
+        return await _shoppingCartDal.GetAllListByDiningTableAsync(diningTableId);
+    }
+    
+    public async Task<CreateShoppingCartDto> CreateBasketAsync(CreateShoppingCartDto createBasketDto)
+    {
+        return await _shoppingCartDal.CreateBasketAsync(createBasketDto);
     }
 }

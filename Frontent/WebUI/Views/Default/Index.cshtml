@@ -1,0 +1,13 @@
+﻿@model dynamic
+
+@{
+    ViewBag.Title = "title";
+    Layout = "~/Views/UILayout/Index.cshtml";
+}
+
+@await Component.InvokeAsync("_DefaultSliderSectionComponentPartial")
+@await Component.InvokeAsync("_DefaultOfferSectionComponentPartial")
+@await Component.InvokeAsync("_DefaultFoodSectionComponentPartial")
+@await Component.InvokeAsync("_DefaultAboutSectionComponentPartial")
+@await Component.InvokeAsync("_DefaultBookTableSectionComponentPartial")
+@await Component.InvokeAsync("_DefaultTestimonialSectionComponentPartial")

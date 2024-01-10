@@ -18,9 +18,10 @@ public class ShoppingCart
     
     public decimal Price { get; set; }
     
-    [NotMapped]
+    public decimal TotalPrice { get; set; }
     
-    public double TotalPrice { get; set; }
+    public int DiningTableId { get; set; }
+    public DiningTable ResultDiningTableDto { get; set; }
     
     public DateTime CreatedDate { get; set; }
     

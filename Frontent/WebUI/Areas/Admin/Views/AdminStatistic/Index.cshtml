@@ -1,4 +1,6 @@
-﻿@model dynamic
+﻿@using WebUI.Models
+@using System.Configuration
+@model dynamic
 
 @{
     ViewBag.Title = "title";
@@ -6,8 +8,86 @@
 }
 <div class="main-panel">
 <div class="content">
-	<div class="container-fluid">
-		<h4 class="page-title">Dashboard</h4>
+<div class="container-fluid">
+
+ <script type="text/javascript">
+  $(document).ready(function () {
+ var connection = new signalR.HubConnectionBuilder()
+ .withUrl('@ViewBag.HubUrl')
+ .build();
+  $("#constatus").text(connection.state);
+                            
+  connection.start().then(function () {
+   $("#constatus").text(connection.state);
+   setInterval(function(){
+   connection.invoke("GetTotalCategoryCount");
+   connection.invoke("GetTotalProductCount");
+	connection.invoke("GetTotalActiveBookingCount");
+    connection.invoke("GetTotalPassiveBookingCount");
+    connection.invoke("GetAveragePrice");
+    connection.invoke("GetCheapestProduct");
+    connection.invoke("GetExpensiveProduct");
+    connection.invoke("GetTotalOrderCount");
+    connection.invoke("GetTodayTotalCompletedOrderCount");
+    connection.invoke("GetTotalCashRevenue");
+    connection.invoke("GetTotalActiveTableCount");
+    connection.invoke("GetTotalPassiveTableCount");								 
+    },1000);
+    console.log("connected");
+    }).catch(function (err) {
+    return console.error(err.toString());
+    });
+                             
+                             connection.on("ReceiveTotalCategoryCount",(result)=>{
+                                $("#categorycount").text(result); 
+                             }); 
+							 
+							 connection.on("ReceiveTotalProductCount",(result)=>{
+								$("#productcount").text(result); 
+							 });
+							 
+							 connection.on("ReceiveTotalActiveBookingCount",(result)=>{
+                             $("#activeBookingCount").text(result); 
+                             });
+							 connection.on("ReceiveTotalPassiveBookingCount",(result)=>{
+                             $("#passiveBookingCount").text(result); 
+                             });
+							 
+							 connection.on("ReceiveAveragePrice",(result)=>{
+                             $("#averagePrice").text("NOK " + result); 
+                             });
+							 connection.on("ReceiveCheapestProduct",(result)=>{
+                             $("#cheapestProduct").text(result); 
+                             });
+							 
+							 connection.on("ReceiveExpensiveProduct",(result)=>{
+                            $("#expensiveProduct").text(result); 
+                            });
+							 
+							 connection.on("ReceiveTotalOrderCount",(result)=>{
+							 $("#totalOrderCount").text(result); 
+							 });
+							 
+							 connection.on("ReceiveTodayTotalCompletedOrderCount",(result)=>{
+							$("#todayTotalCompletedOrderCount").text(result);
+							});
+							 connection.on("ReceiveTotalCashRevenue",(result)=>{
+                             $("#TotalCashRevenue").text("NOK " + result);
+                             });
+							 connection.on("ReceiveTotalActiveTableCount",(result)=>{
+                             $("#totalActiveTableCount").text(result);
+                             });
+                             							 
+                            connection.on("ReceiveTotalPassiveTableCount",(result)=>{
+                            $("#totalPassiveTableCount").text(result);
+                            }); 
+							 connection.onclose(function () {
+								 $("#constatus").text(connection.state);
+								 console.log("disconnected");
+							 });
+                         });
+                         </script>
+		<h4 class="page-title">Øyeblikkelig Statistikk</h4>
 		<div class="row">
 			<div class="col-md-3">
 				<div class="card card-stats card-warning">
@@ -15,13 +95,13 @@
 						<div class="row">
 							<div class="col-5">
 								<div class="icon-big text-center">
-									<i class="la la-users"></i>
+									<i class="la la-certificate"></i>
 								</div>
 							</div>
 							<div class="col-7 d-flex align-items-center">
 								<div class="numbers">
-									<p class="card-category">Visitors</p>
-									<h4 class="card-title">1,294</h4>
+									<p class="card-category">Antall Kategori</p>
+									<h4 class="card-title" id="categorycount"></h4>
 								</div>
 							</div>
 						</div>
@@ -34,13 +114,91 @@
 						<div class="row">
 							<div class="col-5">
 								<div class="icon-big text-center">
+									<i class="la la-puzzle-piece"></i>
+								</div>
+							</div>
+							<div class="col-7 d-flex align-items-center">
+								<div class="numbers">
+									<p class="card-category">Antall Produkt</p>
+									<h4 class="card-title" id="productcount"></h4>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="col-md-3">
+				<div class="card card-stats card-danger">
+					<div class="card-body">
+						<div class="row">
+							<div class="col-5">
+								<div class="icon-big text-center">
+									<i class="la la-shopping-cart "></i>
+								</div>
+							</div>
+							<div class="col-7 d-flex align-items-center">
+								<div class="numbers">
+									<p class="card-category">Aktive Bestilling</p>
+									<h4 class="card-title" id="activeBookingCount"></h4>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="col-md-3">
+				<div class="card card-stats card-primary">
+					<div class="card-body ">
+						<div class="row">
+							<div class="col-5">
+								<div class="icon-big text-center">
+									<i class="la la-pie-chart"></i>
+								</div>
+							</div>
+							<div class="col-7 d-flex align-items-center">
+								<div class="numbers">
+									<p class="card-category">Pasive Bestilling</p>
+									<h4 class="card-title" id="passiveBookingCount"></h4>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="row">
+			<div class="col-md-3">
+				<div class="card card-stats card-warning">
+					<div class="card-body ">
+						<div class="row">
+							<div class="col-5">
+								<div class="icon-big text-center">
 									<i class="la la-bar-chart"></i>
 								</div>
 							</div>
 							<div class="col-7 d-flex align-items-center">
 								<div class="numbers">
-									<p class="card-category">Sales</p>
-									<h4 class="card-title">$ 1,345</h4>
+									<p class="card-category">Gejennomsnittlig Prise</p>
+									<h4 class="card-title" id="averagePrice"></h4>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="col-md-3">
+				<div class="card card-stats card-success">
+					<div class="card-body ">
+						<div class="row">
+							<div class="col-5">
+								<div class="icon-big text-center">
+									<i class="la la-area-chart"></i>
+								</div>
+							</div>
+							<div class="col-7 d-flex align-items-center">
+								<div class="numbers">
+									<p class="card-category">Billigste Product</p>
+									<h4 class="card-title" id="cheapestProduct"></h4>
 								</div>
 							</div>
 						</div>
@@ -58,8 +216,8 @@
 							</div>
 							<div class="col-7 d-flex align-items-center">
 								<div class="numbers">
-									<p class="card-category">Subscribers</p>
-									<h4 class="card-title">1303</h4>
+									<p class="card-category">Dyreste Produkt</p>
+									<h4 class="card-title" id="expensiveProduct"></h4>
 								</div>
 							</div>
 						</div>
@@ -77,8 +235,8 @@
 							</div>
 							<div class="col-7 d-flex align-items-center">
 								<div class="numbers">
-									<p class="card-category">Order</p>
-									<h4 class="card-title">576</h4>
+									<p class="card-category">Antall Ordre</p>
+									<h4 class="card-title" id="totalOrderCount" ></h4>
 								</div>
 							</div>
 						</div>
@@ -86,6 +244,84 @@
 				</div>
 			</div>
 		</div>
+	<div class="row">
+		<div class="col-md-3">
+			<div class="card card-stats card-warning">
+				<div class="card-body ">
+					<div class="row">
+						<div class="col-5">
+							<div class="icon-big text-center">
+								<i class="la la-dollar"></i>
+							</div>
+						</div>
+						<div class="col-7 d-flex align-items-center">
+							<div class="numbers">
+								<p class="card-category">Total Ordre</p>
+								<h4 class="card-title" id="todayTotalCompletedOrderCount"></h4>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="col-md-3">
+			<div class="card card-stats card-success">
+				<div class="card-body ">
+					<div class="row">
+						<div class="col-5">
+							<div class="icon-big text-center">
+								<i class="la la-money"></i>
+							</div>
+						</div>
+						<div class="col-7 d-flex align-items-center">
+							<div class="numbers">
+								<p class="card-category">Total Inntekt</p>
+								<h4 class="card-title" id="TotalCashRevenue"></h4>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="col-md-3">
+			<div class="card card-stats card-danger">
+				<div class="card-body">
+					<div class="row">
+						<div class="col-5">
+							<div class="icon-big text-center">
+								<i class="la la-tablet"></i>
+							</div>
+						</div>
+						<div class="col-7 d-flex align-items-center">
+							<div class="numbers">
+								<p class="card-category">Totalt Utilgjengelige Bord</p>
+								<h4 class="card-title" id="totalActiveTableCount"></h4>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="col-md-3">
+			<div class="card card-stats card-primary">
+				<div class="card-body ">
+					<div class="row">
+						<div class="col-5">
+							<div class="icon-big text-center">
+								<i class="la la-table"></i>
+							</div>
+						</div>
+						<div class="col-7 d-flex align-items-center">
+							<div class="numbers">
+								<p class="card-category">Totalt Tilgjengelige Bord</p>
+								<h4 class="card-title" id="totalPassiveTableCount"></h4>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
 	</div>
 </div>
 </div>
