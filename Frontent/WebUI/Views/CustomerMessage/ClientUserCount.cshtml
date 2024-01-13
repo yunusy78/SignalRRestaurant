@@ -1,0 +1,30 @@
+﻿@model dynamic
+
+@{
+    ViewBag.Title = "title";
+    Layout = "~/Areas/Admin/Views/AdminLayout/Index.cshtml";
+}
+
+<div class="main-panel">
+    <div class="content">
+        <div class="container-fluid">
+            <script type="text/javascript">
+                $(document).ready(function () {
+                    var connection = new signalR.HubConnectionBuilder().withUrl("http://localhost:5183/SignalRBookingHub").build();
+                    connection.start().then(function () {
+                        console.log("connected");
+                    }).catch(function (err) {
+                        return console.error(err.toString());
+                    });
+
+                    connection.on("ReceiveConnectionCount", (result) => {
+                       console.log(result);
+                          $("#connectionCount").text(result);
+                        });
+                });
+                
+            </script>
+<h4 class="page-title" id="connectionCount"></h4>
+            </div>
+    </div>
+</div>

@@ -1,0 +1,47 @@
+﻿@model dynamic
+
+@{
+    ViewBag.Title = "title";
+    Layout = "~/Areas/Admin/Views/AdminLayout/Index.cshtml";
+}
+
+
+<section class="book_section layout_padding">
+    <div class="container">
+        <div class="heading_container">
+            <h2>
+               SignalR  BurgerClash Umiddelbar Chat
+            </h2>
+        </div>
+        <div class="row">
+            <div class="col-md-6">
+                <div class="form_container">
+                    <div>
+                        <input type="text" class="form-control" placeholder="Ditt Brukernavn" id="userInput"/>
+                    </div>
+                        <div>
+                            <textarea id="messageInput" rows="4" class="form-control" placeholder="Melding" ></textarea>
+                        </div>
+                    <div>
+                        <input type="button" class="btn btn-warning" value="Send Melding" id="sendButton"/>
+                    </div>
+                    
+                    <div>
+                        <div>
+                            <hr/>
+                        </div>
+                    </div>
+                    
+                    <div>
+                        <div>
+                            <ul class="list-group" id="messageList">
+                                
+                            </ul>
+                        </div>
+                    </div>
+                    
+                </div>
+            </div>
+        </div>
+    </div>
+</section>

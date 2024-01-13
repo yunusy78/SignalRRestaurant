@@ -1,0 +1,70 @@
+﻿@model List<DtoLayer.MessageDtos.ResultMessageDto>
+
+@{
+    ViewBag.Title = "title";
+    Layout = "~/Areas/Admin/Views/AdminLayout/Index.cshtml";
+}
+
+<div class="main-panel">
+<div class="content">
+    <div class="container-fluid">
+        <h4 class="page-title">Melding</h4>
+        <div class="row">
+            <div class="col-md-12">
+                <div class="card">
+                    <div class="card-header">
+                        <div class="card-title">Melding Liste</div>
+                    </div>
+                    <div class="card-body">
+
+                        <table id="datatable-buttons" class="table table-bordered table-bordered-bd-info mt-4">
+                            <thead>
+                            <tr>
+                                <th>Id</th>
+                                <th>Navn</th>
+                                <th>E-Post</th>
+                                <th>Emne</th>
+                                <th>Melding</th>
+                                <th>Bestilling Dato</th>
+                                <th>Er Lest</th>
+                                <th>Rediger</th>
+                                <th>Slett</th>
+                                <th>Detaljer</th>
+                            </tr>
+                            </thead>
+
+                            <tbody>
+                            @foreach(var item in Model)
+                            {
+                                <tr>
+                                    <td>@item.Id</td>
+                                    <td>@item.Name</td>
+                                    <td>@item.Email</td>
+                                    <td>@item.Subject</td>
+                                    <td>@item.MessageText</td>
+                                    <td>@item.CreatedAt</td>
+                                    <td>@item.IsRead</td>
+                                    <td><a href="/Admin/AdminMessage/Update/@item.Id" class="btn btn-outline-warning"> <i class="mdi mdi-account-edit"></i> Rediger</a></td>
+                                    <td><a href="/Admin/AdminMessage/Delete/@item.Id" class="btn btn-outline-danger" onclick="deleteItemWarning()"><i class="mdi mdi-delete"></i> Slett</a> </td>
+                                    <td><a href="#" class="btn btn-outline-primary"><i class="mdi mdi-eye"></i> Detaljer</a></td>
+                                </tr>
+                                <script>
+                function deleteItemWarning() {
+                var confirmDelete = confirm("Advarsel! Denne handlingen vil slette elementet permanent. Er du sikker på at du vil fortsette?");
+                if (confirmDelete) {
+            // Brukeren bekreftet sletting, slettingsprosessen kan fortsette.
+                window.location.href = "/Admin/AdminMessage/Delete/@item.Id";
+                  }
+               }
+            </script>
+                            }
+                            </tbody>
+                        </table>
+                        <a href="/Admin/AdminMessage/Create" class="btn btn-primary"> <i class="mdi mdi-plus"></i> Legg en ny Melding</a>
+                    </div> <!-- end card body-->
+                </div> <!-- end card -->
+            </div><!-- end col-->
+        </div>
+    </div>
+</div>
+</div>
