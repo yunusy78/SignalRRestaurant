@@ -1,8 +1,10 @@
 ﻿using System.Linq.Expressions;
+using System.Net.Http.Headers;
 using System.Text;
 using BusinessLayer;
 using BusinessLayer.Abstract;
 using DtoLayer.SocialMediaDtos;
+using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Configuration;
 using Newtonsoft.Json;
 
@@ -12,15 +14,20 @@ public class SocialMediaManager : ISocialMediaService
 {
     private readonly IHttpClientFactory _httpClientFactory;
     private readonly IConfiguration _configuration;
+    private readonly IHttpContextAccessor _httpContextAccessor;
     
-    public SocialMediaManager(IHttpClientFactory httpClientFactory, IConfiguration configuration)
+    
+    public SocialMediaManager(IHttpClientFactory httpClientFactory, IConfiguration configuration, IHttpContextAccessor httpContextAccessor)
     {
         _httpClientFactory = httpClientFactory;
         _configuration = configuration;
+        _httpContextAccessor = httpContextAccessor;
     }
     public async Task<bool> DeleteAsync(int id)
     {
+        var jwtToken = _httpContextAccessor.HttpContext!.Request.Cookies["JwtToken"];
         var client = _httpClientFactory.CreateClient();
+        client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", jwtToken);
         var serviceApiSettings = _configuration.GetSection("ServiceApiSettings").Get<ServiceApiSettings>();
         var response = await client.DeleteAsync($"{serviceApiSettings!.BaseUri}/{serviceApiSettings.SocialMedia.Path}/{id}");
         if (response.IsSuccessStatusCode)
@@ -66,7 +73,9 @@ public class SocialMediaManager : ISocialMediaService
 
     public async Task<bool> AddAsync(CreateSocialMediaDto socialMediaDto)
     {
+        var jwtToken = _httpContextAccessor.HttpContext!.Request.Cookies["JwtToken"];
         var client = _httpClientFactory.CreateClient();
+        client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", jwtToken);
         var serviceApiSettings = _configuration.GetSection("ServiceApiSettings").Get<ServiceApiSettings>();
         var json = JsonConvert.SerializeObject(socialMediaDto);
         var data = new StringContent(json, Encoding.UTF8, "application/json");
@@ -82,7 +91,9 @@ public class SocialMediaManager : ISocialMediaService
 
     public async Task<bool> UpdateAsync(UpdateSocialMediaDto socialMediaDto)
     {
+        var jwtToken = _httpContextAccessor.HttpContext!.Request.Cookies["JwtToken"];
         var client = _httpClientFactory.CreateClient();
+        client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", jwtToken);
         var serviceApiSettings = _configuration.GetSection("ServiceApiSettings").Get<ServiceApiSettings>();
         var json = JsonConvert.SerializeObject(socialMediaDto);
         var data = new StringContent(json, Encoding.UTF8, "application/json");

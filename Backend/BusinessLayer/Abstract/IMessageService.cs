@@ -1,6 +1,8 @@
-﻿namespace BusinessLayer.Abstract;
+﻿using EntityLayer.Concrete;
 
-public class IMessageService
+namespace BusinessLayer.Abstract;
+
+public interface IMessageService : IGenericService<Message>
 {
     
 }

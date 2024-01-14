@@ -4,29 +4,30 @@ using System.IdentityModel.Tokens.Jwt;
 using System.Linq;
 using System.Security.Claims;
 using System.Text;
-using System.Threading.Tasks;
-using EindomsHavnAPI.DTOs.ApplicationUserDto;
-using EindomsHavnAPI.Model;
-using EindomsHavnAPI.Repositories.ApplicationUserRepository;
+using BusinessLayer.Abstract;
+using DtoLayer.AppUserDtos;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.IdentityModel.Tokens;
+using WebApi.Model;
 
-namespace API.Controllers
+namespace WebApi.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
     public class AuthController : ControllerBase
     {
-        private readonly IApplicationUserRepository _userRepository;
+        private readonly IAppUserService _userService;
         private readonly IConfiguration _configuration;
-
-        public AuthController(IApplicationUserRepository userRepository, IConfiguration configuration)
+        
+        public AuthController(IAppUserService userService, IConfiguration configuration)
         {
-            _userRepository = userRepository;
+            _userService = userService;
             _configuration = configuration;
         }
+
+        
 
         [HttpPost("login")]
         [AllowAnonymous]
@@ -35,12 +36,12 @@ namespace API.Controllers
             if (ModelState.IsValid)
             {
                 // Kullanıcı kimlik doğrulama işlemi
-                var user = await _userRepository.AuthenticateUser(model.Email!, model.Password);
+                var user = await _userService.AuthenticateUser(model.Email!, model.Password);
 
                 if (user != null)
                 {
                     // Kullanıcı doğrulandı, kullanıcı rollerini alın
-                    var roles = await _userRepository.GetRolesForUser(user);
+                    var roles = await _userService.GetRolesForUser(user);
 
                     // Kullanıcı doğrulandı, bir JWT token oluşturun
                     var token = CreateToken(user, roles);
@@ -63,11 +64,11 @@ namespace API.Controllers
         {
             List<Claim> claims = new List<Claim>
             {
-                new Claim(ClaimTypes.Name, userViewModel.Email),
+                new Claim(ClaimTypes.Name, userViewModel.UserEmail),
                 new Claim(ClaimTypes.Role,roles)
             };
             
-            var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration.GetSection("AppSettings:Token").Value));
+            var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration.GetSection("AppSettings:Token").Value!));
             var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha512Signature);
 
             var token = new JwtSecurityToken(
@@ -81,7 +82,7 @@ namespace API.Controllers
         
         // AuthController.cs (veya uygun bir controller)
         [HttpPost]
-        [Route("api/Auth/logout")]
+        [Route("logout")]
         public IActionResult Logout()
         {
             // Kullanıcıyı oturumdan çıkarın (örneğin, JWT çerezini silin veya geçersizleştirin)

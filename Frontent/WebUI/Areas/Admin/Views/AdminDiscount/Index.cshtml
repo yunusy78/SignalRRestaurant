@@ -23,6 +23,8 @@
                                 <th>Tittel</th>
                                 <th>Beskrivelse</th>
                                 <th>Beløp</th>
+                                <th>Kode</th>
+                                <th>Is Aktive</th>
                                 <th>Rediger</th>
                                 <th>Slett</th>
                                 <th>Detaljer</th>
@@ -37,6 +39,8 @@
                                     <td>@item.Title</td>
                                     <td>@item.Description</td>
                                     <td>@item.Amount</td>
+                                    <td>@item.Code</td>
+                                    <td>@item.IsActive</td>
                                     <td><a href="/Admin/AdminDiscount/Update/@item.DiscountId" class="btn btn-outline-warning"> <i class="mdi mdi-account-edit"></i> Rediger</a></td>
                                     <td><a href="/Admin/AdminDiscount/Delete/@item.DiscountId" class="btn btn-outline-danger" onclick="deleteItemWarning()"><i class="mdi mdi-delete"></i> Slett</a> </td>
                                     <td><a href="#" class="btn btn-outline-primary"><i class="mdi mdi-eye"></i> Detaljer</a></td>

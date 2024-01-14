@@ -8,16 +8,20 @@ namespace WebUI.Areas.Admin.Controllers;
 public class AdminReservationController : Controller
 {
    private readonly IReservationService _reservationService;
+   private readonly IConfiguration _configuration;
 
-   public AdminReservationController(IReservationService reservationService)
-   {
-       _reservationService = reservationService;
-   }
+    public AdminReservationController(IReservationService reservationService, IConfiguration configuration)
+    {
+         _reservationService = reservationService;
+         _configuration = configuration;
+    }
 
 
    // GET
     public async Task<IActionResult> Index()
     {
+        var hubUrl = _configuration.GetSection("SignalRHubSettings:HubBookingUrl").Value;
+        ViewBag.HubUrl = hubUrl;
         var response = await _reservationService.GetAllAsync();
         if (response != null)
         {

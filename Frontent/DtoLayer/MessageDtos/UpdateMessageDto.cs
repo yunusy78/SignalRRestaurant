@@ -1,4 +1,4 @@
-﻿namespace DtoLayer.ContactDtos;
+﻿namespace DtoLayer.MessageDtos;
 
 public class UpdateMessageDto
 {

@@ -19,6 +19,7 @@
         <PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite" Version="7.0.13"/>
         <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="7.0.13"/>
         <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="7.0.11" />
+        <PackageReference Include="NETCore.MailKit" Version="2.1.0" />
     </ItemGroup>
 
     <ItemGroup>
@@ -30,7 +31,6 @@
 
     <ItemGroup>
       <Folder Include="Areas\Admin\Data\" />
-      <Folder Include="Areas\Admin\Models\" />
       <Folder Include="Areas\Admin\Pages\" />
       <Folder Include="Areas\Admin\Views\Shared\" />
       <Folder Include="Pages\Components\" />
@@ -45,9 +45,16 @@
       <AdditionalFiles Include="Areas\Admin\Views\AdminContact\Create.cshtml" />
       <AdditionalFiles Include="Areas\Admin\Views\AdminContact\Index.cshtml" />
       <AdditionalFiles Include="Areas\Admin\Views\AdminContact\Update.cshtml" />
+      <AdditionalFiles Include="Areas\Admin\Views\AdminDiningTable\Create.cshtml" />
+      <AdditionalFiles Include="Areas\Admin\Views\AdminDiningTable\Index.cshtml" />
+      <AdditionalFiles Include="Areas\Admin\Views\AdminDiningTable\Update.cshtml" />
+      <AdditionalFiles Include="Areas\Admin\Views\AdminNotification\Create.cshtml" />
+      <AdditionalFiles Include="Areas\Admin\Views\AdminNotification\Index.cshtml" />
+      <AdditionalFiles Include="Areas\Admin\Views\AdminNotification\Update.cshtml" />
       <AdditionalFiles Include="Areas\Admin\Views\AdminReservation\Create.cshtml" />
       <AdditionalFiles Include="Areas\Admin\Views\AdminReservation\Index.cshtml" />
       <AdditionalFiles Include="Areas\Admin\Views\AdminReservation\Update.cshtml" />
+      <AdditionalFiles Include="Areas\Admin\Views\Email\Index.cshtml" />
       <AdditionalFiles Include="Areas\Admin\Views\Shared\Components\_LayoutFooterPartialComponent\Default.cshtml" />
       <AdditionalFiles Include="Areas\Admin\Views\Shared\Components\_LayoutHeaderPartialComponent\Default.cshtml" />
       <AdditionalFiles Include="Areas\Admin\Views\Shared\Components\_LayoutNavBarComponentPartial\Default.cshtml" />
@@ -56,6 +63,7 @@
       <AdditionalFiles Include="Views\About\Index.cshtml" />
       <AdditionalFiles Include="Views\BookingTable\Index.cshtml" />
       <AdditionalFiles Include="Views\Menu\Index.cshtml" />
+      <AdditionalFiles Include="Views\Message\Index.cshtml" />
       <AdditionalFiles Include="Views\SignalRDefault\Index.cshtml" />
     </ItemGroup>
 
@@ -63,6 +71,12 @@
       <_ContentIncludedByDefault Remove="Pages\SignalRDefault\Index.cshtml" />
       <_ContentIncludedByDefault Remove="Pages\ShoppingCart\Index.cshtml" />
       <_ContentIncludedByDefault Remove="Pages\About\Index.cshtml" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <Reference Include="QRCoder">
+        <HintPath>..\..\..\..\..\QRCoder.dll</HintPath>
+      </Reference>
     </ItemGroup>
 
 </Project>

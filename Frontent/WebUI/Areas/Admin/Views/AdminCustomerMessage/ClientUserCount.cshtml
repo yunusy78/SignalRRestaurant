@@ -10,7 +10,7 @@
         <div class="container-fluid">
             <script type="text/javascript">
                 $(document).ready(function () {
-                    var connection = new signalR.HubConnectionBuilder().withUrl("http://localhost:5183/SignalRBookingHub").build();
+                    var connection = new signalR.HubConnectionBuilder().withUrl("@ViewBag.HubUrl").build();
                     connection.start().then(function () {
                         console.log("connected");
                     }).catch(function (err) {
@@ -24,7 +24,28 @@
                 });
                 
             </script>
-<h4 class="page-title" id="connectionCount"></h4>
-            </div>
+            <h4 class="page-title">Øyeblikkelig Statistikk</h4>
+            <div class="row">
+            	<div class="col-md-3">
+             <div class="card card-stats card-warning">
+                					<div class="card-body ">
+                						<div class="row">
+                							<div class="col-5">
+                								<div class="icon-big text-center">
+                									<i class="la la-user-plus"></i>
+                								</div>
+                							</div>
+                							<div class="col-7 d-flex align-items-center">
+                								<div class="numbers">
+                									<p class="card-category">Antall Klinent</p>
+                									<h4 class="card-title" id="connectionCount"></h4>
+                								</div>
+                							</div>
+                						</div>
+                					</div>
+                				</div>
+                			</div>
+    </div>
+</div>
     </div>
 </div>

@@ -1,22 +1,22 @@
 ﻿using BusinessLayer.Abstract;
-using DtoLayer.ContactDtos;
+using DtoLayer.MessageDtos;
 using Microsoft.AspNetCore.Mvc;
 namespace WebUI.Areas.Admin.Controllers
 {
     [Area("Admin")]
-    public class AdminContactController : Controller
+    public class AdminMessageController : Controller
     {
-        private readonly IContactService _contactService;
+        private readonly IMessageService _messageService;
     
-        public AdminContactController(IContactService contactService)
+        public AdminMessageController(IMessageService messageService)
         {
-            _contactService = contactService;
+            _messageService = messageService;
         }
     
         // GET
         public async Task<IActionResult> Index()
         {
-            var result = await _contactService.GetAllAsync();
+            var result = await _messageService.GetAllAsync();
             return View(result);
         
         }
@@ -27,20 +27,20 @@ namespace WebUI.Areas.Admin.Controllers
         }
     
         [HttpPost]
-        public async Task<IActionResult> Create(CreateContactDto dto)
+        public async Task<IActionResult> Create(CreateMessageDto dto)
         {
             dto.CreatedAt = DateTime.Now;
-            var result = await _contactService.AddAsync(dto);
+            var result = await _messageService.AddAsync(dto);
             if (result)
             {
-                return Redirect("/Admin/AdminContact/Index");
+                return Redirect("/Admin/AdminMessage/Index");
             }
             return View(dto);
         }
     
         public async Task<IActionResult> Update(int id)
         {
-            var result = await _contactService.GetByIdAsync(id);
+            var result = await _messageService.GetByIdAsync(id);
             if (result == null)
             {
                 return NotFound();
@@ -50,12 +50,12 @@ namespace WebUI.Areas.Admin.Controllers
     
     
         [HttpPost]
-        public async Task<IActionResult> Update(UpdateContactDto dto)
+        public async Task<IActionResult> Update(UpdateMessageDto dto)
         {
-            var result = await _contactService.UpdateAsync(dto);
+            var result = await _messageService.UpdateAsync(dto);
             if (result)
             {
-                return Redirect("/Admin/AdminContact/Index");
+                return Redirect("/Admin/AdminMessage/Index");
             }
             return View();
         }
@@ -63,12 +63,12 @@ namespace WebUI.Areas.Admin.Controllers
         public async Task<IActionResult> Delete(int id)
         {
         
-            var result = await _contactService.DeleteAsync(id);
+            var result = await _messageService.DeleteAsync(id);
             if (result == null)
             {
                 return NotFound();
             }
-            return Redirect("/Admin/AdminContact/Index");
+            return Redirect("/Admin/AdminMessage/Index");
         }
     
     }

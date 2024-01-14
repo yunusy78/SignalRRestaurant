@@ -31,6 +31,21 @@ public class SignalRContext : DbContext
     public DbSet<DiningTable> DiningTables { get; set; }
     
     
+    public DbSet<Message> Messages { get; set; }
+    
+    public DbSet<Notification> Notifications { get; set; }
+    
+    public DbSet<AppUser> AppUsers { get; set; }
+    
+    public DbSet<AppRole> AppRoles { get; set; }
+    
+    
+    public DbSet<ForgotPassword> ForgotPasswords { get; set; }
+    
+    public DbSet<AppUserRole> AppUserRoles { get; set; }
+    
+    
+    
     
     
 }

@@ -4,12 +4,16 @@ using System.Linq;
 using System.Threading.Tasks;
 using AutoMapper;
 using BusinessLayer.Abstract;
+using DtoLayer.OrderDetailsDtos;
 using EntityLayer.Concrete;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 
 namespace WebApi.Controllers
 {
+    [Authorize(Roles = "Admin")]
     [Route("api/[controller]")]
     [ApiController]
     public class OrderDetailsController : ControllerBase
@@ -24,7 +28,7 @@ namespace WebApi.Controllers
             _mapper = mapper;
         }
         
-       
+         
         
         [HttpGet]
         public async Task<IActionResult> GetList()
@@ -41,24 +45,26 @@ namespace WebApi.Controllers
             return Ok(result);
         }
         
+        [AllowAnonymous]
         [HttpPost]
-        public async Task<IActionResult> Add(OrderDetails dto)
+        public async Task<IActionResult> Add(CreateOrderDetailsDto orderDetails)
         {
-            await _orderDetailsService.AddAsync(dto);
+            var result = _mapper.Map<OrderDetails>(orderDetails);
+            await _orderDetailsService.AddAsync(result);
             return Ok("Added Successfully");
         }
         
-        [HttpPut]
         
-        public async Task<IActionResult> Update(OrderDetails dto)
+        [HttpPut]
+        public async Task<IActionResult> Update(UpdateOrderDetailsDto orderDetails)
         {
-            
-            await _orderDetailsService.UpdateAsync(dto);
+            var result = _mapper.Map<OrderDetails>(orderDetails);
+            await _orderDetailsService.UpdateAsync(result);
             return Ok("Updated Successfully");
         }
         
-        [HttpDelete("{id}")]
         
+        [HttpDelete("{id}")]
         public async Task<IActionResult> Delete(int id)
         {
             var orderDetails = await _orderDetailsService.GetByIdAsync(id);
@@ -66,6 +72,14 @@ namespace WebApi.Controllers
             return Ok("Deleted Successfully");
         }
         
+        [AllowAnonymous]
+        [HttpGet("GetOrderDetailsByOrderWithProductName")]
+        
+        public async Task<IActionResult> GetOrderDetailsByOrderWithProductName()
+        {
+            var result = await _orderDetailsService.GetOrderDetailsByOrderWithProductName();
+            return Ok(result);
+        }
         
         
         

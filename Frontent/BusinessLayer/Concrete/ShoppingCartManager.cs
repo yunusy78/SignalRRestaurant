@@ -1,4 +1,5 @@
 ﻿using System.Linq.Expressions;
+using System.Net.Http.Json;
 using System.Text;
 using BusinessLayer.Abstract;
 using DtoLayer.ShoppingCartDtos;
@@ -11,11 +12,13 @@ public class ShoppingCartManager : IShoppingCartService
 {
     private readonly IHttpClientFactory _httpClientFactory;
     private readonly IConfiguration _configuration;
+    private readonly IDiscountService _discountService;
     
-    public ShoppingCartManager(IHttpClientFactory httpClientFactory, IConfiguration configuration)
+    public ShoppingCartManager(IHttpClientFactory httpClientFactory, IConfiguration configuration, IDiscountService discountService)
     {
         _httpClientFactory = httpClientFactory;
         _configuration = configuration;
+        _discountService = discountService;
     }
     
     
@@ -125,5 +128,45 @@ public Task<bool> RemoveRange(int cartId, int productId)
     }
     
     return Task.FromResult(true);
+}
+
+public async Task<ResultShoppingCart> GetCart()
+{
+    var response = await _httpClientFactory.CreateClient().GetAsync("carts");
+    if (!response.IsSuccessStatusCode)
+    {
+        return null!;
+    }
+    
+    var basketViewModel = await response.Content.ReadFromJsonAsync<ResultShoppingCart>();
+    return basketViewModel!;
+        
+}
+public async Task<bool> ApplyDiscount(int discountCode)
+{
+    await CancelApplyDiscount();
+    var cart = await GetCart();
+    if (cart == null )
+    {
+        return false;
+    }
+
+    var discount = await _discountService.GetByIdAsync(discountCode);
+    if (discount == null)
+    {
+        return false;
+    }
+    return true;
+}
+
+public async Task<bool> CancelApplyDiscount()
+{
+    var cart = await GetCart();
+    if (cart == null)
+    {
+        return false;
+    }
+    return true;
+        
 }
 }

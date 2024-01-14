@@ -7,4 +7,6 @@ public interface IDiscountService : IGenericService<ResultDiscountDto>
 {
     Task<bool> AddAsync(CreateDiscountDto categoryDto);
     Task<bool> UpdateAsync(UpdateDiscountDto categoryDto);
+    
+    Task<int> CheckDiscountCodeAsync(string code);
 }

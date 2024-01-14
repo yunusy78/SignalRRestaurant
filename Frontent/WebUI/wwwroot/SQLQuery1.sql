@@ -1,0 +1,10 @@
+﻿INSERT INTO Categories (CategoryName, Description, Status) VALUES ('Matretter', 'Forskjellige hovedretter', 1);
+INSERT INTO Categories (CategoryName, Description, Status) VALUES ('Desserter', 'Deilige søtsaker', 1);
+INSERT INTO Categories (CategoryName, Description, Status) VALUES ('Drikkevarer', 'Kald og varm drikke', 1);
+INSERT INTO Categories (CategoryName, Description, Status) VALUES ('Vegetarretter', 'Fleksible vegetaralternativer', 1);
+INSERT INTO Categories (CategoryName, Description, Status) VALUES ('Fiskeretter', 'Ferske fiskeretter', 1);
+INSERT INTO Categories (CategoryName, Description, Status) VALUES ('Forretter', 'Smakfulle forretter', 1);
+INSERT INTO Categories (CategoryName, Description, Status) VALUES ('Snacks', 'Småretter for mellommåltider', 1);
+INSERT INTO Categories (CategoryName, Description, Status) VALUES ('Supper', 'Varme supper for enhver smak', 1);
+INSERT INTO Categories (CategoryName, Description, Status) VALUES ('Søndagsmiddag', 'Tradisjonelle søndagsretter', 1);
+INSERT INTO Categories (CategoryName, Description, Status) VALUES ('Salater', 'Frisk og sunn salater', 1);

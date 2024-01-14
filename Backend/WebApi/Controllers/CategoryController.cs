@@ -6,11 +6,13 @@ using AutoMapper;
 using BusinessLayer.Abstract;
 using DtoLayer.CategoryDtos;
 using EntityLayer.Concrete;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 namespace WebApi.Controllers
 {
+    [Authorize(Roles = "Admin")]
     [Route("api/[controller]")]
     [ApiController]
     public class CategoryController : ControllerBase
@@ -26,7 +28,7 @@ namespace WebApi.Controllers
         }
         
        
-        
+        [AllowAnonymous]
         [HttpGet]
         public async Task<IActionResult> GetList()
         {
@@ -34,13 +36,14 @@ namespace WebApi.Controllers
             return Ok(result);
         }
         
+        [AllowAnonymous]
         [HttpGet("{id}")]
-        
         public async Task<IActionResult> GetById(int id)
         {
             var result = await _categoryService.GetByIdAsync(id);
             return Ok(result);
         }
+        
         
         [HttpPost]
         public async Task<IActionResult> Add(CreateCategoryDto Category)
@@ -60,7 +63,6 @@ namespace WebApi.Controllers
         }
         
         [HttpDelete("{id}")]
-        
         public async Task<IActionResult> Delete(int id)
         {
             var category = await _categoryService.GetByIdAsync(id);
@@ -68,7 +70,12 @@ namespace WebApi.Controllers
             return Ok("Deleted Successfully");
         }
         
-        
+        [HttpGet("CategoriesAdmin")]
+        public async Task<IActionResult> GetAllCategoriesAdmin()
+        {
+            var result = await _categoryService.GetAllAsync();
+            return Ok(result);
+        }
         
         
     }

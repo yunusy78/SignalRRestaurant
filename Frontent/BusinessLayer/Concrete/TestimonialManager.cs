@@ -1,8 +1,10 @@
 ﻿using System.Linq.Expressions;
+using System.Net.Http.Headers;
 using System.Net.Http.Json;
 using BusinessLayer;
 using BusinessLayer.Abstract;
 using DtoLayer.TestimonialDtos;
+using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Configuration;
 
 namespace BusinessLayer.Concrete;
@@ -11,16 +13,22 @@ public class TestimonialManager : ITestimonialService
 {
     private readonly IHttpClientFactory _httpClientFactory;
     private readonly IConfiguration _configuration;
+    private readonly IHttpContextAccessor _httpContextAccessor;
     
-    public TestimonialManager(IHttpClientFactory httpClientFactory, IConfiguration configuration)
+   
+    
+    public TestimonialManager(IHttpClientFactory httpClientFactory, IConfiguration configuration, IHttpContextAccessor httpContextAccessor)
     {
         _httpClientFactory = httpClientFactory;
         _configuration = configuration;
+        _httpContextAccessor = httpContextAccessor;
     }
     
     public async Task<bool> DeleteAsync(int id)
     {
+        var jwtToken = _httpContextAccessor.HttpContext!.Request.Cookies["JwtToken"];
         var client = _httpClientFactory.CreateClient();
+        client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", jwtToken);
         var serviceApiSettings = _configuration.GetSection("ServiceApiSettings").Get<ServiceApiSettings>();
         var response = await client.DeleteAsync($"{serviceApiSettings!.BaseUri}/{serviceApiSettings.Testimonial.Path}/{id}");
         if (!response.IsSuccessStatusCode)
@@ -73,7 +81,9 @@ public class TestimonialManager : ITestimonialService
 
     public async Task<bool> AddAsync(CreateTestimonialDto testimonialDto)
     {
+        var jwtToken = _httpContextAccessor.HttpContext!.Request.Cookies["JwtToken"];
         var client = _httpClientFactory.CreateClient();
+        client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", jwtToken);
         var serviceApiSettings = _configuration.GetSection("ServiceApiSettings").Get<ServiceApiSettings>();
         var response = await client.PostAsJsonAsync($"{serviceApiSettings!.BaseUri}/{serviceApiSettings.Testimonial.Path}", testimonialDto);
         if (!response.IsSuccessStatusCode)
@@ -86,7 +96,9 @@ public class TestimonialManager : ITestimonialService
 
     public async Task<bool> UpdateAsync(UpdateTestimonialDto testimonialDto)
     {
+        var jwtToken = _httpContextAccessor.HttpContext!.Request.Cookies["JwtToken"];
         var client = _httpClientFactory.CreateClient();
+        client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", jwtToken);
         var serviceApiSettings = _configuration.GetSection("ServiceApiSettings").Get<ServiceApiSettings>();
         var response = await client.PutAsJsonAsync($"{serviceApiSettings!.BaseUri}/{serviceApiSettings.Testimonial.Path}", testimonialDto);
         if (!response.IsSuccessStatusCode)

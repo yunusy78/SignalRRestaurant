@@ -1,12 +1,11 @@
-﻿namespace DtoLayer.MessageDtos;
+﻿namespace DtoLayer.NotificationDtos;
 
-public class GetMessageDto
+public class GetNotificationDto
 {
-    public int Id { get; set; }
-    public string? Name { get; set; }
-    public string? Email { get; set; }
-    public string? Subject { get; set; }
-    public string? MessageText { get; set; }
-    public DateTime CreatedAt { get; set; } = DateTime.Now;
-    public bool IsRead { get; set; } = false;
+    public int NotificationId { get; set; }
+    public string Title { get; set; }
+    public string Icon { get; set; }
+    public string Content { get; set; }
+    public DateTime CreatedAt { get; set; }
+    public bool IsRead { get; set; }
 }

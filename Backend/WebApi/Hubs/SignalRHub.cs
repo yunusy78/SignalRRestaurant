@@ -107,7 +107,6 @@ public class SignalRHub : Hub
         var result1 = await _signalRStatisticService.GetTotalProductCountAsync();
         await Clients.All.SendAsync("ReceiveTotalProductCount", result1);
       
-        
         var result3 = await _signalRStatisticService.GetTotalActiveBookingCountAsync();
         await Clients.All.SendAsync("ReceiveTotalActiveBookingCount", result3);
         
@@ -123,6 +122,10 @@ public class SignalRHub : Hub
         var result2 = await _signalRStatisticService.GetTotalPassiveTableCountAsync();
         await Clients.All.SendAsync("ReceiveTotalPassiveTableCount", result2);
     }
+    
+    
+    
+    
     
     
     

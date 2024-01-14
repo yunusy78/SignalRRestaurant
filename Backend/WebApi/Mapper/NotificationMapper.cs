@@ -1,17 +1,17 @@
 ﻿using AutoMapper;
-using DtoLayer.MessageDtos;
+using DtoLayer.NotificationDtos;
 using EntityLayer.Concrete;
 
 namespace WebApi.Mapper;
 
-public class MessageMapper : Profile
+public class NotificationMapper : Profile
 {
-    public MessageMapper()
+    public NotificationMapper()
     {
-        CreateMap<Message, CreateMessageDto>().ReverseMap();
-        CreateMap<Message, UpdateMessageDto>().ReverseMap();
-        CreateMap<Message, ResultMessageDto>().ReverseMap();
-        CreateMap<Message, GetMessageDto>().ReverseMap();
+        CreateMap<Notification, CreateNotificationDto>().ReverseMap();
+        CreateMap<Notification, UpdateNotificationDto>().ReverseMap();
+        CreateMap<Notification, ResultNotificationDto>().ReverseMap();
+        CreateMap<Notification, GetNotificationDto>().ReverseMap();
     }
     
     

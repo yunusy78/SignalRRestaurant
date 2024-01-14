@@ -1,8 +1,8 @@
-﻿@model web.DTOs.ApplicationUserDto.RegisterUserDto
+﻿@model DtoLayer.AppUserDtos.RegisterUserDto
 
 @{
     ViewBag.Title = "title";
-    Layout = "_DefaultLayout";
+    Layout = "~/Views/UILayout/Index.cshtml";
 }
 
  <div class="container-fluid">
@@ -11,7 +11,7 @@
                     <div class="bg-light rounded p-4 p-sm-5 my-4 mx-3">
                         <div class="d-flex align-items-center justify-content-between mb-3">
                             <a href="/Default/Index" class="">
-                                <h3 class="text-primary"><i class="fa fa-home"></i> Eindomshavn</h3>
+                               <h3 style="color: #ffc107" class="text-primary"><i class="fa fa-home" style="color: #ffc107">BurgerClash</i></h3>
                             </a>
                             <h3>Sign Up</h3>
                         </div>
@@ -31,11 +31,11 @@
                             
                             <div id="passwordMessage"></div>
                             <div class="d-flex align-items-center justify-content-between mb-4">
-                                <a href="">Forgot Password</a>
+                                <a style="color: #ffc107" href="">Forgot Password</a>
                             </div>
-                            <button id="checkPassword" type="submit"  class="btn btn-primary py-3 w-100 mb-4">Sign Up</button>
+                            <button id="checkPassword" type="submit"  class="btn btn-warning py-3 w-100 mb-4">Sign Up</button>
                         </form>
-                         <p class="text-center mb-0">Already have an Account? <a href="/Login/Index">Sign In</a></p>
+                         <p style="color: #ffc107" class="text-center mb-0">Already have an Account? <a href="/Login/Index" style="color: #ffc107">Sign In</a></p>
                     </div>
                     
                 </div>

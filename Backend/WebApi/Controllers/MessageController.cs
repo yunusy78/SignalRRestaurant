@@ -4,7 +4,9 @@ using System.Linq;
 using System.Threading.Tasks;
 using AutoMapper;
 using BusinessLayer.Abstract;
+using DtoLayer.MessageDtos;
 using EntityLayer.Concrete;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
@@ -12,15 +14,15 @@ namespace WebApi.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class OrderController : ControllerBase
+    public class MessageController : ControllerBase
     {
-        private readonly IOrderService _orderService;
+        private readonly IMessageService _messageService;
         private readonly IMapper _mapper;
         
         
-        public OrderController(IOrderService orderService, IMapper mapper)
+        public MessageController(IMessageService messageService, IMapper mapper)
         {
-            _orderService = orderService;
+            _messageService = messageService;
             _mapper = mapper;
         }
         
@@ -29,40 +31,45 @@ namespace WebApi.Controllers
         [HttpGet]
         public async Task<IActionResult> GetList()
         {
-            var result = await _orderService.GetAllAsync();
-            return Ok(result);
+            
+            var result = await _messageService.GetAllAsync();
+            var resultDto = _mapper.Map<List<ResultMessageDto>>(result);
+            return Ok(resultDto);
         }
         
         [HttpGet("{id}")]
         
         public async Task<IActionResult> GetById(int id)
         {
-            var result = await _orderService.GetByIdAsync(id);
-            return Ok(result);
+            var result = await _messageService.GetByIdAsync(id);
+            var resultDto = _mapper.Map<ResultMessageDto>(result);
+            return Ok(resultDto);
         }
         
         [HttpPost]
-        public async Task<IActionResult> Add(Order dto)
+        public async Task<IActionResult> Add(CreateMessageDto dto)
         {
-            await _orderService.AddAsync(dto);
+            var result = _mapper.Map<Message>(dto);
+            await _messageService.AddAsync(result);
             return Ok("Added Successfully");
         }
         
         [HttpPut]
         
-        public async Task<IActionResult> Update(Order dto)
+        public async Task<IActionResult> Update(UpdateMessageDto dto)
         {
-            
-            await _orderService.UpdateAsync(dto);
+            var result = _mapper.Map<Message>(dto);
+            await _messageService.UpdateAsync(result);
             return Ok("Updated Successfully");
         }
         
+        [Authorize(Roles = "Admin")]
         [HttpDelete("{id}")]
         
         public async Task<IActionResult> Delete(int id)
         {
-            var Order = await _orderService.GetByIdAsync(id);
-            await _orderService.DeleteAsync(Order);
+            var result = await _messageService.GetByIdAsync(id);
+            await _messageService.DeleteAsync(result);
             return Ok("Deleted Successfully");
         }
         

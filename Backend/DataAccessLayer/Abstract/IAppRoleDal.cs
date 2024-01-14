@@ -2,7 +2,7 @@
 
 namespace DataAccessLayer.Abstract;
 
-public interface IAppUserDal : IGenericDal<AppUser>
+public interface IAppRoleDal : IGenericDal<AppRole>
 {
     
 }

@@ -1,8 +1,8 @@
-﻿namespace Entity.Concrete;
+﻿namespace EntityLayer.Concrete;
 
 public class Message 
 {
-    public Guid Id { get; set; }= Guid.NewGuid();
+    public int Id { get; set; }
     public string? Name { get; set; }
     public string? Email { get; set; }
     public string? Subject { get; set; }

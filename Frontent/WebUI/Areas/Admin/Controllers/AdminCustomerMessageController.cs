@@ -2,21 +2,23 @@
 
 namespace WebUI.Areas.Admin.Controllers;
 [Area("Admin")]
-public class CustomerMessageController : Controller
+public class AdminCustomerMessageController : Controller
 {
     private readonly IConfiguration _configuration;
     
-    public CustomerMessageController(IConfiguration configuration)
+    public AdminCustomerMessageController(IConfiguration configuration)
     {
         _configuration = configuration;
     }
-    // GET
+    
+    
     public IActionResult Index()
     {
         var hubUrl = _configuration.GetSection("SignalRHubSettings:HubBookingUrl").Value;
         ViewBag.HubUrl = hubUrl!;
         return View();
     }
+    
     
     public IActionResult ClientUserCount()
     {

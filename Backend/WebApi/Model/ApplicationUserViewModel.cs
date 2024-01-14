@@ -1,8 +1,8 @@
-﻿namespace EindomsHavnAPI.Model;
-
+﻿namespace WebApi.Model;
 public class ApplicationUserViewModel
-{
-    public string? Email { get; set; }
+{ 
+   
+   public string? Email { get; set; }
     
    public  required string Password { get; set; }
     

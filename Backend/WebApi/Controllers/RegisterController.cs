@@ -2,12 +2,12 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using EindomsHavnAPI.DTOs.ApplicationUserDto;
-using EindomsHavnAPI.Model;
-using EindomsHavnAPI.Repositories.ApplicationUserRepository;
+using BusinessLayer.Abstract;
+using DtoLayer.AppUserDtos;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using WebApi.Model;
 
 namespace API.Controllers
 {
@@ -15,12 +15,14 @@ namespace API.Controllers
     [ApiController]
     public class RegisterController : ControllerBase
     {
-        private readonly IApplicationUserRepository _applicationUserRepository;
-
-        public RegisterController(IApplicationUserRepository applicationUserRepository)
+        private readonly IAppUserService _appService;
+        
+        public RegisterController(IAppUserService appService)
         {
-            _applicationUserRepository = applicationUserRepository;
+            _appService = appService;
         }
+
+        
 
         [HttpPost]
         [AllowAnonymous]
@@ -34,12 +36,12 @@ namespace API.Controllers
                 // Kullanıcı bilgilerini ApplicationUserDto'dan çıkar
                 var user = new ApplicationUserDto()
                 {
-                    Email = model.Email,
+                    UserEmail = model.Email,
                     PasswordHash = passwordHash
                 };
 
                 // Kullanıcı kaydı işlemi
-                var userRegistered = await _applicationUserRepository.RegisterUser(user);
+                var userRegistered = await _appService.RegisterUser(user);
 
                 if (userRegistered)
                 {

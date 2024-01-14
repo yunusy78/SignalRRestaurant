@@ -6,6 +6,7 @@ using AutoMapper;
 using BusinessLayer.Abstract;
 using DtoLayer.AboutDtos;
 using EntityLayer.Concrete;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
@@ -42,6 +43,7 @@ namespace WebApi.Controllers
             return Ok(result);
         }
         
+        [Authorize(Roles = "Admin")]
         [HttpPost]
         public async Task<IActionResult> Add(CreateAboutDto about)
         {
@@ -50,8 +52,8 @@ namespace WebApi.Controllers
             return Ok("Added Successfully");
         }
         
+        [Authorize(Roles = "Admin")]
         [HttpPut]
-        
         public async Task<IActionResult> Update(UpdateAboutDto about)
         {
             var result = _mapper.Map<About>(about);
@@ -59,8 +61,8 @@ namespace WebApi.Controllers
             return Ok("Updated Successfully");
         }
         
+        [Authorize(Roles = "Admin")]
         [HttpDelete("{id}")]
-        
         public async Task<IActionResult> Delete(int id)
         {
             var result = await _aboutService.GetByIdAsync(id);

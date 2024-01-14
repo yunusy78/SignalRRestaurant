@@ -1,45 +1,44 @@
 ﻿using System.Text;
+using BusinessLayer.Abstract;
+using DtoLayer.AppUserDtos;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
-using web.DTOs.ApplicationUserDto;
 
-namespace WEB.Controllers;
-
-public class RegisterUserController : Controller
+namespace WebUI.Controllers
 {
-    private readonly IHttpClientFactory _clientFactory;
-    
-    public RegisterUserController(IHttpClientFactory clientFactory)
+
+    public class RegisterUserController : Controller
     {
-        _clientFactory = clientFactory;
-    }
-    
-    // GET
-    public IActionResult Index()
-    {
+        private readonly IAuthenticationService _authenticationService;
         
-        return View();
-    }
-    
-    
-    [HttpPost]
-    public async Task<IActionResult> RegisterUser(RegisterUserDto model)
-    {
-        var client = _clientFactory.CreateClient("api");
-        var json = JsonConvert.SerializeObject(model);
-        var data = new StringContent(json, Encoding.UTF8, "application/json");
-        var response = await client.PostAsync("http://localhost:5076/api/Register", data);
-        var result = await response.Content.ReadAsStringAsync();
-        if (response.IsSuccessStatusCode)
+        
+        
+        public RegisterUserController(IAuthenticationService authenticationService)
         {
-            return RedirectToAction("Index", "Login");
+            _authenticationService = authenticationService;
         }
-        else
+
+        // GET
+        public IActionResult Index()
         {
-                ViewBag.ErrorMessage = result;
-                return View("Index"); // Aynı sayfayı tekrar görüntüle
-            
-            
+
+            return View();
+        }
+
+
+        [HttpPost]
+        public async Task<IActionResult> RegisterUser(RegisterUserDto model)
+        {
+            var response = await _authenticationService.RegisterUser(model);
+            if (response)
+            {
+                return RedirectToAction("Index", "Login");
+            }
+            else
+            {
+                ViewBag.ErrorMessage = "Username or password is incorrect";
+                return RedirectToAction("Index");
+            }
         }
     }
 }

@@ -1,6 +1,11 @@
-﻿namespace BusinessLayer.Abstract;
+﻿using DtoLayer.ContactDtos;
+using DtoLayer.MessageDtos;
+using Microsoft.DotNet.Scaffolding.Shared.Messaging;
 
-public interface IMessageService
+namespace BusinessLayer.Abstract;
+
+public interface IMessageService : IGenericService<ResultMessageDto>
 {
-    
+    Task<bool> AddAsync(CreateMessageDto dto);
+    Task<bool> UpdateAsync(UpdateMessageDto dto);
 }

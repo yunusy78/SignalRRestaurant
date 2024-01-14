@@ -1,4 +1,4 @@
-﻿@model DtoLayer.MessageDtos.ResultMessageDto
+﻿@model DtoLayer.DiningTableDtos.ResultDiningTableDto
 
 @{
     ViewBag.Title = "title";
@@ -15,37 +15,22 @@
                 <div class="card-title">Rediger Meldingen</div>
             </div>
             <div class="card-body">
-                <form method="post" enctype="multipart/form-data" action="/Admin/AdminMessage/Update">
+                <form method="post" enctype="multipart/form-data" action="/Admin/AdminDiningTable/Update">
                     @Html.AntiForgeryToken()
-                    <input asp-for="Id" class="form-control" type="hidden">
+                    <input asp-for="DiningTableId" class="form-control" type="hidden">
                     <div class="form-group">
                         <label>Navn:</label>
-                        <input asp-for="Name" type="text" class="form-control" >
+                        <input asp-for="TableName" type="text" class="form-control" >
                     </div>
-                    
                     <div class="form-group">
-                        <label>E-Post :</label>
-                        <input asp-for="Email" type="email" class="form-control" >
+                        <label>Kapasitet :</label>
+                        <input asp-for="Capacity" type="number" class="form-control" >
                     </div>
-                    
                     <div class="form-group">
-                        <label>Emne :</label>
-                        <input asp-for="Subject" type="text" class="form-control" >
-                    </div>
-                    
-                    <div class="form-group">
-                        <label>Meldigen :</label>
-                        <textarea asp-for="MessageText" class="form-control" rows="5"></textarea>
-                    </div>
-                                           
-                    @{
-                        string isRead = Model.IsRead ? "read" : "";
-                    }
-                    <div class="form-group">
-                        <label for="status">Er Lest</label>
-                        <select id="status" asp-for="IsRead" class="form-control">
-                            <<option value="true" selected="@isRead">True</option>
-                            <option value="false" selected="@(isRead== "" ? "read" : "")">False</option>
+                        <label for="status">Status</label>
+                        <select id="status" asp-for="Status" class="form-control">
+                            <<option value="true">True</option>
+                            <option value="false">False</option>
                         </select>
                     </div>
                     <div class="text-center">

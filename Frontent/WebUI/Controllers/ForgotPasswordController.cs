@@ -1,17 +1,20 @@
 ﻿using System.Text;
+using BusinessLayer.Abstract;
+using DtoLayer.AppUserDtos;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
-using web.DTOs.ApplicationUserDto;
 
-namespace WEB.Controllers;
+namespace WebUI.Controllers;
 
 public class ForgotPasswordController : Controller
 {
     private readonly IHttpClientFactory _clientFactory;
+    private readonly IAuthenticationService _authenticationService;
     
-    public ForgotPasswordController(IHttpClientFactory clientFactory)
+    public ForgotPasswordController(IHttpClientFactory clientFactory, IAuthenticationService authenticationService)
     {
         _clientFactory = clientFactory;
+        _authenticationService = authenticationService;
     }
     
     // GET
@@ -68,13 +71,9 @@ public class ForgotPasswordController : Controller
     [HttpPost]
     public async Task<IActionResult> ResetPassword(string resetToken, string newPassword)
     {
-        var client = _clientFactory.CreateClient("api");
+        var response = await _authenticationService.ResetPassword(resetToken, newPassword);
 
-        var resetPasswordUrl = $"http://localhost:5076/api/ForgetPassword/reset-password?resetToken={resetToken}&newPassword={newPassword}";
-
-        var response = await client.PostAsync(resetPasswordUrl, null);
-
-        if (response.IsSuccessStatusCode)
+        if (response)
         {
             return RedirectToAction("Index", "Login", new {area=""});
         }

@@ -2,7 +2,29 @@
 
 @{
     ViewBag.Title = "title";
-    Layout = "~/Views/UILayout/Index.cshtml";
+    Layout=null;
 }
 
+<!DOCTYPE html>
+<html>
+
+@await Component.InvokeAsync("_UILayoutHeadComponentPartial")
+
+<body class="sub_page">
+
+@await Html.PartialAsync("~/Views/PartialView/_NavBarPartialView.cshtml")
+
+  <!-- book section -->
 @await Component.InvokeAsync("_DefaultBookTableSectionComponentPartial")
+  <!-- end book section -->
+
+  <!-- footer section -->
+@await Component.InvokeAsync("_UILayoutFooterComponentPartial")
+  <!-- footer section -->
+
+  <!-- jQery -->
+@await Component.InvokeAsync("_UILayoutScriptComponentPartial")
+
+</body>
+
+</html>

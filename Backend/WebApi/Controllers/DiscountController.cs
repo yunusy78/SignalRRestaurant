@@ -7,11 +7,13 @@ using BusinessLayer.Abstract;
 using DtoLayer.DiscountDtos;
 using DtoLayer.FeatureDtos;
 using EntityLayer.Concrete;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 namespace WebApi.Controllers
 {
+    [Authorize(Roles = "Admin")]
     [Route("api/[controller]")]
     [ApiController]
     public class DiscountController : ControllerBase
@@ -27,7 +29,7 @@ namespace WebApi.Controllers
         }
         
        
-        
+        [AllowAnonymous]
         [HttpGet]
         public async Task<IActionResult> GetList()
         {
@@ -35,6 +37,7 @@ namespace WebApi.Controllers
             return Ok(result);
         }
         
+        [AllowAnonymous]
         [HttpGet("{id}")]
         
         public async Task<IActionResult> GetById(int id)
@@ -52,7 +55,6 @@ namespace WebApi.Controllers
         }
         
         [HttpPut]
-        
         public async Task<IActionResult> Update(UpdateDiscountDto Discount)
         {
             var result = _mapper.Map<Discount>(Discount);
@@ -61,12 +63,19 @@ namespace WebApi.Controllers
         }
         
         [HttpDelete("{id}")]
-        
         public async Task<IActionResult> Delete(int id)
         {
             var discount = await _discountService.GetByIdAsync(id);
             await _discountService.DeleteAsync(discount);
             return Ok("Deleted Successfully");
+        }
+        
+        [HttpGet("CheckDiscountCode")]
+        
+        public async Task<IActionResult> CheckDiscountCode(string code)
+        {
+            var result = await _discountService.CheckDiscountCodeAsync(code);
+            return Ok(result);
         }
         
         

@@ -1,4 +1,4 @@
-﻿@model DtoLayer.BookingDtos.GetReservationDto
+﻿@model DtoLayer.MessageDtos.ResultMessageDto
 
 @{
     ViewBag.Title = "title";
@@ -7,45 +7,45 @@
 <div class="main-panel">
 <div class="content">
 <div class="container-fluid">
-    <h4 class="page-title">Bestilling</h4>
+    <h4 class="page-title">Meldinger</h4>
     <div class="row">
     <div class="col-md-6">
         <div class="card">
             <div class="card-header">
-                <div class="card-title">Rediger Bestilling</div>
+                <div class="card-title">Rediger Meldingen</div>
             </div>
             <div class="card-body">
-                <form method="post" enctype="multipart/form-data" action="/Admin/AdminReservation/Update">
+                <form method="post" enctype="multipart/form-data" action="/Admin/AdminMessage/Update">
                     @Html.AntiForgeryToken()
-                    <input asp-for="BookingId" class="form-control" type="hidden">
+                    <input asp-for="Id" class="form-control" type="hidden">
                     <div class="form-group">
                         <label>Navn:</label>
-                        <input asp-for="FullName" type="text" class="form-control" required>
+                        <input asp-for="Name" type="text" class="form-control" >
                     </div>
+                    
                     <div class="form-group">
                         <label>E-Post :</label>
-                        <input asp-for="Email" type="email" class="form-control" required>
+                        <input asp-for="Email" type="email" class="form-control" >
                     </div>
+                    
                     <div class="form-group">
-                        <label>Telefon :</label>
-                        <input asp-for="Phone" type="text" class="form-control" required>
+                        <label>Emne :</label>
+                        <input asp-for="Subject" type="text" class="form-control" >
                     </div>
+                    
                     <div class="form-group">
-                        <label>Anntall Person :</label>
-                        <input asp-for="PersonCount" type="number" class="form-control" required>
+                        <label>Meldigen :</label>
+                        <textarea asp-for="MessageText" class="form-control" rows="5"></textarea>
                     </div>
-                    <div class="form-group">
-                        <label>Bestilling Dato :</label>
-                        <input asp-for="CreatedAt"  type="datetime-local" class="form-control" >
-                    </div>
+                                           
                     @{
-                                        string isSelected = Model.IsConfirmed ? "selected" : "";
+                        string isRead = Model.IsRead ? "read" : "";
                     }
                     <div class="form-group">
-                        <label for="status">Er Bekreftet</label>
-                        <select id="status" asp-for="IsConfirmed" class="form-control">
-                            <<option value="true" selected="@isSelected">True</option>
-                            <option value="false" selected="@(isSelected == "" ? "selected" : "")">False</option>
+                        <label for="status">Er Lest</label>
+                        <select id="status" asp-for="IsRead" class="form-control">
+                            <<option value="true" selected="@isRead">True</option>
+                            <option value="false" selected="@(isRead== "" ? "read" : "")">False</option>
                         </select>
                     </div>
                     <div class="text-center">

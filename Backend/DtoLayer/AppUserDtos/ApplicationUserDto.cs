@@ -1,7 +1,7 @@
-﻿namespace EindomsHavnAPI.DTOs.ApplicationUserDto;
+﻿namespace DtoLayer.AppUserDtos;
 
 public class ApplicationUserDto
 {
-    public string? Email { get; set; }
+    public string? UserEmail { get; set; }
     public string? PasswordHash { get; set; }
 }

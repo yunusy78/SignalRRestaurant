@@ -1,6 +1,4 @@
-﻿using Castle.Components.DictionaryAdapter;
-
-namespace EindomsHavnAPI.DTOs.ApplicationUserDto;
+﻿namespace DtoLayer.AppUserDtos;
 
 public class ForgotPasswordDto
 {

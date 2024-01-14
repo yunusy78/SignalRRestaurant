@@ -1,4 +1,53 @@
 ﻿<div class="main-header">
+    <script type="text/javascript">
+    function calculateTimeAgo(date) {
+        const now = new Date();
+        const timestamp = date.getTime();
+        const seconds = Math.floor((now - timestamp) / 1000);
+    
+        if (seconds < 60) {
+            return seconds + " minutter siden";
+        } else if (seconds < 3600) {
+            const minutes = Math.floor(seconds / 60);
+            return minutes + " minutter siden";
+        } else if (seconds < 86400) {
+            const hours = Math.floor(seconds / 3600);
+            return hours + " timer siden";
+        } else {
+            const days = Math.floor(seconds / 86400);
+            return days + " dag(er) siden";
+        }
+    }
+      $(document).ready(function () {
+     var connection = new signalR.HubConnectionBuilder()
+     .withUrl('@ViewBag.HubUrl')
+     .build();
+      $("#constatus").text(connection.state);
+                                
+      connection.start().then(function () {
+       $("#constatus").text(connection.state);
+       setInterval(function(){
+       connection.invoke("GetNotificationCountByStatus");
+         connection.invoke("GetNotificationListByStatus");
+        },5000);
+        console.log("connected");
+        }).catch(function (err) {
+        return console.error(err.toString());
+        });
+                                 
+        connection.on("ReceiveNotificationCountByStatus",(result)=>{
+        $("#notificationCount").text(result); 
+        }); 
+       connection.on("ReceiveNotificationListByStatus", function (result) {
+           $("#notificationList").empty();
+                   for (var i = 0; i < result.length; i++) {
+                       var item = result[i];
+                       const timeAgo = calculateTimeAgo(new Date(item.createdAt));
+                       $("#notificationList").append(`<a href='#'><div class='${item.title}'><i class='${item.icon}'></i></div><div class="notif-content"><span class='block'>${item.content}</span><span class='time'>${timeAgo}</span></div></a>`);
+                   }
+               });
+           });
+</script>
     <div class="logo-header">
         <a href="~/Ready-Bootstrap-Dashboard-master/index.html" class="logo">
             Admin Dashboard
@@ -35,58 +84,20 @@
                 <li class="nav-item dropdown hidden-caret">
                     <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                         <i class="la la-bell"></i>
-                        <span class="notification">3</span>
+                        <span class="notification" id="notificationCount"></span>
                     </a>
                     <ul class="dropdown-menu notif-box" aria-labelledby="navbarDropdown">
-                        <li>
-                            <div class="dropdown-title">Du har 4 nye varsler</div>
-                        </li>
-                        <li>
-                            <div class="notif-center">
-                                <a href="#">
-                                    <div class="notif-icon notif-primary"> <i class="la la-user-plus"></i> </div>
-                                    <div class="notif-content">
-                                        <span class="block">
-                                            Ny bruker registrert
-                                        </span>
-                                        <span class="time">5 minutter siden</span>
-                                    </div>
-                                </a>
-                                <a href="#">
-                                    <div class="notif-icon notif-success"> <i class="la la-comment"></i> </div>
-                                    <div class="notif-content">
-                                        <span class="block">
-                                            Rahmad kommenterte på Admin
-                                        </span>
-                                        <span class="time">12 minutter siden</span>
-                                    </div>
-                                </a>
-                                <a href="#">
-                                    <div class="notif-img">
-                                        <img src="~/Ready-Bootstrap-Dashboard-master/assets/img/profile2.jpg" alt="Profilbilde">
-                                    </div>
-                                    <div class="notif-content">
-                                        <span class="block">
-                                            Reza sendte meldinger til deg
-                                        </span>
-                                        <span class="time">12 minutter siden</span>
-                                    </div>
-                                </a>
-                                <a href="#">
-                                    <div class="notif-icon notif-danger"> <i class="la la-heart"></i> </div>
-                                    <div class="notif-content">
-                                        <span class="block">
-                                            Farrah likte Admin
-                                        </span>
-                                        <span class="time">17 minutter siden</span>
-                                    </div>
-                                </a>
-                            </div>
-                        </li>
-                        <li>
-                            <a class="see-all" href="javascript:void(0);"> <strong>Se alle varsler</strong> <i class="la la-angle-right"></i> </a>
-                        </li>
-                    </ul>
+    <li>
+    <div class="dropdown-title">Du har et nytt varsel</div>
+   </li>
+   <li>
+    <div class="notif-center" id="notificationList">
+   </div>
+   </li>
+   <li>
+   <a class="see-all" href="javascript:void(0);"> <strong>See all notifications</strong> <i class="la la-angle-right"></i> </a>
+   </li>
+   </ul>
                 </li>
                 <li class="nav-item dropdown">
                     <a class="dropdown-toggle profile-pic" data-toggle="dropdown" href="#" aria-expanded="false"> <img src="~/Ready-Bootstrap-Dashboard-master/assets/img/profile3.jpg" alt="bruker-bilde" width="36" class="img-circle"><span >Hizrian</span></img> </a>
@@ -97,20 +108,20 @@
                                 <div class="u-text">
                                     <h4>Yunus Yigit</h4>
                                     <p class="text-muted">hello@themekita.com</p><a href="profile.html" class="btn btn-rounded btn-danger btn-sm">Vis profil</a></div>
-                                </div>
-                            </li>
-                            <div class="dropdown-divider"></div>
-                            <a class="dropdown-item" href="#"><i class="ti-user"></i> Min profil</a>
-                            <a class="dropdown-item" href="#">Min saldo</a>
-                            <a class="dropdown-item" href="#"><i class="ti-email"></i> Innboks</a>
-                            <div class="dropdown-divider"></div>
-                            <a class="dropdown-item" href="#"><i class="ti-settings"></i> Kontoinnstillinger</a>
-                            <div class="dropdown-divider"></div>
-                            <a class="dropdown-item" href="#"><i class="fa fa-power-off"></i> Logg ut</a>
-                        </ul>
-                        <!-- /.dropdown-user -->
-                    </li>
-                </ul>
-            </div>
-        </nav>
-    </div>
+                            </div>
+                        </li>
+                        <div class="dropdown-divider"></div>
+                        <a class="dropdown-item" href="#"><i class="ti-user"></i> Min profil</a>
+                        <a class="dropdown-item" href="#">Min saldo</a>
+                        <a class="dropdown-item" href="#"><i class="ti-email"></i> Innboks</a>
+                        <div class="dropdown-divider"></div>
+                        <a class="dropdown-item" href="#"><i class="ti-settings"></i> Kontoinnstillinger</a>
+                        <div class="dropdown-divider"></div>
+                        <a class="dropdown-item" href="#"><i class="fa fa-power-off"></i> Logg ut</a>
+                    </ul>
+                    <!-- /.dropdown-user -->
+                </li>
+            </ul>
+        </div>
+    </nav>
+</div>

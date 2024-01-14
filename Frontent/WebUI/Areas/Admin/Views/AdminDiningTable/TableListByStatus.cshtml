@@ -1,8 +1,67 @@
-﻿@model dynamic
+﻿@using WebUI.Models
+@using System.Configuration
+@model List<DtoLayer.DiningTableDtos.ResultDiningTableDto>
 
 @{
     ViewBag.Title = "title";
-    Layout = "_Layout";
+	Layout = "~/Areas/Admin/Views/AdminLayout/Index.cshtml";
+	string color = "";
+	string status = "";
 }
-
-<h2>title</h2>
+<div class="main-panel">
+<div class="content">
+    <div class="container-fluid">
+        <h4 class="page-title">Nåværende Bordtilstander</h4>
+        <script type="text/javascript">
+  $(document).ready(function () {
+ var connection = new signalR.HubConnectionBuilder()
+ .withUrl('@ViewBag.HubUrl')
+ .build();
+  $("#constatus").text(connection.state);
+                            
+  connection.start().then(function () {
+   $("#constatus").text(connection.state);
+   setInterval(function(){
+    connection.invoke("GetDiningTableList");								 
+    },1000);
+    console.log("connected");
+    }).catch(function (err) {
+    return console.error(err.toString());
+    });
+  connection.on("ReceiveDiningTableList",(result)=>{
+      console.log(result);
+  $("#diningTableList").empty();
+                    for (var i = 0; i < result.length; i++) {
+                        var item = result[i];
+                        const color = item.status == false ? "card-success" : "card-danger";
+                           const status = item.status == false ? "Ledig" : "Opptatt";
+                       var cardHtml = ` <div class="col-md-3" >
+                               <div class="card card-stats ${color}">
+                                   <div class="card-body ">
+                                       <div class="row">
+                                           <div class="col-5">
+                                               <div class="icon-big text-center">
+                                                    <i class="la la-certificate"></i>
+                                               </div>
+                                           </div>
+                                           <div class="col-7 d-flex align-items-center">
+                                               <div class="numbers">
+                                                   <p class="card-category">${item.tableName}</p>
+                                                   <h4 class="card-title" id="categorycount">${status}</h4>
+                                               </div>
+                                           </div>
+                                       </div>
+                                   </div>
+                               </div></div>`;
+                       
+                           // Append the dynamically created card to the notificationList
+                           $("#diningTableList").append(cardHtml);
+                    }
+                });
+            });
+  </script>
+        <div class="row" id="diningTableList">
+        </div>
+    </div>
+</div>
+</div>

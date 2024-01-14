@@ -1,4 +1,4 @@
-﻿namespace EindomsHavnAPI.DTOs.ApplicationUserDto;
+﻿namespace DtoLayer.AppUserDtos;
 
 public class UserRoleDto
 {

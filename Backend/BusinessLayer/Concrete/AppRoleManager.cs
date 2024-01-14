@@ -4,42 +4,42 @@ using EntityLayer.Concrete;
 
 namespace BusinessLayer.Concrete;
 
-public class AppUserManager : IAppUserService
+public class AppRoleManager : IAppRoleService
 {
-    private readonly IAppUserDal _appUserDal;
+    private readonly IAppRoleDal _appRoleDal;
     
-    public AppUserManager(IAppUserDal appUserDal)
+    public AppRoleManager(IAppRoleDal appRoleDal)
     {
-        _appUserDal = appUserDal;
+        _appRoleDal = appRoleDal;
     }
     
-    public Task<List<AppUser>> GetAllAsync()
+    public Task<List<AppRole>> GetAllAsync()
     {
-        var result = _appUserDal.GetAllAsync();
+        var result = _appRoleDal.GetAllAsync();
         return result;
     }
 
-    public Task<AppUser> GetByIdAsync(int id)
+    public Task<AppRole> GetByIdAsync(int id)
     {
-        var result = _appUserDal.GetByIdAsync(id);
+        var result = _appRoleDal.GetByIdAsync(id);
         return result;
     }
 
-    public Task AddAsync(AppUser entity)
+    public Task AddAsync(AppRole entity)
     {
-        _appUserDal.AddAsync(entity);
+        _appRoleDal.AddAsync(entity);
         return Task.CompletedTask;
     }
 
-    public Task UpdateAsync(AppUser entity)
+    public Task UpdateAsync(AppRole entity)
     {
-        _appUserDal.UpdateAsync(entity);
+        _appRoleDal.UpdateAsync(entity);
         return Task.CompletedTask;
     }
 
-    public Task DeleteAsync(AppUser entity)
+    public Task DeleteAsync(AppRole entity)
     {
-        _appUserDal.DeleteAsync(entity);
+        _appRoleDal.DeleteAsync(entity);
         return Task.CompletedTask;
     }
 }

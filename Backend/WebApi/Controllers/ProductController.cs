@@ -6,11 +6,13 @@ using AutoMapper;
 using BusinessLayer.Abstract;
 using DtoLayer.ProductDtos;
 using EntityLayer.Concrete;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 namespace WebApi.Controllers
 {
+    [Authorize(Roles = "Admin")]
     [Route("api/[controller]")]
     [ApiController]
     public class ProductController : ControllerBase
@@ -33,7 +35,7 @@ namespace WebApi.Controllers
         
         
        
-        
+        [AllowAnonymous]
         [HttpGet]
         public async Task<IActionResult> GetList()
         {
@@ -41,6 +43,7 @@ namespace WebApi.Controllers
             return Ok(result);
         }
         
+        [AllowAnonymous]
         [HttpGet("{id}")]
         
         public async Task<IActionResult> GetById(int id)
@@ -48,6 +51,7 @@ namespace WebApi.Controllers
             var result = await _productService.GetByIdAsync(id);
             return Ok(result);
         }
+        
         
         [HttpPost]
         public async Task<IActionResult> Add(CreateProductDto Product)
@@ -58,7 +62,6 @@ namespace WebApi.Controllers
         }
         
         [HttpPut]
-        
         public async Task<IActionResult> Update(UpdateProductDto Product)
         {
             var result = _mapper.Map<Product>(Product);
@@ -67,7 +70,6 @@ namespace WebApi.Controllers
         }
         
         [HttpDelete("{id}")]
-        
         public async Task<IActionResult> Delete(int id)
         {
             var product = await _productService.GetByIdAsync(id);
@@ -75,15 +77,15 @@ namespace WebApi.Controllers
             return Ok("Deleted Successfully");
         }
         
+        [AllowAnonymous]
         [HttpGet("GetListWithCategory")]
-        
         public async Task<IActionResult> GetListWithCategory()
         {
             var result = _mapper.Map<List<ResultProductWithCategoryDto>>(await _productService.GetListWithCategoryAsync());
             return Ok(result);
         }
         
-        
+        [AllowAnonymous]
         [HttpPost("AddToCart")]
         public async Task<IActionResult> AddToCart([FromBody] ShoppingCart addToCartRequest)
         {

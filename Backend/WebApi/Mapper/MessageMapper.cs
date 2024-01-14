@@ -1,17 +1,17 @@
 ﻿using AutoMapper;
-using DtoLayer.FeatureDtos;
+using DtoLayer.MessageDtos;
 using EntityLayer.Concrete;
 
 namespace WebApi.Mapper;
 
-public class FeatureMapper : Profile
+public class MessageMapper : Profile
 {
-    public FeatureMapper()
+    public MessageMapper()
     {
-        CreateMap<Feature, CreateFeatureDto>().ReverseMap();
-        CreateMap<Feature, UpdateFeatureDto>().ReverseMap();
-        CreateMap<Feature, ResultFeatureDto>().ReverseMap();
-        CreateMap<Feature, GetFeatureDto>().ReverseMap();
+        CreateMap<Message, CreateMessageDto>().ReverseMap();
+        CreateMap<Message, UpdateMessageDto>().ReverseMap();
+        CreateMap<Message, ResultMessageDto>().ReverseMap();
+        CreateMap<Message, GetMessageDto>().ReverseMap();
     }
     
     

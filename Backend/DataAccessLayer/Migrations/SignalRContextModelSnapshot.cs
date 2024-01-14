@@ -50,6 +50,67 @@ namespace DataAccessLayer.Migrations
                     b.ToTable("Abouts");
                 });
 
+            modelBuilder.Entity("EntityLayer.Concrete.AppRole", b =>
+                {
+                    b.Property<int>("AppRoleId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("AppRoleId"));
+
+                    b.Property<string>("AppRoleName")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("AppRoleId");
+
+                    b.ToTable("AppRoles");
+                });
+
+            modelBuilder.Entity("EntityLayer.Concrete.AppUser", b =>
+                {
+                    b.Property<int>("UserId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("UserId"));
+
+                    b.Property<string>("PasswordHash")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("UserEmail")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("UserId");
+
+                    b.ToTable("AppUsers");
+                });
+
+            modelBuilder.Entity("EntityLayer.Concrete.AppUserRole", b =>
+                {
+                    b.Property<int>("AppUserRoleId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("AppUserRoleId"));
+
+                    b.Property<int>("AppRoleId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("AppUserId")
+                        .HasColumnType("int");
+
+                    b.HasKey("AppUserRoleId");
+
+                    b.HasIndex("AppRoleId");
+
+                    b.HasIndex("AppUserId");
+
+                    b.ToTable("AppUserRoles");
+                });
+
             modelBuilder.Entity("EntityLayer.Concrete.Booking", b =>
                 {
                     b.Property<int>("BookingId")
@@ -196,6 +257,9 @@ namespace DataAccessLayer.Migrations
                     b.Property<int>("Amount")
                         .HasColumnType("int");
 
+                    b.Property<string>("Code")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("datetime2");
 
@@ -205,6 +269,9 @@ namespace DataAccessLayer.Migrations
 
                     b.Property<string>("ImageUrl")
                         .HasColumnType("nvarchar(max)");
+
+                    b.Property<bool>("IsActive")
+                        .HasColumnType("bit");
 
                     b.Property<string>("Title")
                         .IsRequired()
@@ -237,6 +304,97 @@ namespace DataAccessLayer.Migrations
                     b.HasKey("FeatureId");
 
                     b.ToTable("Features");
+                });
+
+            modelBuilder.Entity("EntityLayer.Concrete.ForgotPassword", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("Email")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("PasswordHash")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("ResetToken")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime?>("ResetTokenExpires")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("UserId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("ForgotPasswords");
+                });
+
+            modelBuilder.Entity("EntityLayer.Concrete.Message", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Email")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<bool>("IsRead")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("MessageText")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Name")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Subject")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Messages");
+                });
+
+            modelBuilder.Entity("EntityLayer.Concrete.Notification", b =>
+                {
+                    b.Property<int>("NotificationId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("NotificationId"));
+
+                    b.Property<string>("Content")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Icon")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<bool>("IsRead")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("Title")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("NotificationId");
+
+                    b.ToTable("Notifications");
                 });
 
             modelBuilder.Entity("EntityLayer.Concrete.Order", b =>
@@ -437,6 +595,25 @@ namespace DataAccessLayer.Migrations
                     b.ToTable("Testimonials");
                 });
 
+            modelBuilder.Entity("EntityLayer.Concrete.AppUserRole", b =>
+                {
+                    b.HasOne("EntityLayer.Concrete.AppRole", "AppRole")
+                        .WithMany()
+                        .HasForeignKey("AppRoleId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("EntityLayer.Concrete.AppUser", "AppUser")
+                        .WithMany()
+                        .HasForeignKey("AppUserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("AppRole");
+
+                    b.Navigation("AppUser");
+                });
+
             modelBuilder.Entity("EntityLayer.Concrete.OrderDetails", b =>
                 {
                     b.HasOne("EntityLayer.Concrete.Order", "Order")
@@ -469,7 +646,7 @@ namespace DataAccessLayer.Migrations
 
             modelBuilder.Entity("EntityLayer.Concrete.ShoppingCart", b =>
                 {
-                    b.HasOne("EntityLayer.Concrete.DiningTable", "DiningTable")
+                    b.HasOne("EntityLayer.Concrete.DiningTable", "ResultDiningTableDto")
                         .WithMany("ShoppingCarts")
                         .HasForeignKey("DiningTableId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -481,9 +658,9 @@ namespace DataAccessLayer.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("DiningTable");
-
                     b.Navigation("Product");
+
+                    b.Navigation("ResultDiningTableDto");
                 });
 
             modelBuilder.Entity("EntityLayer.Concrete.Category", b =>

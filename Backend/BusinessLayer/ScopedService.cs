@@ -37,6 +37,19 @@ public static class ScopedService
         services.AddScoped<IOrderService, OrderManager>();
         services.AddScoped<IOrderDetailsDal, EfOrderDetailsDal>();
         services.AddScoped<IOrderDetailsService, OrderDetailsManager>();
+        
+        services.AddScoped<IAppUserDal, EfAppUserDal>();
+        services.AddScoped<IAppUserService, AppUserManager>();
+            
+        services.AddScoped<IAppRoleDal, EfAppRoleDal>();
+        services.AddScoped<IAppRoleService, AppRoleManager>();
+        
+        
+        services.AddScoped<INotificationService, NotificationManager>();
+        services.AddScoped<INotificationDal, EfNotificationDal>();
+        
+        services.AddScoped<IMessageDal, EfMessageDal>();
+        services.AddScoped<IMessageService, MessageManager>();
 
         services.AddScoped<IShoppingCartDal, EfShoppingCartDal>();
         services.AddScoped<IShoppingCartService, ShoppingCartManager>();

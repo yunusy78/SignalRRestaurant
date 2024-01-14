@@ -1,7 +1,6 @@
 using System.Configuration;
-using Business.Concrete;
-using BusinessLayer.Abstract;
 using BusinessLayer.Concrete;
+using BusinessLayer.Abstract;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using WebUI.Data;
@@ -30,7 +29,13 @@ builder.Services.AddScoped<IReservationService, ReservationManager>();
 builder.Services.AddScoped<IDiscountService, DiscountManager>();
 builder.Services.AddScoped<IShoppingCartService, ShoppingCartManager>();
 builder.Services.AddScoped<IDiningTableService, DiningTableManager>();
+builder.Services.AddScoped<IMessageService, MessageManager>();
+builder.Services.AddScoped<INotificationService, NotificationManager>();
+builder.Services.AddScoped<IAuthenticationService, AuthenticationManager>();
+builder.Services.AddScoped<IOrderService, OrderManager>();
+builder.Services.AddScoped<IOrderDetailsService, OrderDetailsManager>();
 builder.Services.AddHttpClient();
+builder.Services.AddHttpContextAccessor();
 builder.Services.Configure<SignalRHubSettings>(builder.Configuration.GetSection("SignalRHubSettings"));
 var app = builder.Build();
 

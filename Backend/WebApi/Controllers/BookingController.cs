@@ -6,11 +6,14 @@ using AutoMapper;
 using BusinessLayer.Abstract;
 using DtoLayer.BookingDtos;
 using EntityLayer.Concrete;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 
 namespace WebApi.Controllers
 {
+    [Authorize(Roles = "Admin")]
     [Route("api/[controller]")]
     [ApiController]
     public class BookingController : ControllerBase
@@ -25,7 +28,7 @@ namespace WebApi.Controllers
             _mapper = mapper;
         }
         
-       
+         
         
         [HttpGet]
         public async Task<IActionResult> GetList()
@@ -42,6 +45,7 @@ namespace WebApi.Controllers
             return Ok(result);
         }
         
+        [AllowAnonymous]
         [HttpPost]
         public async Task<IActionResult> Add(CreateBookingDto Booking)
         {
@@ -50,8 +54,8 @@ namespace WebApi.Controllers
             return Ok("Added Successfully");
         }
         
-        [HttpPut]
         
+        [HttpPut]
         public async Task<IActionResult> Update(UpdateBookingDto Booking)
         {
             var result = _mapper.Map<Booking>(Booking);
@@ -59,8 +63,8 @@ namespace WebApi.Controllers
             return Ok("Updated Successfully");
         }
         
-        [HttpDelete("{id}")]
         
+        [HttpDelete("{id}")]
         public async Task<IActionResult> Delete(int id)
         {
             var booking = await _bookingService.GetByIdAsync(id);

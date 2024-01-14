@@ -4,12 +4,16 @@ using System.Linq;
 using System.Threading.Tasks;
 using AutoMapper;
 using BusinessLayer.Abstract;
+using DtoLayer.OrderDtos;
 using EntityLayer.Concrete;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 
 namespace WebApi.Controllers
 {
+    [Authorize(Roles = "Admin")]
     [Route("api/[controller]")]
     [ApiController]
     public class OrderController : ControllerBase
@@ -24,7 +28,7 @@ namespace WebApi.Controllers
             _mapper = mapper;
         }
         
-       
+         
         
         [HttpGet]
         public async Task<IActionResult> GetList()
@@ -41,31 +45,32 @@ namespace WebApi.Controllers
             return Ok(result);
         }
         
+        [AllowAnonymous]
         [HttpPost]
-        public async Task<IActionResult> Add(Order dto)
+        public async Task<IActionResult> Add(CreateOrderDto Order)
         {
-            await _orderService.AddAsync(dto);
+            var result = _mapper.Map<Order>(Order);
+            await _orderService.AddAsync(result);
             return Ok("Added Successfully");
         }
         
-        [HttpPut]
         
-        public async Task<IActionResult> Update(Order dto)
+        [HttpPut]
+        public async Task<IActionResult> Update(UpdateOrderDto Order)
         {
-            
-            await _orderService.UpdateAsync(dto);
+            var result = _mapper.Map<Order>(Order);
+            await _orderService.UpdateAsync(result);
             return Ok("Updated Successfully");
         }
         
-        [HttpDelete("{id}")]
         
+        [HttpDelete("{id}")]
         public async Task<IActionResult> Delete(int id)
         {
             var Order = await _orderService.GetByIdAsync(id);
             await _orderService.DeleteAsync(Order);
             return Ok("Deleted Successfully");
         }
-        
         
         
         

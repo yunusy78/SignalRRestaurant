@@ -2,5 +2,5 @@
 
 public class DiscountRequestModel
 {
-    
+    public string Code { get; set; }
 }

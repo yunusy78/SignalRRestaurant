@@ -1,4 +1,4 @@
-﻿@model List<DtoLayer.MessageDtos.ResultMessageDto>
+﻿@model List<DtoLayer.DiningTableDtos.ResultDiningTableDto>
 
 @{
     ViewBag.Title = "title";
@@ -8,12 +8,12 @@
 <div class="main-panel">
 <div class="content">
     <div class="container-fluid">
-        <h4 class="page-title">Melding</h4>
+        <h4 class="page-title">Bord</h4>
         <div class="row">
             <div class="col-md-12">
                 <div class="card">
                     <div class="card-header">
-                        <div class="card-title">Melding Liste</div>
+                        <div class="card-title">Bord Liste</div>
                     </div>
                     <div class="card-body">
 
@@ -22,11 +22,8 @@
                             <tr>
                                 <th>Id</th>
                                 <th>Navn</th>
-                                <th>E-Post</th>
-                                <th>Emne</th>
-                                <th>Melding</th>
-                                <th>Bestilling Dato</th>
-                                <th>Er Lest</th>
+                                <th>Kapasitet</th>
+                                <th>Status</th>
                                 <th>Rediger</th>
                                 <th>Slett</th>
                                 <th>Detaljer</th>
@@ -37,21 +34,18 @@
                             @foreach(var item in Model)
                             {
                                 <tr>
-                                    <td>@item.Id</td>
-                                    <td>@item.Name</td>
-                                    <td>@item.Email</td>
-                                    <td>@item.Subject</td>
-                                    <td>@item.MessageText</td>
-                                    <td>@item.CreatedAt</td>
-                                    <td>@item.IsRead</td>
-                                    <td><a href="/Admin/AdminMessage/Update/@item.Id" class="btn btn-outline-warning"> <i class="mdi mdi-account-edit"></i> Rediger</a></td>
-                                    <td><a href="/Admin/AdminMessage/Delete/@item.Id" class="btn btn-outline-danger" ><i class="mdi mdi-delete"></i> Slett</a> </td>
+                                    <td>@item.DiningTableId</td>
+                                    <td>@item.TableName</td>
+                                    <td>@item.Capacity</td>
+                                    <td>@item.Status</td>
+                                    <td><a href="/Admin/AdminDiningTable/Update/@item.DiningTableId" class="btn btn-outline-warning"> <i class="mdi mdi-account-edit"></i> Rediger</a></td>
+                                    <td><a href="/Admin/AdminDiningTable/Delete/@item.DiningTableId" class="btn btn-outline-danger" ><i class="mdi mdi-delete"></i> Slett</a> </td>
                                     <td><a href="#" class="btn btn-outline-primary"><i class="mdi mdi-eye"></i> Detaljer</a></td>
                                 </tr>
                             }
                             </tbody>
                         </table>
-                        <a href="/Admin/AdminMessage/Create" class="btn btn-primary"> <i class="mdi mdi-plus"></i> Legg en ny Melding</a>
+                        <a href="/Admin/AdminDiningTable/Create" class="btn btn-primary"> <i class="mdi mdi-plus"></i> Legg et nytt Bord</a>
                     </div> <!-- end card body-->
                 </div> <!-- end card -->
             </div><!-- end col-->

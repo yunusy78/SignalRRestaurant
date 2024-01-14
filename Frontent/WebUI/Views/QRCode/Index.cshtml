@@ -1,0 +1,45 @@
+﻿@model dynamic
+
+@{
+    ViewBag.Title = "title";
+    Layout = null;
+}
+
+<!DOCTYPE html>
+<html>
+
+@await Component.InvokeAsync("_UILayoutHeadComponentPartial")
+
+<body class="sub_page">
+
+  @await Html.PartialAsync("~/Views/PartialView/_NavBarPartialView.cshtml")
+
+<div class="container-fluid">
+    <div class="row h-100 align-items-center justify-content-center" style="min-height: 100vh;">
+        <div class="col-12 col-sm-8 col-md-6 col-lg-5 col-xl-4">
+            <div class="d-flex align-items-center justify-content-between mb-3">
+                <a href="/Default/Index" class="">
+                    <h3 style="color: #ffc107" class="text-primary"><i class="fa fa-home" style="color: #ffc107"></i>BurgerClash QRCode Genarator</h3>
+                </a>
+            </div>
+            <form method="post" action="/QRCode/Index">
+                <input type="text" name="value"/>
+                <input type="submit" value="Create QRCode" class="btn btn-warning"/>
+       </form>
+            @if (ViewBag.QRCodeImage != null)
+                    {
+                    <img src="@ViewBag.QRCodeImage" alt="QRCode" style="width: 400px; height: 400px;" />
+                   }
+        </div>
+    </div>
+</div>
+
+@await Component.InvokeAsync("_UILayoutFooterComponentPartial")
+<!-- footer section -->
+
+<!-- jQery -->
+@await Component.InvokeAsync("_UILayoutScriptComponentPartial")
+
+</body>
+
+</html>

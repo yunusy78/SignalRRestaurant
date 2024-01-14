@@ -5,5 +5,10 @@ namespace DataAccessLayer.Abstract;
 
 public interface IDiningTableDal : IGenericDal<DiningTable>
 {
+    Task<int> GetTotalActiveTableCountAsync();
     
+    Task<int> GetTotalPassiveTableCountAsync();
+    
+    
+    Task<List<DiningTable>> GetDiningTablesByStatusAsync();
 }

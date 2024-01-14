@@ -1,10 +1,17 @@
-﻿using Microsoft.AspNetCore.Mvc;
-using web.DTOs.ApplicationUserDto;
+﻿using BusinessLayer.Abstract;
+using Microsoft.AspNetCore.Mvc;
 
-namespace WEB.Controllers;
+
+namespace WebUI.Controllers;
 
 public class LogoutController : Controller
 {
+    private readonly IAuthenticationService _authenticationService;
+    
+    public LogoutController(IAuthenticationService authenticationService)
+    {
+        _authenticationService = authenticationService;
+    }
     // GET
     public IActionResult Index()
     {
@@ -14,17 +21,13 @@ public class LogoutController : Controller
     [HttpPost]
     public async Task<IActionResult> Logout()
     {
-       
-        // Client tarafında Logout isteği gönderme (örnek)
-        var httpClient = new HttpClient();
 
-        var response = await httpClient.PostAsync("http://localhost:5076/api/Auth/api/Auth/logout", null);
+        var response = await _authenticationService.Logout();
 
-        if (response.IsSuccessStatusCode)
+        if (response)
         {
             // Logout işlemi başarılı oldu
-           
-           
+            
             HttpContext.Response.Cookies.Delete("JwtToken");
             return RedirectToAction("Index", "Default");
         }

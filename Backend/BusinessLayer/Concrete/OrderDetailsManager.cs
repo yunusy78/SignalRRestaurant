@@ -1,5 +1,6 @@
 ﻿using BusinessLayer.Abstract;
 using DataAccessLayer.Abstract;
+using DtoLayer.OrderDetailsDtos;
 using EntityLayer.Concrete;
 
 namespace BusinessLayer.Concrete;
@@ -38,6 +39,11 @@ public class OrderDetailsManager : IOrderDetailsService
     public async Task DeleteAsync(OrderDetails entity)
     {
         await _orderDetailsDal.DeleteAsync(entity);
+    }
+    
+    public async Task<List<ResultOrderDetailsDto>> GetOrderDetailsByOrderWithProductName()
+    {
+        return await _orderDetailsDal.GetOrderDetailsByOrderWithProductName();
     }
     
     

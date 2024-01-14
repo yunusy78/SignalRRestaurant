@@ -1,9 +1,6 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using EindomsHavnAPI.DTOs.ApplicationUserDto;
-using EindomsHavnAPI.Repositories.ApplicationUserRepository;
+
+using BusinessLayer.Abstract;
+using DtoLayer.AppUserDtos;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -14,20 +11,19 @@ namespace API.Controllers
     [ApiController]
     public class ForgetPasswordController : ControllerBase
     {
-        private readonly IApplicationUserRepository _userRepository;
-
-        public ForgetPasswordController(IApplicationUserRepository userRepository)
+        private readonly IAppUserService _userService;
+        
+        public ForgetPasswordController(IAppUserService userService)
         {
-            _userRepository = userRepository;
+            _userService = userService;
         }
-
 
         [HttpPost]
         [AllowAnonymous]
         public async Task<IActionResult> ForgotPassword(ForgotPasswordDto dto)
         {
             // Kullanıcıyı veritabanında e-posta adresine göre bulun
-            var user = await _userRepository.FindByEmail(dto.Email);
+            var user = await _userService.FindByEmail(dto.Email);
 
             if (user == null)
             {
@@ -48,7 +44,7 @@ namespace API.Controllers
             user.ResetTokenExpiry = DateTime.UtcNow.AddHours(1); // Örneğin, 1 saat geçerli
 
             // Veritabanındaki değişiklikleri kaydedin
-            await _userRepository.CreateForgotPasswordRecord(user);
+            await _userService.CreateForgotPasswordRecord(user);
 
             // Kullanıcıya sıfırlama bağlantısı içeren e-posta gönderin
             // E-posta gönderme işlemini burada gerçekleştirin
@@ -63,7 +59,7 @@ namespace API.Controllers
         public async Task<IActionResult> ResetPassword(string resetToken, string newPassword)
         {
             // Kullanıcıyı veritabanında e-posta adresine göre bulun
-            var user = await _userRepository.FindByEmailFromForgetPassword(resetToken);
+            var user = await _userService.FindByEmailFromForgetPassword(resetToken);
 
             if (user == null)
             {
@@ -88,7 +84,7 @@ namespace API.Controllers
             user.ResetTokenExpiry = null;
 
             // Veritabanındaki değişiklikleri kaydedin
-            await _userRepository.UpdateUser(user);
+            await _userService.UpdateUser(user);
 
             return Ok("Password updated successfully");
         }

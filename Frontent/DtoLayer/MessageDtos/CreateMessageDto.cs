@@ -1,6 +1,6 @@
-﻿namespace DtoLayer.ContactDtos;
+﻿namespace DtoLayer.MessageDtos;
 
-public class MessageContactDto
+public class CreateMessageDto
 {
     public string? Name { get; set; }
     public string? Email { get; set; }

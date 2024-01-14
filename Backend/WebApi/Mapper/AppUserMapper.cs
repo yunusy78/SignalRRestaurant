@@ -1,18 +1,19 @@
 ﻿using AutoMapper;
 using DtoLayer.AboutDtos;
+using DtoLayer.AppUserDtos;
 using DtoLayer.DiningTableDtos;
 using EntityLayer.Concrete;
 
 namespace WebApi.Mapper;
 
-public class DiningTableMapper : Profile
+public class AppUserMapper : Profile
 {
-    public DiningTableMapper()
+    public AppUserMapper()
     {
-        CreateMap<DiningTable, CreateDiningTableDto>().ReverseMap();
-        CreateMap<DiningTable, UpdateDiningTableDto>().ReverseMap();
-        CreateMap<DiningTable, ResultDiningTableDto>().ReverseMap();
-        CreateMap<DiningTable, GetDiningTableDto>().ReverseMap();
+        CreateMap<AppUser, ApplicationUserDto>().ReverseMap();
+        CreateMap<AppUser, ForgotPasswordDto>().ReverseMap();
+        CreateMap<AppUser, ResetPasswordDto>().ReverseMap();
+        CreateMap<AppRole, UserRoleDto>().ReverseMap();
     }
     
     

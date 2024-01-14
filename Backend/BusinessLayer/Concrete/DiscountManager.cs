@@ -45,4 +45,10 @@ public class DiscountManager : IDiscountService
     }
     
     
+    public async Task<int> CheckDiscountCodeAsync(string code)
+    {
+        return await _discountDal.CheckDiscountCodeAsync(code);
+    }
+    
+    
 }

@@ -28,6 +28,21 @@ public class ServiceApiSettings
     
     public ServiceApi DiningTable { get; set; }
     
+    public ServiceApi Message { get; set; }
+    
+    public ServiceApi Notification { get; set; }
+    
+    public ServiceApi Auth { get; set; }
+    
+    public ServiceApi ForgetPassword { get; set; }
+    
+    public ServiceApi Register { get; set; }
+    
+    public ServiceApi Order { get; set; }
+    
+    public ServiceApi OrderDetails { get; set; }
+    
+    
     
     
 }

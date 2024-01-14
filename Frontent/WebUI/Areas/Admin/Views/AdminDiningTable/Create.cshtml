@@ -1,4 +1,4 @@
-﻿@model DtoLayer.MessageDtos.CreateMessageDto
+﻿@model DtoLayer.DiningTableDtos.CreateDiningTableDto
 
 @{
     ViewBag.Title = "title";
@@ -7,31 +7,23 @@
 <div class="main-panel">
 <div class="content">
 <div class="container-fluid">
-    <h4 class="page-title">Bestilling</h4>
+    <h4 class="page-title">Bord</h4>
     <div class="row">
         <div class="col-md-6">
             <div class="card">
                 <div class="card-header">
-                    <div class="card-title">Legg til ny Melding</div>
+                    <div class="card-title">Legg til nytt Bord</div>
                 </div>
                 <div class="card-body">
-                    <form method="post" enctype="multipart/form-data" action="/Admin/AdminMessage/Create">
+                    <form method="post" enctype="multipart/form-data" action="/Admin/AdminDiningTable/Create">
                         @Html.AntiForgeryToken()
                         <div class="form-group">
                             <label>Navn:</label>
-                            <input asp-for="Name" type="text" class="form-control" >
+                            <input asp-for="TableName" type="text" class="form-control" >
                         </div>
                         <div class="form-group">
-                            <label>E-Post :</label>
-                            <input asp-for="Email" type="email" class="form-control" >
-                        </div>
-                        <div class="form-group">
-                            <label>Emne :</label>
-                            <input asp-for="Subject" type="text" class="form-control" >
-                        </div>
-                        <div class="form-group">
-                        <label>Meldigen :</label>
-                        <textarea asp-for="MessageText" class="form-control" rows="5"></textarea>
+                            <label>Kapasitet :</label>
+                            <input asp-for="Capacity" type="number" class="form-control" >
                         </div>
                         <div class="text-center">
                             <button type="submit" class="btn btn-primary"><i class="fa fa-save"></i> Lagre</button>

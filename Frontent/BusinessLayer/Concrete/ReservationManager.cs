@@ -4,6 +4,7 @@ using System.Net.Http.Json;
 using BusinessLayer;
 using BusinessLayer.Abstract;
 using DtoLayer.BookingDtos;
+using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Configuration;
 using Newtonsoft.Json;
 
@@ -13,16 +14,21 @@ public class ReservationManager : IReservationService
 {
     private readonly IHttpClientFactory _httpClientFactory;
     private readonly IConfiguration _configuration;
+    private readonly IHttpContextAccessor _httpContextAccessor;
     
-    public ReservationManager(IHttpClientFactory httpClientFactory, IConfiguration configuration)
+    
+    public ReservationManager(IHttpClientFactory httpClientFactory, IConfiguration configuration, IHttpContextAccessor httpContextAccessor)
     {
         _httpClientFactory = httpClientFactory;
         _configuration = configuration;
+        _httpContextAccessor = httpContextAccessor;
     }
     
     public async Task<bool> DeleteAsync(int id)
     {
+        var jwtToken = _httpContextAccessor.HttpContext!.Request.Cookies["JwtToken"];
         var client = _httpClientFactory.CreateClient();
+        client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", jwtToken);
         var serviceApiSettings = _configuration.GetSection("ServiceApiSettings").Get<ServiceApiSettings>();
         var response = await client.DeleteAsync($"{serviceApiSettings!.BaseUri}/{serviceApiSettings.Reservation.Path}/{id}");
         if (response.IsSuccessStatusCode)
@@ -100,7 +106,9 @@ public class ReservationManager : IReservationService
 
     public async Task<bool> UpdateReservationAsync(UpdateReservationDto dto)
     {
+        var jwtToken = _httpContextAccessor.HttpContext!.Request.Cookies["JwtToken"];
         var client = _httpClientFactory.CreateClient();
+        client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", jwtToken);
         var serviceApiSettings = _configuration.GetSection("ServiceApiSettings").Get<ServiceApiSettings>();
         var response = await client.PutAsJsonAsync($"{serviceApiSettings!.BaseUri}/{serviceApiSettings.Reservation.Path}", dto);
         if (response.IsSuccessStatusCode)

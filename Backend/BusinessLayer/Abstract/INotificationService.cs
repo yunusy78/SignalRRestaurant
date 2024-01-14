@@ -1,6 +1,13 @@
-﻿namespace BusinessLayer.Abstract;
+﻿using EntityLayer.Concrete;
 
-public interface INotificationService
+namespace BusinessLayer.Abstract;
+
+public interface INotificationService : IGenericService<Notification>
 {
+    
+    
+    Task<int> GetNotificationCountByStatus();
+    
+    Task<List<Notification>> GetNotificationListByStatus();
     
 }

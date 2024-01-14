@@ -2,7 +2,9 @@
 
 namespace DataAccessLayer.Abstract;
 
-public interface IMessageDal : IGenericDal<Message>
+public interface INotificationDal : IGenericDal<Notification>
 {
-    
+    Task<int> GetNotificationCountByStatus();
+    Task<List<Notification>> GetNotificationListByStatus();
+
 }

@@ -6,65 +6,154 @@
 }
 
 <div class="main-panel">
+    <div class="content">
+        <div class="container-fluid">
+            <script type="text/javascript">
+                $(document).ready(function () {
+                    var connection = new signalR.HubConnectionBuilder()
+                        .withUrl('@ViewBag.HubUrl')
+                        .build();
+
+                    connection.start().then(function () {
+                        setInterval(function () {
+                            connection.invoke("GetBookingList");
+                        }, 5000);
+                        console.log("connected");
+                    }).catch(function (err) {
+                        return console.error(err.toString());
+                    });
+
+                    connection.on("ReceiveBookingList", (bookingList) => {
+                        var table = $("#bookingList tbody");
+                        table.empty(); // Tabloyu temizle
+
+                        bookingList.forEach(function (booking) {
+                            var row = $("<tr>");
+                            row.append($("<td>").text(booking.bookingId));
+                            row.append($("<td>").text(booking.fullName));
+                            row.append($("<td>").text(booking.email));
+                            row.append($("<td>").text(booking.phone));
+                            row.append($("<td>").text(booking.personCount));
+                             // Tarih formatını güncelle
+                                    var formattedDate = new Intl.DateTimeFormat('en-GB', {
+                                        year: 'numeric',
+                                        month: '2-digit',
+                                        day: '2-digit',
+                                        hour: 'numeric',
+                                        minute: 'numeric',
+                                        second: 'numeric'
+                                    }).format(new Date(booking.createdAt));
+                            
+                            row.append($("<td>").text(formattedDate));
+                            row.append($("<td>").text(booking.isConfirmed));
+                            row.append($("<td>").html("<a href='/Admin/AdminReservation/Update/" + booking.bookingId + "' class='btn btn-outline-warning'> <i class='mdi mdi-account-edit'></i> Rediger</a>"));
+                            row.append($("<td>").html("<a href='/Admin/AdminReservation/Delete/" + booking.bookingId + "' class='btn btn-outline-danger' onclick='deleteItemWarning()'><i class='mdi mdi-delete'></i> Slett</a>"));
+                            row.append($("<td>").html("<a href='#' class='btn btn-outline-primary'><i class='mdi mdi-eye'></i> Detaljer</a>"));
+                            table.append(row);
+                        });
+                    });
+                });
+                function deleteItemWarning() {
+                                    var confirmDelete = confirm("Advarsel! Denne handlingen vil slette elementet permanent. Er du sikker på at du vil fortsette?");
+                                    if (confirmDelete) {
+                                        // Brukeren bekreftet sletting, slettingsprosessen kan fortsette.
+                                        window.location.href = "/Admin/AdminReservation/Delete"/+booking.bookingId;
+                                    }
+                                }
+            </script>
+<h4 class="page-title">Bestilling</h4>
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="card">
+                        <div class="card-header">
+                            <div class="card-title">Bestilling Liste</div>
+                        </div>
+                        <div class="card-body">
+                            <table id="bookingList" class="table table-bordered table-bordered-bd-info mt-4">
+                                <thead>
+                                <tr>
+                                    <th>Id</th>
+                                    <th>Navn</th>
+                                    <th>E-Post</th>
+                                    <th>Telefon</th>
+                                    <th>Antall Person</th>
+                                    <th>Bestilling Dato</th>
+                                    <th>Er Bekreftet</th>
+                                    <th>Rediger</th>
+                                    <th>Slett</th>
+                                    <th>Detaljer</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                <!-- Bu kısım boş bırakılacak, çünkü tablo içeriği JavaScript ile dinamik olarak doldurulacak -->
+                                </tbody>
+                            </table>
+                        </div>
+
+                        
+                    </div>
+                </div>
+            </div>
+            <a href="/Admin/AdminReservation/Create" class="btn btn-primary"> <i class="mdi mdi-plus"></i> Legg en ny Reservasjon</a>
+            </div>
+    </div>
+</div>
+
+
+
+
+<div class="main-panel">
 <div class="content">
     <div class="container-fluid">
-        <h4 class="page-title">Bestilling</h4>
-        <div class="row">
-            <div class="col-md-12">
-                <div class="card">
-                    <div class="card-header">
-                        <div class="card-title">Bestilling Liste</div>
-                    </div>
-                    <div class="card-body">
+            <h4 class="page-title">Bestilling</h4>
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="card">
+                        <div class="card-header">
+                            <div class="card-title">Bestilling Liste</div>
+                        </div>
+                        <div class="card-body">
 
-                        <table id="datatable-buttons" class="table table-bordered table-bordered-bd-info mt-4">
-                            <thead>
-                            <tr>
-                                <th>Id</th>
-                                <th>Navn</th>
-                                <th>E-Post</th>
-                                <th>Telefon</th>
-                                <th>Antall Person</th>
-                                <th>Bestilling Dato</th>
-                                <th>Er Bekreftet</th>
-                                <th>Rediger</th>
-                                <th>Slett</th>
-                                <th>Detaljer</th>
-                            </tr>
-                            </thead>
-
-                            <tbody>
-                            @foreach(var item in Model)
-                            {
+                            <table id="datatable-buttons" class="table table-bordered table-bordered-bd-info mt-4">
+                                <thead>
                                 <tr>
-                                    <td>@item.BookingId</td>
-                                    <td>@item.FullName</td>
-                                    <td>@item.Email</td>
-                                    <td>@item.Phone</td>
-                                    <td>@item.PersonCount</td>
-                                    <td>@item.CreatedAt</td>
-                                    <td>@item.IsConfirmed</td>
-                                    <td><a href="/Admin/AdminReservation/Update/@item.BookingId" class="btn btn-outline-warning"> <i class="mdi mdi-account-edit"></i> Rediger</a></td>
-                                    <td><a href="/Admin/AdminReservation/Delete/@item.BookingId" class="btn btn-outline-danger" onclick="deleteItemWarning()"><i class="mdi mdi-delete"></i> Slett</a> </td>
-                                    <td><a href="#" class="btn btn-outline-primary"><i class="mdi mdi-eye"></i> Detaljer</a></td>
+                                    <th>Id</th>
+                                    <th>Navn</th>
+                                    <th>E-Post</th>
+                                    <th>Telefon</th>
+                                    <th>Antall Person</th>
+                                    <th>Bestilling Dato</th>
+                                    <th>Er Bekreftet</th>
+                                    <th>Rediger</th>
+                                    <th>Slett</th>
+                                    <th>Detaljer</th>
                                 </tr>
-                                <script>
-                function deleteItemWarning() {
-                var confirmDelete = confirm("Advarsel! Denne handlingen vil slette elementet permanent. Er du sikker på at du vil fortsette?");
-                if (confirmDelete) {
-            // Brukeren bekreftet sletting, slettingsprosessen kan fortsette.
-                window.location.href = "/Admin/AdminReservation/Delete/@item.BookingId";
-                  }
-               }
-            </script>
-                            }
-                            </tbody>
-                        </table>
-                        <a href="/Admin/AdminReservation/Create" class="btn btn-primary"> <i class="mdi mdi-plus"></i> Legg en ny Reservasjon</a>
-                    </div> <!-- end card body-->
-                </div> <!-- end card -->
-            </div><!-- end col-->
+                                </thead>
+
+                                <tbody>
+                                @foreach (var item in Model)
+                                {
+                                    <tr>
+                                        <td>@item.BookingId</td>
+                                        <td>@item.FullName</td>
+                                        <td>@item.Email</td>
+                                        <td>@item.Phone</td>
+                                        <td>@item.PersonCount</td>
+                                        <td>@item.CreatedAt</td>
+                                        <td>@item.IsConfirmed</td>
+                                        <td><a href="/Admin/AdminReservation/Update/@item.BookingId" class="btn btn-outline-warning"> <i class="mdi mdi-account-edit"></i> Rediger</a></td>
+                                        <td><a href="/Admin/AdminReservation/Delete/@item.BookingId" class="btn btn-outline-danger" onclick="deleteItemWarning()"><i class="mdi mdi-delete"></i> Slett</a> </td>
+                                        <td><a href="#" class="btn btn-outline-primary"><i class="mdi mdi-eye"></i> Detaljer</a></td>
+                                    </tr>
+                                    
+                                }
+                                </tbody>
+                            </table>
+                            <a href="/Admin/AdminReservation/Create" class="btn btn-primary"> <i class="mdi mdi-plus"></i> Legg en ny Reservasjon</a>
+                        </div> <!-- end card body-->
+                    </div> <!-- end card -->
+                </div><!-- end col-->
+            </div>
         </div>
-    </div>
 </div>
 </div>

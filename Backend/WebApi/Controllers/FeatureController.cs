@@ -6,11 +6,13 @@ using AutoMapper;
 using BusinessLayer.Abstract;
 using DtoLayer.FeatureDtos;
 using EntityLayer.Concrete;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 namespace WebApi.Controllers
 {
+    [Authorize(Roles = "Admin")]
     [Route("api/[controller]")]
     [ApiController]
     public class FeatureController : ControllerBase
@@ -26,7 +28,7 @@ namespace WebApi.Controllers
         }
         
        
-        
+        [AllowAnonymous]
         [HttpGet]
         public async Task<IActionResult> GetList()
         {
@@ -34,6 +36,7 @@ namespace WebApi.Controllers
             return Ok(result);
         }
         
+        [AllowAnonymous]
         [HttpGet("{id}")]
         
         public async Task<IActionResult> GetById(int id)
@@ -41,6 +44,7 @@ namespace WebApi.Controllers
             var result = await _featureService.GetByIdAsync(id);
             return Ok(result);
         }
+        
         
         [HttpPost]
         public async Task<IActionResult> Add(CreateFeatureDto Feature)

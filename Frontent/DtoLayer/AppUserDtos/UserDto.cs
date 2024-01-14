@@ -1,4 +1,4 @@
-﻿namespace web.DTOs.ApplicationUserDto;
+﻿namespace DtoLayer.AppUserDtos;
 
 public class UserDto
 {

@@ -1,46 +1,50 @@
 ﻿using BusinessLayer.Abstract;
-using DtoLayer.MessageDtos;
+using DtoLayer.NotificationDtos;
 using Microsoft.AspNetCore.Mvc;
+using WebUI.Areas.Admin.Models;
+
 namespace WebUI.Areas.Admin.Controllers
 {
     [Area("Admin")]
-    public class AdminMessageController : Controller
+    public class AdminNotificationController : Controller
     {
-        private readonly IMessageService _messageService;
+        private readonly INotificationService _notificationService;
     
-        public AdminMessageController(IMessageService messageService)
+        public AdminNotificationController(INotificationService notificationService)
         {
-            _messageService = messageService;
+            _notificationService = notificationService;
         }
     
         // GET
         public async Task<IActionResult> Index()
         {
-            var result = await _messageService.GetAllAsync();
+            var result = await _notificationService.GetAllAsync();
             return View(result);
         
         }
     
         public IActionResult Create()
         {
-            return View();
+            var viewModel = new NotificationAdminTypeModel();
+            return View(viewModel);
         }
     
         [HttpPost]
-        public async Task<IActionResult> Create(CreateMessageDto dto)
+        public async Task<IActionResult> Create(CreateNotificationDto dto)
         {
             dto.CreatedAt = DateTime.Now;
-            var result = await _messageService.AddAsync(dto);
+            dto.IsRead = false;
+            var result = await _notificationService.AddAsync(dto);
             if (result)
             {
-                return Redirect("/Admin/AdminMessage/Index");
+                return Redirect("/Admin/AdminNotification/Index");
             }
-            return View(dto);
+            return View();
         }
     
         public async Task<IActionResult> Update(int id)
         {
-            var result = await _messageService.GetByIdAsync(id);
+            var result = await _notificationService.GetByIdAsync(id);
             if (result == null)
             {
                 return NotFound();
@@ -50,12 +54,12 @@ namespace WebUI.Areas.Admin.Controllers
     
     
         [HttpPost]
-        public async Task<IActionResult> Update(UpdateMessageDto dto)
+        public async Task<IActionResult> Update(UpdateNotificationDto dto)
         {
-            var result = await _messageService.UpdateAsync(dto);
+            var result = await _notificationService.UpdateAsync(dto);
             if (result)
             {
-                return Redirect("/Admin/AdminMessage/Index");
+                return Redirect("/Admin/AdminNotification/Index");
             }
             return View();
         }
@@ -63,12 +67,12 @@ namespace WebUI.Areas.Admin.Controllers
         public async Task<IActionResult> Delete(int id)
         {
         
-            var result = await _messageService.DeleteAsync(id);
+            var result = await _notificationService.DeleteAsync(id);
             if (result == null)
             {
                 return NotFound();
             }
-            return Redirect("/Admin/AdminMessage/Index");
+            return Redirect("/Admin/AdminNotification/Index");
         }
     
     }

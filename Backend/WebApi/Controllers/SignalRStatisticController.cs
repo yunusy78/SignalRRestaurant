@@ -5,11 +5,13 @@ using System.Threading.Tasks;
 using AutoMapper;
 using BusinessLayer.Abstract;
 using EntityLayer.Concrete;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 namespace WebApi.Controllers
 {
+    [Authorize(Roles = "Admin")]
     [Route("api/[controller]")]
     [ApiController]
     public class SignalRStatisticController : ControllerBase

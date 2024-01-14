@@ -1,6 +1,13 @@
-﻿namespace DataAccessLayer.EntityFramework;
+﻿using DataAccessLayer.Abstract;
+using DataAccessLayer.Concrete;
+using DataAccessLayer.Repositories;
+using EntityLayer.Concrete;
 
-public class EfAppRoleDal
+namespace DataAccessLayer.EntityFramework;
+
+public class EfAppRoleDal : GenericRepository<AppRole>, IAppRoleDal
 {
-    
+    public EfAppRoleDal(SignalRContext context) : base(context)
+    {
+    }
 }

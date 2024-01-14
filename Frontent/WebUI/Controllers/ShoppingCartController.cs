@@ -39,6 +39,7 @@ public class ShoppingCartController : Controller
     public async Task<IActionResult> Index(int id)
     {
         var result = await _shoppingCartService.GetAllListByDiningTableAsync(id);
+        ViewData["DiningTableName"] = result.FirstOrDefault()?.DiningTableName;
         return View(result);
     }
     
@@ -89,6 +90,7 @@ public class ShoppingCartController : Controller
         var response = await _shoppingCartService.CreateBasketAsync(dto);
         if (response)
         {
+            
             return Redirect($"/ShoppingCart/Index/{dto.DiningTableId}");
 
         }
@@ -97,6 +99,7 @@ public class ShoppingCartController : Controller
 
 
     }
+    
    
     
     

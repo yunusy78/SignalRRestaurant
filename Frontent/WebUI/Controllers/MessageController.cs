@@ -1,16 +1,17 @@
 ﻿using BusinessLayer.Abstract;
 using DtoLayer.BookingDtos;
+using DtoLayer.MessageDtos;
 using Microsoft.AspNetCore.Mvc;
 
 namespace WebUI.Controllers;
 
-public class BookingTableController : Controller
+public class MessageController : Controller
 {
-    private readonly IReservationService _reservationService;
+    private readonly IMessageService _service;
     
-    public BookingTableController(IReservationService reservationService)
+    public MessageController(IMessageService service)
     {
-        _reservationService = reservationService;
+        _service = service;
     }
     
     // GET
@@ -21,9 +22,10 @@ public class BookingTableController : Controller
     
     
     [HttpPost]
-    public async Task<IActionResult> Create(CreateReservationDto createBookingDto)
+    public async Task<IActionResult> Create(CreateMessageDto dto)
     {
-            var result = await _reservationService.CreateReservationAsync(createBookingDto);
+        dto.CreatedAt = DateTime.Now;
+            var result = await _service.AddAsync(dto);
             if (result)
             {
                 return RedirectToAction("Index", "Default");

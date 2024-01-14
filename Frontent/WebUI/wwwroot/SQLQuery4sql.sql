@@ -1,0 +1,1 @@
+﻿update DiningTables set Status=0

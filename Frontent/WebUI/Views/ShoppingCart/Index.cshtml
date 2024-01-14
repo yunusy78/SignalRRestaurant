@@ -5,8 +5,8 @@
 	Layout = "~/Views/UILayout/Index.cshtml";
 }
 
-<form method="post">
-	<br />
+<form method="post" action="/Order/Add">
+	<br/>
 	<div class="container">
 		<div class="card">
 			<div class="card-header bg-dark text-light ml-0">
@@ -16,13 +16,14 @@
 						Bestilling Kurv
 					</div>
 					<div class="col-6 text-end">
-						<a  asp-controller="Default" asp-area="" asp-action="Index" class="btn btn-outline-info btn-sm">Forsette å Handle</a>
+						<a asp-controller="Default" asp-area="" asp-action="Index" class="btn btn-outline-info btn-sm">Forsette å Handle</a>
 					</div>
 				</div>
 			</div>
 
 			<div class="card-body">
-				@foreach(var item in Model){
+				@foreach (var item in Model)
+				{
 					<div class="row">
 						<div class="d-none d-lg-block col-lg-1 text-center py-2">
 							<img src="@item.ImageUrl" class="rounded" width="100%"/>
@@ -32,8 +33,10 @@
 						</div>
 						<div class="col-12  col-lg-5 text-center row">
 							<div class="col-4 text-md-right pt-4">
-								<h6 class="text-info"><strong><span class="text-info"></span><strong class="text-info">@item.Price.ToString("0")
-									<span class="text-info">x&nbsp;</span>@item.Quantity </strong><span class="text-info"> = </span>@item.TotalPrice.ToString("0"),- </strong></h6>
+								<h6 class="text-info">
+									<strong><span class="text-info"></span>
+										<strong class="text-info">@item.Price.ToString("0")
+											<span class="text-info">x&nbsp;</span>@item.Quantity </strong><span class="text-info"> = </span>@item.TotalPrice.ToString("0"),- </strong></h6>
 							</div>
 							<div class="col-6 col-sm-4 col-lg-6 pt-2">
 								<div class="w-75 btn-group" role="group">
@@ -60,46 +63,101 @@
 						</ul>
 					</div>
 					<div class="col-12 col-md-6 offset-md-6 col-lg-4 offset-lg-8 pr-4">
-     <form asp-action="" asp-controller="">
-	     <ul class="list-group">
-		     
-		     <li class="list-group-item d-flex justify-content-between bg-light">
-			     <div class="input-group">
-				     <input type="text" class="form-control" name="discountCode" placeholder="Rabattkode"/>
-				     <button type="submit" class="btn btn-info"> &nbsp; Bruk &nbsp; </button>
-				     <br/>
-				     <button asp-controller="" asp-action="" class="btn btn-warning">Avbryt</button>
-			     </div>
-		     </li>
-	     </ul>
-     </form>
-					</div>      
-					
+						<form id="discountForm">
+							<ul class="list-group">
+								<li class="list-group-item d-flex justify-content-between bg-light">
+									<div class="input-group">
+										<input type="text" class="form-control" id="discountCode" placeholder="Rabattkode"/>
+										<button type="button" class="btn btn-info" onclick="applyDiscount()"> &nbsp; Bruk &nbsp; </button>
+										<br/>
+										<button type="button" class="btn btn-warning" onclick="cancelDiscount()">Avbryt</button>
+									</div>
+								</li>
+							</ul>
+						</form>
+					</div>
+
 				</div>
 			</div>
-			
+
 			<div class="card-footer">
 				<div class="card-footer row">
 					<div class="col-sm-12 col-lg-4 col-md-6 offset-lg-8 offset-md-6 ">
+						<button type="submit" class="btn btn-success form-control">Checkout</button>
 					</div>
 				</div>
 			</div>
-			
 		</div>
 	</div>
 </form>
 
 
 <script>
-    // Toplam miktarı hesapla ve göster
+    var initialTotalAmount = 0;
     var totalAmount = 0;
+
     @foreach (var item in Model)
     {
-	    <text>
-			totalAmount += @item.TotalPrice;
-		</text>
+        <text>
+            totalAmount += @item.TotalPrice;
+        </text>
     }
 
-    // Toplam miktarı göster
-    document.getElementById('totalAmount').innerText =' '+ totalAmount.toFixed(2)+',-' ;
+    initialTotalAmount = totalAmount; // İlk toplam miktarı kaydet
+
+    // Total miktarı göster
+    document.getElementById('totalAmount').innerText = ' ' + totalAmount.toFixed(2) + ',-';
+
+    // Rabattkode
+    function applyDiscount() {
+        const discountCode = $('#discountCode').val();
+
+        // İndirim kodunu kullanarak API'ye istek yapma
+        const apiUrl = '/Discount/ApplyDiscount';
+        const requestData = { code: discountCode };
+
+        // AJAX isteği
+        $.ajax({
+            url: apiUrl,
+            type: 'POST',
+            contentType: 'application/json',
+            data: JSON.stringify(requestData),
+            success: function (data) {
+                // İndirim uygulandıktan sonra gelen cevap
+                if (data.success) {
+                    totalAmount = totalAmount - (totalAmount * data.amount) / 100;
+                    alert('Rabatt vellykket anvendt. Ny totalbeløp: ' + totalAmount.toFixed(2));
+                    document.getElementById('totalAmount').innerText = ' ' + totalAmount.toFixed(2) + ',-'; // Total beløp oppdatering
+                    $('#discountCode').val('');
+                } else {
+                    alert('Rabatt kunne ikke brukes. Feil: ' + data.error);
+                    // Hata durumunda toplam miktarı eski değerine geri döndür
+                    $('#discountCode').val('');
+                    totalAmount = initialTotalAmount;
+                    document.getElementById('totalAmount').innerText = ' ' + totalAmount.toFixed(2) + ',-';
+                }
+            },
+            error: function (error) {
+                console.error('API-feil:', error);
+                // Hata durumunda toplam miktarı eski değerine geri döndür
+                totalAmount = initialTotalAmount;
+                document.getElementById('totalAmount').innerText = ' ' + totalAmount.toFixed(2) + ',-';
+            }
+        });
+    }
+
+    // Avbryt knappfunksjon
+    function cancelDiscount() {
+        // Avbryt işlemleri burada yapılabilir
+        alert('Rabatt avbrutt.');
+        // Avbryt işlemleri kodu buraya eklenebilir
+        // Hata durumunda toplam miktarı eski değerine geri döndür
+        totalAmount = initialTotalAmount;
+        document.getElementById('totalAmount').innerText = ' ' + totalAmount.toFixed(2) + ',-';
+		initialTotalAmount = totalAmount;
+            document.getElementById('hiddenTotalAmount').value = totalAmount.toFixed(2);
+    }
 </script>
+
+
+

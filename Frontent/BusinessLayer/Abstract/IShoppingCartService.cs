@@ -14,6 +14,12 @@ public interface IShoppingCartService :IGenericService<ResultShoppingCart>
     
     Task<bool> RemoveRange(int cartId, int productId);
     
-    
-    
+
+
+
+
+
+
+
+
 }

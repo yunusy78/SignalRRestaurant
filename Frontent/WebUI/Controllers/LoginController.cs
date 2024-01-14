@@ -2,18 +2,21 @@
 using System.Net.Http.Headers;
 using System.Text;
 using System.Threading.Tasks;
+using BusinessLayer.Abstract;
+using DtoLayer.AppUserDtos;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
-using web.DTOs.ApplicationUserDto;
 
-namespace YourWebAppNamespace.Controllers
+namespace WebUI.Controllers
 {
     public class LoginController : Controller
     {
+        private readonly IAuthenticationService _authenticationService;
         private readonly IHttpClientFactory _clientFactory;
         
-        public LoginController(IHttpClientFactory clientFactory)
+        public LoginController(IAuthenticationService authenticationService, IHttpClientFactory clientFactory)
         {
+            _authenticationService = authenticationService;
             _clientFactory = clientFactory;
         }
         
@@ -57,56 +60,31 @@ namespace YourWebAppNamespace.Controllers
 
         private async Task<string> GetJwtTokenAsync(string email, string password)
         {
-            var authRequest = new
+            var response = await _authenticationService.GetJwtTokenAsync(HttpContext, email, password);
+            
+            if (response != null)
             {
-                Email = email,
-                Password = password
-            };
-
-            var apiBaseUrl = "http://localhost:5076"; // API'nizin başlangıç URL'sini burada tanımlayın
-
-            var content = new StringContent(JsonConvert.SerializeObject(authRequest), Encoding.UTF8, "application/json");
-
-            using (var client = new HttpClient())
+                return response;
+            }
+            else
             {
-                var response = await client.PostAsync($"{apiBaseUrl}/api/Auth/login", content);
-
-                if (response.IsSuccessStatusCode)
-                {
-                    var tokenResponse = await response.Content.ReadAsStringAsync();
-                    var token = JsonConvert.DeserializeAnonymousType(tokenResponse, new { token = "" });
-                    var cookieOptions = new CookieOptions
-                    {
-                        HttpOnly = true, // JavaScript tarafından erişilemez
-                        Expires = DateTime.UtcNow.AddHours(1) // Tokenin süresini ayarlayın
-                    };
-
-
-                    HttpContext.Response.Cookies.Append("JwtToken", token!.token, cookieOptions);
-                    
-                    return token.token;
-                }
-                else
-                {
-                    return null;
-                }
+                return null;
             }
         }
 
         [HttpPost]
         private async Task<string> AccessSecureResourceAsync(string token)
         {
-            var client = _clientFactory.CreateClient("API");
-            client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
-            var response = await client.GetAsync("http://localhost:5076/api/Product");
-
-            if (response.IsSuccessStatusCode)
+            var response = await _authenticationService.AccessSecureResourceAsync(token);
+            
+            if (response != null)
             {
-                var result = await response.Content.ReadAsStringAsync();
-                return result;
+                return response;
             }
-
-            return null;
+            else
+            {
+                return null;
+            }
         }
         
         [HttpGet]
@@ -120,13 +98,11 @@ namespace YourWebAppNamespace.Controllers
         }
         
         [HttpGet]
-        public IActionResult IsAdmin()
+        public async Task<IActionResult> IsAdmin()
         {
-            var jwtToken = HttpContext.Request.Cookies["JwtToken"];
-            var client =  _clientFactory.CreateClient("API");
-            client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", jwtToken);
-            var response = client.GetAsync("http://localhost:5076/api/Category/CategoriesAdmin").Result;
-            if (response.IsSuccessStatusCode)
+            var response = await _authenticationService.IsAdmin(HttpContext);
+            
+            if (response)
             {
                 bool isAdmin = true;
                 return Ok(isAdmin);

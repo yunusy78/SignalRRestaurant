@@ -1,62 +1,79 @@
-﻿@model DtoLayer.MessageDtos.ResultMessageDto
+﻿@model DtoLayer.NotificationDtos.ResultNotificationDto
 
 @{
     ViewBag.Title = "title";
     Layout = "~/Areas/Admin/Views/AdminLayout/Index.cshtml";
 }
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Add New Role</title>
+    <style>
+        .custom-form {
+        	border: 1px solid #ccc;
+        	padding: 20px;
+        	border-radius: 10px;
+        	margin-top: 50px;
+        }
+    </style>
+</head>
+<body>
 <div class="main-panel">
 <div class="content">
 <div class="container-fluid">
-    <h4 class="page-title">Meldinger</h4>
+    <h4 class="page-title">Bestilling</h4>
     <div class="row">
-    <div class="col-md-6">
-        <div class="card">
-            <div class="card-header">
-                <div class="card-title">Rediger Meldingen</div>
-            </div>
-            <div class="card-body">
-                <form method="post" enctype="multipart/form-data" action="/Admin/AdminMessage/Update">
-                    @Html.AntiForgeryToken()
-                    <input asp-for="Id" class="form-control" type="hidden">
-                    <div class="form-group">
-                        <label>Navn:</label>
-                        <input asp-for="Name" type="text" class="form-control" >
-                    </div>
-                    
-                    <div class="form-group">
-                        <label>E-Post :</label>
-                        <input asp-for="Email" type="email" class="form-control" >
-                    </div>
-                    
-                    <div class="form-group">
-                        <label>Emne :</label>
-                        <input asp-for="Subject" type="text" class="form-control" >
-                    </div>
-                    
-                    <div class="form-group">
-                        <label>Meldigen :</label>
-                        <textarea asp-for="MessageText" class="form-control" rows="5"></textarea>
-                    </div>
-                                           
-                    @{
-                        string isRead = Model.IsRead ? "read" : "";
-                    }
-                    <div class="form-group">
-                        <label for="status">Er Lest</label>
-                        <select id="status" asp-for="IsRead" class="form-control">
-                            <<option value="true" selected="@isRead">True</option>
-                            <option value="false" selected="@(isRead== "" ? "read" : "")">False</option>
-                        </select>
-                    </div>
-                    <div class="text-center">
-                        <button type="submit" class="btn btn-primary"><i class="fa fa-save"></i> Lagre</button>
-                    </div>
-                    
-                </form>
-            </div>
+        <div class="col-md-6">
+            <div class="card">
+                <div class="card-header">
+                    <div class="card-title">Rediger varsling</div>
+                </div>
+             <form action="/Admin/AdminNotification/Update" method="post">
+                <input type="hidden"  class="form-control" asp-for="NotificationId">
+                <div class="form-group">
+                    <label asp-for="Title">Velg et farge</label>
+                    <select asp-for="Title" class="form-control">
+                        <option  value="">Velg et farge</option>
+                        @foreach (var type in Model.NotificationTypes)
+                        {
+                            <option value="@type.Value">@type.Text</option>
+                        }
+                    </select>
+                    <span asp-validation-for="Title" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="Icon">Velg et symbol</label>
+                    <select asp-for="Icon" class="form-control">
+                        <option value="">Velg et symbol</option>
+                        @foreach (var type in Model.NotificationSymbol)
+                        {
+                            <option value="@type.Value">@type.Text</option>
+                        }
+                    </select>
+                    <span asp-validation-for="Icon" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label for="title">Detaljer:</label>
+                    <input type="text" id="title" asp-for="Content" class="form-control">
+                    <span asp-validation-for="Content" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label for="status">Status:</label>
+                    <select id="status" asp-for="IsRead" class="form-control">
+                        <option value="true">Lest</option>
+                        <option value="false">ULest</option>
+                    </select>
+                    <span asp-validation-for="IsRead" class="text-danger"></span>
+                </div>
+                <div class="text-center">
+                    <button type="submit" class="btn btn-primary"> <i class="fa fa-save"></i> Lagre</button>
+                </div>
+            </form>
         </div>
     </div>
     </div>
+       </div>
+    </div>
 </div>
-</div>
-</div>
+</body>
+</html>
