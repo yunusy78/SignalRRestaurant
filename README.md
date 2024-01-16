@@ -48,7 +48,7 @@ This project brings together innovative features using modern technologies. Welc
 
 ![Dashboard](/Frontent/WebUI/wwwroot/Burgerclash/1.png))
 
-![Microservices](/Frontent/WebUI/wwwroot/Burberclash/2.png)
+![Microservices](/Frontent/WebUI/wwwroot/Burgerclash/2.png)
 
 ![DDD](/Frontent/WebUI/wwwroot/Burberclash/3.png)
 
