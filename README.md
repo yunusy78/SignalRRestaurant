@@ -1,6 +1,6 @@
 # BurgerClash
 
-I am excited to present BurgerClash, developed with great enthusiasm using ASP.NET 7.0 API, MVC, SignalR, and Javascript. Also, with the expert guidance of Murat Yücedağ, I have successfully completed the "QR Code Order Management with Asp.Net Core API SignalR" Udemy course, adding a unique dimension to my project.
+I am excited to present BurgerClash, developed with great enthusiasm using ASP.NET 7.0 API, MVC, SignalR, and Javascript.
 
 ## Project Features
 
