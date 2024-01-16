@@ -44,9 +44,7 @@ I am excited to present BurgerClash, developed with great enthusiasm using ASP.N
 
 ## Project Guide
 
-You can access the project's source code on GitHub [here](https://lnkd.in/dBSYgA7R).
-
-This project brings together innovative features using modern technologies. Welcome to BurgerClash, where technology meets flavor! 🍔🚀
+This project brings together innovative features using modern technologies. Welcome to BurgerClash, where technology meets flavor!
 
 ## Images
 
