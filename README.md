@@ -48,39 +48,39 @@ This project brings together innovative features using modern technologies. Welc
 
 ![Dashboard](/Frontent/WebUI/wwwroot/Burgerclash/1.png))
 
-![Microservices](Frontent/WebUI/wwwroot/Burberclash/2.png)
+![Microservices](/Frontent/WebUI/wwwroot/Burberclash/2.png)
 
-![DDD](Frontent/WebUI/wwwroot/Burberclash/3.png)
+![DDD](/Frontent/WebUI/wwwroot/Burberclash/3.png)
 
-![api](Frontent/WebUI/wwwroot/Burberclash/4.png)
+![api](/Frontent/WebUI/wwwroot/Burberclash/4.png)
 
 
-![blo](Frontent/WebUI/wwwroot/Burberclash/5.png)
+![blo](/Frontent/WebUI/wwwroot/Burberclash/5.png)
 
-![blog](Frontent/WebUI/wwwroot/Burberclash/6.png)
+![blog](/Frontent/WebUI/wwwroot/Burberclash/6.png)
 
-![MVC](Frontent/WebUI/wwwroot/Burberclash/7.png)
+![MVC](/Frontent/WebUI/wwwroot/Burberclash/7.png)
 
-![MVC](Frontent/WebUI/wwwroot/Burberclash/8.png)
+![MVC](/Frontent/WebUI/wwwroot/Burberclash/8.png)
 
-![MVC](Frontent/WebUI/wwwroot/Burberclash/9).png).
+![MVC](/Frontent/WebUI/wwwroot/Burberclash/9).png).
 
-![MVC](Frontent/WebUI/wwwroot/Burberclash/10.png)
+![MVC](/Frontent/WebUI/wwwroot/Burberclash/10.png)
 
-![MVC](Frontent/WebUI/wwwroot/Burberclash/11.png)
+![MVC](/Frontent/WebUI/wwwroot/Burberclash/11.png)
 
-![IdentityServer](Frontent/WebUI/wwwroot/Burberclash/12.png)
+![IdentityServer](/Frontent/WebUI/wwwroot/Burberclash/12.png)
 
-![MVC](Frontent/WebUI/wwwroot/Burberclash/13.png)
+![MVC](/Frontent/WebUI/wwwroot/Burberclash/13.png)
 
-![IdentityServer](Frontent/WebUI/wwwroot/Burberclash/14.png)
+![IdentityServer](/Frontent/WebUI/wwwroot/Burberclash/14.png)
 
-![MVC](Frontent/WebUI/wwwroot/Burberclash/15.png)
+![MVC](/Frontent/WebUI/wwwroot/Burberclash/15.png)
 
-![IdentityServer](Frontent/WebUI/wwwroot/Burberclash/16.png)
+![IdentityServer](/Frontent/WebUI/wwwroot/Burberclash/16.png)
 
-![IdentityServer](Frontent/WebUI/wwwroot/Burberclash/17.png)
+![IdentityServer](/Frontent/WebUI/wwwroot/Burberclash/17.png)
 
-![MVC](Frontent/WebUI/wwwroot/Burberclash/18.png)
+![MVC](/Frontent/WebUI/wwwroot/Burberclash/18.png)
 
-![IdentityServer](Frontent/WebUI/wwwroot/Burberclash/19.png)
+![IdentityServer](/Frontent/WebUI/wwwroot/Burberclash/19.png)
