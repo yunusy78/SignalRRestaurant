@@ -10,18 +10,20 @@ namespace DataAccessLayer.EntityFramework;
 
 public class EfShoppingCartDal :GenericRepository<ShoppingCart>, IShoppingCartDal
 {
+    private readonly SignalRContext _context;
     public EfShoppingCartDal(SignalRContext context) : base(context)
     {
+        _context = context ?? throw new ArgumentNullException(nameof(context));
     }
     
     public int IncrementCount(int cartId, int productId)
     {
-        var context = new SignalRContext();
+        
         var shoppingCart = GetFirstOrDefault(x => x.Id == cartId && x.ProductId == productId);
         shoppingCart.Quantity += 1;
         shoppingCart.TotalPrice += shoppingCart.Price;
-        context.ShoppingCarts.Update(shoppingCart);
-        context.SaveChanges();
+        _context.ShoppingCarts.Update(shoppingCart);
+        _context.SaveChanges();
         return shoppingCart.Quantity;
         
     }
@@ -29,24 +31,24 @@ public class EfShoppingCartDal :GenericRepository<ShoppingCart>, IShoppingCartDa
     
     public int DecrementCount(int cartId, int productId)
     {
-        var context = new SignalRContext();
+       
         var shoppingCart = GetFirstOrDefault(x => x.Id == cartId && x.ProductId == productId);
         if (shoppingCart.Quantity > 1)
         {
             shoppingCart.Quantity -= 1;
             shoppingCart.TotalPrice -= shoppingCart.Price;
         }
-        context.ShoppingCarts.Update(shoppingCart);
-        context.SaveChanges();
+        _context.ShoppingCarts.Update(shoppingCart);
+        _context.SaveChanges();
         return shoppingCart.Quantity;
     }
     
     public ShoppingCart GetFirstOrDefault(Expression<Func<ShoppingCart, bool>> filter, string? includeProperties = null, bool tracked = true)
     {
-        SignalRContext context = new();
+        
         if (tracked)
         {
-            IQueryable<ShoppingCart> query = context.ShoppingCarts;
+            IQueryable<ShoppingCart> query = _context.ShoppingCarts;
 
             query = query.Where(filter);
             if (includeProperties != null)
@@ -60,7 +62,7 @@ public class EfShoppingCartDal :GenericRepository<ShoppingCart>, IShoppingCartDa
         }
         else
         {
-            IQueryable<ShoppingCart> query = context.ShoppingCarts.AsNoTracking();
+            IQueryable<ShoppingCart> query = _context.ShoppingCarts.AsNoTracking();
 
             query = query.Where(filter);
             if (includeProperties != null)
@@ -76,8 +78,8 @@ public class EfShoppingCartDal :GenericRepository<ShoppingCart>, IShoppingCartDa
 
     public IEnumerable<ShoppingCart> GetAllListByFilter(Expression<Func<ShoppingCart, bool>>? filter = null, string? includeProperties = null, string? includeProperties2 = null)
     {
-        SignalRContext context = new();
-        IQueryable<ShoppingCart> query = context.ShoppingCarts;
+      
+        IQueryable<ShoppingCart> query = _context.ShoppingCarts;
         if (filter != null)
         {
             query = query.Where(filter);
@@ -102,23 +104,23 @@ public class EfShoppingCartDal :GenericRepository<ShoppingCart>, IShoppingCartDa
     
     public void RemoveRange(int cartId, int productId)
     {
-        SignalRContext context = new();
-        var shoppingCart = context.ShoppingCarts.Where(x => x.Id == cartId && x.ProductId == productId);
-        context.ShoppingCarts.RemoveRange(shoppingCart);
-        context.SaveChanges();
+       
+        var shoppingCart = _context.ShoppingCarts.Where(x => x.Id == cartId && x.ProductId == productId);
+        _context.ShoppingCarts.RemoveRange(shoppingCart);
+        _context.SaveChanges();
     }
 
     public void SaveChanges()
     {
-        SignalRContext context = new();
-        context.SaveChanges();
+       
+        _context.SaveChanges();
     }
     
     public async Task<List<ResultShoppingCartWithDiningTableDto>> GetAllListByDiningTableAsync(int diningTableId)
     {
-        SignalRContext context = new();
         
-        var result =await context.ShoppingCarts.Include(x => x.ResultDiningTableDto)
+        
+        var result =await _context.ShoppingCarts.Include(x => x.ResultDiningTableDto)
             .Include(x => x.Product)
             .Where(x => x.DiningTableId == diningTableId)
             .ToListAsync();
@@ -148,10 +150,10 @@ public class EfShoppingCartDal :GenericRepository<ShoppingCart>, IShoppingCartDa
     
     public async Task<CreateShoppingCartDto> CreateBasketAsync(CreateShoppingCartDto createBasketDto)
     {
-        SignalRContext context = new SignalRContext();
+        
 
         // Aynı üründen sepette var mı kontrol et
-        var existingCartItem = await context.ShoppingCarts
+        var existingCartItem = await _context.ShoppingCarts
             .FirstOrDefaultAsync(x => x.ProductId == createBasketDto.ProductId && x.DiningTableId == createBasketDto.DiningTableId);
 
         if (existingCartItem != null)
@@ -172,10 +174,10 @@ public class EfShoppingCartDal :GenericRepository<ShoppingCart>, IShoppingCartDa
                 DiningTableId = createBasketDto.DiningTableId,
                 CreatedDate = createBasketDto.CreatedDate
             };
-            await context.ShoppingCarts.AddAsync(shoppingCart);
+            await _context.ShoppingCarts.AddAsync(shoppingCart);
         }
 
-        await context.SaveChangesAsync();
+        await _context.SaveChangesAsync();
         return createBasketDto;
     }
 

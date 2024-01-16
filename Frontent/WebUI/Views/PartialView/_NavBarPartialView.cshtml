@@ -1,12 +1,12 @@
 ﻿  <div class="hero_area">
     <div class="bg-box">
-      <img src="/feane-1.0.0/images/hero-bg.jpg" alt="">
-    </div>
-    <!-- header section strats -->
-    <header class="header_section">
+          <img src="/feane-1.0.0/images/hero-bg.jpg" alt="">
+        </div>
+        <!-- header section strats -->
+        <header class="header_section">
           <div class="container">
             <nav class="navbar navbar-expand-lg custom_nav-container ">
-              <a class="navbar-brand" href="/feane-1.0.0/index.html">
+              <a class="navbar-brand" href="/Default/Index">
                 <span>
                   BurgerClash
                 </span>
@@ -22,16 +22,24 @@
                       <a class="nav-link" href="/Default/Index">Hjem</a>
                   </li>
                   <li class="nav-item">
-                      <a class="nav-link" href="/Menu/Index">Meny</a>
+                    <a class="nav-link" href="/Menu/Index">Meny</a>
                   </li>
-                  <li class="nav-item">
+                  
+                  <li class="nav-item  @@listing__active" id="admin">
                     <a class="nav-link" href="/Admin/AdminStatistic/Index">Admin</a>
                   </li>
+                  
                   <li class="nav-item">
-                    <a class="nav-link" href="/About/Index">Om oss</a>
+                    <a class="nav-link" href="/About/Index">OmOss</a>
                   </li>
                   <li class="nav-item active">
-                      <a class="nav-link" href="/BookingTable/Index">Bestill bord <span class="sr-only">(nåværende)</span></a>
+                    <a class="nav-link" href="/BookingTable/Index">BestillBord <span class="sr-only">(nåværende)</span></a>
+                  </li>
+                  <li class="nav-item" id="logoutLink">
+                    <a class="nav-link" href="/Logout/Index">LoggUt</a>
+                  </li>
+                  <li class="nav-item" id="loginLink">
+                    <a class="nav-link" href="/Login/Index">LoggInn</a>
                   </li>
                 </ul>
                 <div class="user_option">
@@ -97,14 +105,112 @@
                       <i class="fa fa-search" aria-hidden="true"></i>
                     </button>
                   </form>
-                  <a href="" class="order_online">
-                    Order Online
+                  <a href="/CustomerMessage/Index" class="order_online">
+                   <i class="fa fa-comments">Chat</i>
                   </a>
                 </div>
               </div>
             </nav>
           </div>
         </header>
+        <!-- end header section -->
+    <script>
+    
+    function getCookie(cname) {
+      let name = cname + "=";
+      let decodedCookie = decodeURIComponent(document.cookie);
+      let ca = decodedCookie.split(';');
+      for(let i = 0; i <ca.length; i++) {
+        let c = ca[i];
+        while (c.charAt(0) == ' ') {
+          c = c.substring(1);
+        }
+        if (c.indexOf(name) == 0) {
+          return c.substring(name.length, c.length);
+        }
+      }
+      return "";
+    }
+      
+      // jwtToken değerini al
+      var jwtToken = getCookie("JwtToken");
+      console.log("jwtToken:", jwtToken); // jwtToken'ı konsola yazdır
+      
+      // Oturum açık mı kontrol et
+      function isUserAuthenticated() {
+          var isAuthenticated = jwtToken !== null && jwtToken !== '';
+          console.log("isAuthenticated:", isAuthenticated); // isUserAuthenticated değerini konsola yazdır
+          return isAuthenticated;
+      }
+      
+      // Navbar bağlantılarını güncelle
+      function updateNavbarLinks() {
+          if (isUserAuthenticated()) {
+              // Kullanıcı giriş yapmışsa, navbar'da logout düğmesini göster
+              document.getElementById("logoutLink").style.display = "block"; // Logout linki görünür
+              document.getElementById("loginLink").style.display = "none"; // Login linki gizli
+          } else {
+              // Kullanıcı giriş yapmamışsa, giriş düğmesini göster
+              document.getElementById("logoutLink").style.display = "none"; // Logout linki gizli
+              document.getElementById("loginLink").style.display = "block"; // Login linki görünür
+          }
+      }
+      
+      // Sayfa yüklendiğinde navbar bağlantılarını güncelle
+      window.onload = function () {
+          updateNavbarLinks();
+          console.log("Navbar bağlantıları güncellendi.");
+      };
+      
+      // Sayfa yüklendiğinde çalışacak olan kod
+      window.onload = function() {
+          // Oturum durumunu kontrol etmek için checkAuthentication fonksiyonunu çağır
+          checkAuthentication();
+            checkAdmin();
+      };
+      
+      function checkAuthentication() {
+          fetch('/Login/IsAuthenticated')
+              .then(response => response.json())
+              .then(data => {
+                  const logoutLink = document.getElementById('logoutLink');
+                  const loginLink = document.getElementById('loginLink');
+                   console.log("data:", data);
+                  
+                  if (data === true) {
+                      // Kullanıcı oturumu açıksa "Logg Ut" bağlantısını göster, "Logg Inn" bağlantısını gizle
+                      logoutLink.style.display = 'block';
+                      loginLink.style.display = 'none';
+                       console.log("data:", data);
+                  } else {
+                      // Kullanıcı oturumu kapalıysa "Logg Ut" bağlantısını gizle, "Logg Inn" bağlantısını göster
+                      logoutLink.style.display = 'none';
+                      loginLink.style.display = 'block';
+                       console.log(data);
+                  }
+              });
+      }
+      
+      
+      function checkAdmin() {
+            fetch('/Login/IsAdmin')
+                .then(response => response.json())
+                .then(data => {
+                    const admin = document.getElementById('admin');
+                     console.log("data:", data);
+                    
+                    if (data === true) {
+                        // Kullanıcı oturumu açıksa "Logg Ut" bağlantısını göster, "Logg Inn" bağlantısını gizle
+                        admin.style.display = 'block';
+                         console.log("data:", data);
+                    } else {
+                        // Kullanıcı oturumu kapalıysa "Logg Ut" bağlantısını gizle, "Logg Inn" bağlantısını göster
+                        admin.style.display = 'none';                  
+                         console.log(data);
+                    }
+                });
+        }
+        </script>
     <!-- end header section -->
   </div>
 

@@ -39,17 +39,16 @@
 											<span class="text-info">x&nbsp;</span>@item.Quantity </strong><span class="text-info"> = </span>@item.TotalPrice.ToString("0"),- </strong></h6>
 							</div>
 							<div class="col-6 col-sm-4 col-lg-6 pt-2">
-								<div class="w-75 btn-group" role="group">
-									<a asp-action="DecrementCount" asp-controller="ShoppingCart" asp-area="" asp-route-cartId="@item.Id" asp-route-productId="@item.ProductId" asp-route-tableId="@item.DiningTableId" class="btn btn-warning">
-										<i class="fa fa-minus-square"></i>
-									</a>
-									<a asp-action="IncrementCount" asp-controller="ShoppingCart" asp-area="" asp-route-cartId="@item.Id" asp-route-productId="@item.ProductId" asp-route-tableId="@item.DiningTableId" class="btn btn-primary">
-										<i class="fa fa-plus-square"></i>
-									</a> &nbsp;
-									<a asp-action="RemoveFromCart" asp-controller="ShoppingCart" asp-area="" asp-route-cartId="@item.Id" asp-route-productId="@item.ProductId" asp-route-tableId="@item.DiningTableId" class="btn btn-danger">
-										<i class="fa fa-trash"></i></a>
-								</div>
-							</div>
+                            <div class="w-75 btn-group" role="group">
+                            	<a asp-action="DecrementCount" asp-controller="ShoppingCart" asp-area="" asp-route-cartId="@item.Id" asp-route-productId="@item.ProductId" asp-route-tableId="@item.DiningTableId" class="btn btn-warning">
+                            	<i class="fa fa-minus-square"></i>
+                            	</a>
+                            	<a asp-action="IncrementCount" asp-controller="ShoppingCart" asp-area="" asp-route-cartId="@item.Id" asp-route-productId="@item.ProductId" asp-route-tableId="@item.DiningTableId" class="btn btn-primary">
+                            	<i class="fa fa-plus-square"></i></a> &nbsp;
+                            	<a asp-action="RemoveFromCart" asp-controller="ShoppingCart" asp-area="" asp-route-cartId="@item.Id" asp-route-productId="@item.ProductId" asp-route-tableId="@item.DiningTableId" class="btn btn-danger">
+                            	<i class="fa fa-trash"></i></a>
+                            	</div>
+                            	</div>
 						</div>
 					</div>
 					<hr/>}
@@ -91,6 +90,7 @@
 	</div>
 </form>
 
+<script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
 
 <script>
     var initialTotalAmount = 0;
@@ -157,6 +157,42 @@
 		initialTotalAmount = totalAmount;
             document.getElementById('hiddenTotalAmount').value = totalAmount.toFixed(2);
     }
+    
+    function decrementCount(cartId, productId, tableId) {
+            // AJAX-kall for å håndtere DecrementCount
+            $.ajax({
+                type:"GET",
+                url: "/ShoppingCart/DecrementCount",
+                data: { cartId: cartId, productId: productId, tableId: tableId },
+                success: function (data) {
+					
+                }
+            });
+        }
+    
+        function incrementCount(cartId, productId, tableId) {
+            // AJAX-kall for å håndtere IncrementCount
+            $.ajax({
+                type: "GET",
+                url: "/ShoppingCart/IncrementCount",
+                data: { cartId: cartId, productId: productId, tableId: tableId },
+                success: function (data) {
+                    // Oppdater grensesnittet eller gjør andre handlinger etter vellykket kall
+                }
+            });
+        }
+    
+        function removeFromCart(cartId, productId, tableId) {
+            // AJAX-kall for å håndtere RemoveFromCart
+            $.ajax({
+                type: "GET",
+                url: "/ShoppingCart/RemoveFromCart",
+                data: { cartId: cartId, productId: productId, tableId: tableId },
+                success: function (data) {
+                    // Oppdater grensesnittet eller gjør andre handlinger etter vellykket kall
+                }
+            });
+        }
 </script>
 
 

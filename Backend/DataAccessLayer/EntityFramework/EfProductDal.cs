@@ -9,15 +9,17 @@ namespace DataAccessLayer.EntityFramework;
 
 public class EfProductDal : GenericRepository<Product> , IProductDal
 {
+    private readonly SignalRContext _context;
     public EfProductDal(SignalRContext context) : base(context)
     {
+        _context = context ?? throw new ArgumentNullException(nameof(context));
     }
 
     public async Task<List<ResultProductWithCategoryDto>> GetListWithCategoryAsync()
     {
-        var context = new SignalRContext();
-        var result = await context.Products
-            .Include(x => x.Category).Select(y=>new ResultProductWithCategoryDto
+        var result = await _context.Products
+            .Include(x => x.Category)
+            .Select(y => new ResultProductWithCategoryDto
             {
                 Description = y.Description,
                 ImageUrl = y.ImageUrl,
@@ -26,10 +28,10 @@ public class EfProductDal : GenericRepository<Product> , IProductDal
                 ProductName = y.ProductName,
                 Status = y.Status,
                 CategoryId = y.CategoryId,
-                CategoryName = y.Category.CategoryName
+                CategoryName = y.Category != null ? y.Category.CategoryName : null
             })
             .ToListAsync();
+
         return result;
     }
-
 }

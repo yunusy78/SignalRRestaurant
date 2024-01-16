@@ -35,13 +35,14 @@
                         var item = result[i];
                         const color = item.status == false ? "card-success" : "card-danger";
                            const status = item.status == false ? "Ledig" : "Opptatt";
+                           const icon = item.status == false ? "la la-cutlery" : "la la-group";
                        var cardHtml = ` <div class="col-md-3" >
                                <div class="card card-stats ${color}">
                                    <div class="card-body ">
                                        <div class="row">
                                            <div class="col-5">
                                                <div class="icon-big text-center">
-                                                    <i class="la la-certificate"></i>
+                                                    <i class="${icon} "></i>
                                                </div>
                                            </div>
                                            <div class="col-7 d-flex align-items-center">

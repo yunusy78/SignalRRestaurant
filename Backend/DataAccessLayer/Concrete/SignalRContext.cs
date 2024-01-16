@@ -5,11 +5,29 @@ namespace DataAccessLayer.Concrete;
 
 public class SignalRContext : DbContext
 {
-    protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+   /* protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
     {
         optionsBuilder.UseSqlServer("Server=(localdb)\\MSSQLLocalDB;Database=SignalRDB;Trusted_Connection=True;MultipleActiveResultSets=true");
-    }
+    }*/
     
+  /* protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+   {
+       optionsBuilder.UseSqlServer("Server=localhost,1444;Database=SignalRDb;User=sa;Password=Password1234.");
+   }*/
+  
+  public const string DEFAULT_SCHEMA = "Contact";
+
+  public SignalRContext(DbContextOptions<SignalRContext> options) : base(options)
+  {
+  }
+  
+  protected override void OnModelCreating(ModelBuilder modelBuilder)
+  {
+
+      base.OnModelCreating(modelBuilder);
+  }
+   
+   
     public DbSet<Contact> Contacts { get; set; }
     public DbSet<Booking> Bookings { get; set; }
     public DbSet<Discount> Discounts { get; set; }

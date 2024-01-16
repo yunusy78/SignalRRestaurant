@@ -5,7 +5,7 @@
         <Nullable>enable</Nullable>
         <ImplicitUsings>enable</ImplicitUsings>
         <UserSecretsId>aspnet-WebUI-4D5FC279-30CA-4107-B602-55470DF5BAF1</UserSecretsId>
-        <DockerDefaultTargetOS>Windows</DockerDefaultTargetOS>
+        <DockerDefaultTargetOS>Linux</DockerDefaultTargetOS>
     </PropertyGroup>
 
     <ItemGroup>
@@ -20,13 +20,14 @@
         <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="7.0.13"/>
         <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="7.0.11" />
         <PackageReference Include="NETCore.MailKit" Version="2.1.0" />
+        <PackageReference Include="QRCoder" Version="1.4.3" />
+        
     </ItemGroup>
 
     <ItemGroup>
       <Content Include="..\..\.dockerignore">
         <Link>.dockerignore</Link>
       </Content>
-      <Content Include="wwwroot\Ready-Bootstrap-Dashboard-master\.DS_Store" />
     </ItemGroup>
 
     <ItemGroup>
@@ -71,12 +72,7 @@
       <_ContentIncludedByDefault Remove="Pages\SignalRDefault\Index.cshtml" />
       <_ContentIncludedByDefault Remove="Pages\ShoppingCart\Index.cshtml" />
       <_ContentIncludedByDefault Remove="Pages\About\Index.cshtml" />
-    </ItemGroup>
-
-    <ItemGroup>
-      <Reference Include="QRCoder">
-        <HintPath>..\..\..\..\..\QRCoder.dll</HintPath>
-      </Reference>
+      <_ContentIncludedByDefault Remove="Views\QRCode\Index.cshtml" />
     </ItemGroup>
 
 </Project>

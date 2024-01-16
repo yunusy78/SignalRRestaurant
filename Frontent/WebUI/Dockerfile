@@ -6,6 +6,8 @@ EXPOSE 443
 FROM mcr.microsoft.com/dotnet/sdk:7.0 AS build
 WORKDIR /src
 COPY ["Frontent/WebUI/WebUI.csproj", "Frontent/WebUI/"]
+COPY ["Frontent/DtoLayer/DtoLayer.csproj", "Frontent/DtoLayer/"]
+COPY ["Frontent/BusinessLayer/BusinessLayer.csproj", "Frontent/BusinessLayer/"]
 RUN dotnet restore "Frontent/WebUI/WebUI.csproj"
 COPY . .
 WORKDIR "/src/Frontent/WebUI"

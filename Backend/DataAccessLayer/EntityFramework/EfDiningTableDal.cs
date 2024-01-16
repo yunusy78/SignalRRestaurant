@@ -9,25 +9,27 @@ namespace DataAccessLayer.EntityFramework;
 
 public class EfDiningTableDal : GenericRepository<DiningTable>, IDiningTableDal
 {
+    private readonly SignalRContext _context;
     public EfDiningTableDal(SignalRContext context) : base(context)
     {
+        _context = context ?? throw new ArgumentNullException(nameof(context));
     }
     
     public async Task<int> GetTotalActiveTableCountAsync()
     {
-        var context = new SignalRContext();
-        return await context.DiningTables.CountAsync(x => x.Status);
+        
+        return await _context.DiningTables.CountAsync(x => x.Status);
     }
 
     public async Task<int> GetTotalPassiveTableCountAsync()
     {
-        var context = new SignalRContext();
-        return await context.DiningTables.CountAsync(x => !x.Status);
+        
+        return await _context.DiningTables.CountAsync(x => !x.Status);
     }
     
     public async Task<List<DiningTable>> GetDiningTablesByStatusAsync()
     {
-        var context = new SignalRContext();
-        return await context.DiningTables.Where(x => x.Status).ToListAsync();
+        
+        return await _context.DiningTables.Where(x => x.Status).ToListAsync();
     }
 }

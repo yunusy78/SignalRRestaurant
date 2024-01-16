@@ -1,0 +1,16 @@
+version: "3.8"
+services:
+  signalrdb2:
+    image: mcr.microsoft.com/mssql/server:2019-latest
+  signalrweb.api:
+    image: web_api_image
+    build:
+      context: .
+      dockerfile: Backend/WebApi/Dockerfile
+  signalrweb.ui:
+    image: signalr_web_ui
+    build:
+      context: .
+      dockerfile: Frontent/WebUI/Dockerfile
+volumes:
+  signalrdb_volume2:

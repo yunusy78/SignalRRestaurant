@@ -1,0 +1,34 @@
+version: "3.8"
+services:
+  signalrdb2:
+    container_name: signalrdb2
+    restart: always
+    ports:
+      - "1435:1433"
+    volumes:
+      - signalrdb_volume2:/var/opt/mssql
+    environment:
+      - ACCEPT_EULA=Y
+      - SA_PASSWORD=Password12*
+
+  signalrweb.api:
+    container_name: signalrweb.api
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - "ConnectionStrings:DefaultConnection=Server=signalrdb2,1435;Database=SignalRDb2; User Id=sa; Password=Password12*;TrustServerCertificate=True"
+    ports:
+      - "5183:80"
+    depends_on:
+      - signalrdb2
+  signalrweb.ui:
+    container_name: signalrweb.ui
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - ServiceApiSettings:BaseUri=http://localhost
+    ports:
+      - "5196:80"
+    depends_on:
+      - signalrweb.api
+
+volumes:
+  signalrdb_volume2:

@@ -9,14 +9,16 @@ namespace DataAccessLayer.EntityFramework;
 
 public class EfOrderDetailsDal : GenericRepository<OrderDetails>, IOrderDetailsDal
 {
+    private readonly SignalRContext _context;
     public EfOrderDetailsDal(SignalRContext context) : base(context)
     {
+        _context = context ?? throw new ArgumentNullException(nameof(context));
     }
     
     public async Task<List<ResultOrderDetailsDto>> GetOrderDetailsByOrderWithProductName()
     {
-        await using var context = new SignalRContext();
-        var result = await context.OrderDetails
+        
+        var result = await _context.OrderDetails
             .Include(x => x.Product)
             .Include(x => x.Order)
             .Select(x => new ResultOrderDetailsDto

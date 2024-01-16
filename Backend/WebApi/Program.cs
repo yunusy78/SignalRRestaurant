@@ -13,6 +13,7 @@ using WebApi.Hubs;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.EntityFrameworkCore;
 using Swashbuckle.AspNetCore.Filters;
 var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddSwaggerGen(options =>
@@ -26,6 +27,10 @@ builder.Services.AddSwaggerGen(options =>
     });
     options.OperationFilter<SecurityRequirementsOperationFilter>();
 });
+
+var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
+builder.Services.AddDbContext<SignalRContext>(options =>
+    options.UseSqlServer(connectionString!));
 builder.Services.AddControllersWithViews();
 builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
     .AddJwtBearer(opt =>
@@ -44,7 +49,6 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
             ValidateAudience = false
         };
     });
-builder.Services.AddDbContext<SignalRContext>();
 builder.Services.ContainerDependencies();
 builder.Services.AddCors(opt=>
 {

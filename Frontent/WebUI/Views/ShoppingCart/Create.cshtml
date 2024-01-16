@@ -2,8 +2,14 @@
 
 @{
     ViewBag.Title = "title";
-    Layout = "_Layout";
+    Layout = null;
 }
+
+@await Component.InvokeAsync("_UILayoutHeadComponentPartial")
+
+<body class="sub_page">
+
+@await Html.PartialAsync("~/Views/PartialView/_NavBarPartialView.cshtml")
 
 <form method="post" asp-action="Create">
     <div class="container mt-4">
@@ -50,3 +56,10 @@
     </div>
 </form>
 
+@await Component.InvokeAsync("_UILayoutFooterComponentPartial")
+<!-- footer section -->
+
+<!-- jQery -->
+@await Component.InvokeAsync("_UILayoutScriptComponentPartial")
+
+</body>

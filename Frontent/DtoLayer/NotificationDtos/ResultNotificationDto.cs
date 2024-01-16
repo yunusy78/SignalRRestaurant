@@ -1,5 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc.Rendering;
-
+using Microsoft.AspNetCore.Mvc.Rendering;
 namespace DtoLayer.NotificationDtos;
 
 public class ResultNotificationDto

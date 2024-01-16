@@ -70,6 +70,7 @@ namespace WebApi.Controllers
             return Ok("Deleted Successfully");
         }
         
+      
         [HttpGet("CategoriesAdmin")]
         public async Task<IActionResult> GetAllCategoriesAdmin()
         {

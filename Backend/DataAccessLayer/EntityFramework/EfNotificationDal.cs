@@ -8,21 +8,23 @@ namespace DataAccessLayer.EntityFramework;
 
 public class EfNotificationDal : GenericRepository<Notification>, INotificationDal
 {
+    private readonly SignalRContext _context;
     public EfNotificationDal(SignalRContext context) : base(context)
     {
+        _context = context ?? throw new ArgumentNullException(nameof(context));
     }
 
     public async Task<int> GetNotificationCountByStatus()
     {
-        var context = new SignalRContext();
-        var result = await context.Notifications.CountAsync(x => x.IsRead == false);
+        
+        var result = await _context.Notifications.CountAsync(x => x.IsRead == false);
         return result;
     }
     
     public async Task<List<Notification>> GetNotificationListByStatus()
     {
-        var context = new SignalRContext();
-        var result = await context.Notifications.Where(x => x.IsRead == false).ToListAsync();
+        
+        var result = await _context.Notifications.Where(x => x.IsRead == false).ToListAsync();
         return result;
     }
 }

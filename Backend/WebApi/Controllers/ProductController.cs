@@ -12,7 +12,6 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace WebApi.Controllers
 {
-    [Authorize(Roles = "Admin")]
     [Route("api/[controller]")]
     [ApiController]
     public class ProductController : ControllerBase
@@ -52,7 +51,7 @@ namespace WebApi.Controllers
             return Ok(result);
         }
         
-        
+        [AllowAnonymous]
         [HttpPost]
         public async Task<IActionResult> Add(CreateProductDto Product)
         {
