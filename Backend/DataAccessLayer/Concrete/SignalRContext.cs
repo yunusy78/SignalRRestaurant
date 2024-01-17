@@ -1,4 +1,6 @@
-﻿using EntityLayer.Concrete;
+﻿using System.Reflection;
+using DataAccessLayer.Configurations;
+using EntityLayer.Concrete;
 using Microsoft.EntityFrameworkCore;
 
 namespace DataAccessLayer.Concrete;
@@ -23,7 +25,8 @@ public class SignalRContext : DbContext
   
   protected override void OnModelCreating(ModelBuilder modelBuilder)
   {
-
+      modelBuilder.ApplyConfigurationsFromAssembly(Assembly.GetExecutingAssembly());
+      //modelBuilder.ApplyConfiguration(new ProductConfiguration());
       base.OnModelCreating(modelBuilder);
   }
    

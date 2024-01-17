@@ -3,6 +3,7 @@ using System.Net.Http.Headers;
 using System.Net.Http.Json;
 using BusinessLayer.Abstract;
 using DtoLayer.AboutDtos;
+using DtoLayer.CustomResponseDto;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Configuration;
 
@@ -45,8 +46,8 @@ public class AboutManager : IAboutService
         {
             return null;
         }
-        var result = await response.Content.ReadFromJsonAsync<List<ResultAboutDto>>();
-        return result!;
+        var result = await response.Content.ReadFromJsonAsync<CustomResponseDto<List<ResultAboutDto>>>();
+        return result!.Data;
     }
 
     public async Task<ResultAboutDto> GetByIdAsync(int id)

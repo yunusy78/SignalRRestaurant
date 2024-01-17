@@ -9,6 +9,7 @@ using EntityLayer.Concrete;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using WebApi.Filter;
 
 namespace WebApi.Controllers
 {
@@ -42,9 +43,9 @@ namespace WebApi.Controllers
             return Ok(result);
         }
         
+        [ServiceFilter(typeof(NotFoundFilter<Product>))]
         [AllowAnonymous]
         [HttpGet("{id}")]
-        
         public async Task<IActionResult> GetById(int id)
         {
             var result = await _productService.GetByIdAsync(id);

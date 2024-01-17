@@ -3,6 +3,7 @@ using BusinessLayer.Abstract;
 using BusinessLayer.Concrete;
 using DataAccessLayer.Abstract;
 using DataAccessLayer.EntityFramework;
+using DataAccessLayer.UnitOfWorks;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace BusinessLayer;
@@ -22,7 +23,7 @@ public static class ScopedService
         services.AddScoped<IContactDal, EfContactDal>();
         services.AddScoped<IContactService, ContactManager>();
         services.AddScoped<IProductDal, EfProductDal>();
-        services.AddScoped<IProductService, ProductManager>();
+        //services.AddScoped<IProductService, ProductManager>();
         services.AddScoped<ITestimonialDal, EfTestimonialDal>();
         services.AddScoped<ITestimonialService, TestimonialManager>();
         services.AddScoped<ISocialMediaDal, EfSocialMediaDal>();
@@ -40,6 +41,10 @@ public static class ScopedService
         
         services.AddScoped<IAppUserDal, EfAppUserDal>();
         services.AddScoped<IAppUserService, AppUserManager>();
+
+        services.AddScoped<IUnitOfWorks, UnitOfWork>();
+        
+        
             
         services.AddScoped<IAppRoleDal, EfAppRoleDal>();
         services.AddScoped<IAppRoleService, AppRoleManager>();

@@ -7,40 +7,42 @@ namespace DataAccessLayer.Repositories;
 public class GenericRepository<T> : IGenericDal<T> where T : class, new()
 {
     private readonly SignalRContext _context;
+    private readonly DbSet<T> _dbSet;
     
-    public GenericRepository(SignalRContext context)
+   public GenericRepository(SignalRContext context)
     {
-        _context = context;
+        _context = context ?? throw new ArgumentNullException(nameof(context));
+        _dbSet = _context.Set<T>();
     }
 
 
     public async Task<List<T>> GetAllAsync()
     {
-        return await _context.Set<T>().ToListAsync();
+        return await _dbSet.AsNoTracking().ToListAsync();
         
     }
 
     public async Task<T> GetByIdAsync(int id)
     {
-        return (await _context.Set<T>().FindAsync(id))!;
+        return (await _dbSet.FindAsync(id))!;
     }
 
     public async Task AddAsync(T entity)
     {
-        await _context.Set<T>().AddAsync(entity);
+        await _dbSet.AddAsync(entity);
         await _context.SaveChangesAsync();
         
     }
 
     public async Task UpdateAsync(T entity)
     {
-        _context.Set<T>().Update(entity);
+        _dbSet.Update(entity);
         await _context.SaveChangesAsync();
     }
 
     public async Task DeleteAsync(T entity)
     {
-        _context.Set<T>().Remove(entity);
+        _dbSet.Remove(entity);
         await _context.SaveChangesAsync();
     }
 }

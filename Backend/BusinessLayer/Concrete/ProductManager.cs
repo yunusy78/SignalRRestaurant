@@ -1,4 +1,5 @@
 ﻿using BusinessLayer.Abstract;
+using BusinessLayer.Exceptions;
 using DataAccessLayer.Abstract;
 using DtoLayer.ProductDtos;
 using EntityLayer.Concrete;
@@ -21,7 +22,12 @@ public class ProductManager : IProductService
     
     public async Task<Product> GetByIdAsync(int id)
     {
-        return await _productDal.GetByIdAsync(id);
+        var hasProduct= await _productDal.GetByIdAsync(id);
+        if (hasProduct==null)
+        {
+            throw new NotFoundException("Product not found");
+        }
+        return hasProduct;
     }
     
     public async Task AddAsync(Product entity)

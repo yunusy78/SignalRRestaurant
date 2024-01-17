@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using AutoMapper;
 using BusinessLayer.Abstract;
 using DtoLayer.AboutDtos;
+using DtoLayer.CustomResponseDto;
 using EntityLayer.Concrete;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
@@ -14,7 +15,7 @@ namespace WebApi.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class AboutController : ControllerBase
+    public class AboutController : CustomBaseController
     {
         private readonly IAboutService _aboutService;
         private readonly IMapper _mapper;
@@ -32,8 +33,11 @@ namespace WebApi.Controllers
         public async Task<IActionResult> GetList()
         {
             var result = await _aboutService.GetAllAsync();
-            return Ok(result);
+            var abouts = _mapper.Map<List<ResultAboutDto>>(result);
+
+            return CreateActionResultInstance(CustomResponseDto<List<ResultAboutDto>>.Success(abouts, 200));
         }
+
         
         [HttpGet("{id}")]
         
