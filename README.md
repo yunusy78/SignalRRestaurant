@@ -65,7 +65,14 @@ I am excited to present BurgerClash, developed with great enthusiasm using ASP.N
    - Custom validator classes ensure the accuracy of incoming data.
    - Validate filters are used to verify requests pre or post-processing.
    - Benefits: Standardizes error messages, minimizes code repetition, and enhances data validation.
+     
+## CashLayer and Caching
 
+In the project, CashLayer is utilized to enhance performance and avoid redundant database calls for products. CashLayer caches specific data points, providing quick access to the data and consequently improving the overall performance of the application.
+
+### How to Use?
+
+CashLayer caches data obtained from specific service calls for a defined period. This enables sections of the application that frequently access the same data to benefit from improved performance.
 
 ## Project Guide
 
