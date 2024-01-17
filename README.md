@@ -81,8 +81,6 @@ This project brings together innovative features using modern technologies. Welc
 ## Images
 
 ![](/Frontent/WebUI/wwwroot/Burgerclash/1.png))
-
-![](/Frontent/WebUI/wwwroot/Burgerclash/2.png)
 ![](/Frontent/WebUI/wwwroot/Burgerclash/3.png))
 
 ![](/Frontent/WebUI/wwwroot/Burgerclash/4.png)
